@@ -35,7 +35,11 @@ Design detailed business logic for the unit, technology-agnostic and focused pur
 ### Step 3: Generate Context-Appropriate Questions
 **DIRECTIVE**: Thoroughly analyze the unit definition and functional design artifacts to identify ALL areas where clarification would improve the functional design. Be proactive in asking questions to ensure comprehensive understanding.
 
+**MANDATORY**: Generate a minimum of 3 questions for EVERY unit, even if the unit scope seems well-defined from inception artifacts. Prior context provides high-level direction, but functional design requires implementation-level decisions that only the user can make (e.g., error handling strategy, concurrency approach, validation strictness, edge case behavior).
+
 **CRITICAL**: Default to asking questions when there is ANY ambiguity or missing detail that could affect functional design quality. It's better to ask too many questions than to make incorrect assumptions.
+
+**NEVER SKIP THIS STEP**: Do not consolidate functional design questions into a single pass with NFR/Infrastructure stages. Functional design questions must be asked and answered BEFORE generating functional design artifacts. This is a separate approval gate.
 
 - EMBED questions using [Answer]: tag format
 - Focus on ANY ambiguities, missing information, or areas needing clarification
