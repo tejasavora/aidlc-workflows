@@ -69,10 +69,11 @@ Design detailed business logic for the unit, technology-agnostic and focused pur
 - **Do not proceed until ALL ambiguities are resolved**
 
 ### Step 6: Generate Functional Design Artifacts
-- Create `aidlc-docs/construction/{unit-name}/functional-design/business-logic-model.md`
-- Create `aidlc-docs/construction/{unit-name}/functional-design/business-rules.md`
-- Create `aidlc-docs/construction/{unit-name}/functional-design/domain-entities.md`
-- If unit includes frontend/UI: Create `aidlc-docs/construction/{unit-name}/functional-design/frontend-components.md`
+- Create `aidlc-docs/construction/{unit-name}/functional-design/functional-design.md` with the following sections:
+  - `## Domain Entities` - Domain models with entities, relationships, and data structures
+  - `## Business Rules` - Decision rules, validation logic, constraints, and business policies
+  - `## Business Logic Model` - Detailed business logic, algorithms, and workflows
+- If unit includes frontend/UI: Add a `## Frontend Components` section to the same file:
   - Component hierarchy and structure
   - Props and state definitions for each component
   - User interaction flows
