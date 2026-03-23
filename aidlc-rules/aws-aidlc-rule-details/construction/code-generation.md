@@ -76,10 +76,15 @@ This stage generates code for each unit of work through two integrated parts:
 - [ ] Include reference to the complete unit code generation plan
 - [ ] Use ISO 8601 timestamp format
 
-## Step 7: Wait for Explicit Approval
+## Step 7: Wait for Explicit Approval — APPROVAL GATE
+
+**MANDATORY STOP**: Do NOT proceed to Part 2 (Generation) until the user explicitly approves the plan.
+
+- [ ] Present the plan summary to the user and WAIT for their response
 - [ ] Do not proceed until the user explicitly approves the unit code generation plan
 - [ ] Approval must cover the entire plan and generation sequence
 - [ ] If user requests changes, update the plan and repeat approval process
+- [ ] **NEVER auto-proceed**: Even if the plan seems complete and unambiguous, wait for explicit user approval
 
 ## Step 8: Record Approval Response
 - [ ] Log the user's approval response with timestamp in `aidlc-docs/audit.md`
@@ -208,10 +213,57 @@ When generating UI code (web, mobile, desktop), ensure elements are automation-f
 - Avoid dynamic or auto-generated IDs that change between renders
 - Keep `data-testid` values stable across code changes (only change when element purpose changes)
 
+## Step 17: Build Verification (Per-Unit)
+
+After all code generation steps are complete for this unit, verify the generated code compiles and tests pass.
+
+**MANDATORY**: Do not present code as "complete" until build and tests pass.
+
+### 17.1 Install Dependencies (if first unit or dependencies changed)
+- [ ] Run dependency installation command (e.g., `npm install`, `pip install -r requirements.txt`, `mvn dependency:resolve`)
+- [ ] If dependency installation fails: fix package.json/requirements/pom.xml and retry
+
+### 17.2 Build/Compile
+- [ ] Run build command (e.g., `npm run build`, `tsc --noEmit`, `mvn compile`, `go build ./...`)
+- [ ] If build fails:
+  1. Read error output
+  2. Fix the compilation errors in generated code
+  3. Rebuild
+  4. Repeat up to 3 times
+- [ ] If build still fails after 3 attempts: present errors to user and ask for guidance
+
+### 17.3 Run Unit Tests
+- [ ] Run test command (e.g., `npm test`, `pytest`, `mvn test`, `go test ./...`)
+- [ ] If tests fail:
+  1. Read test failure output
+  2. Determine if the fix is in the test or the application code
+  3. Fix the failing code
+  4. Re-run tests
+  5. Repeat up to 3 times
+- [ ] If tests still fail after 3 attempts: present failures to user and ask for guidance
+
+### 17.4 Run Linting (if configured)
+- [ ] Run lint command (e.g., `npm run lint`, `flake8`, `eslint`)
+- [ ] Fix any linting errors in generated code
+- [ ] Re-run lint to confirm clean
+
+### 17.5 Report Results
+- Include in the completion message:
+  - Build status: PASS/FAIL
+  - Test results: X passed, Y failed
+  - Lint status: PASS/FAIL/N/A
+
+**Note**: If the platform does not support command execution (e.g., IDE-only mode), skip Steps 17.1-17.4 and note in the completion message that build verification was not performed.
+
+---
+
 ## Completion Criteria
 - Complete unit code generation plan created and approved
 - All steps in unit code generation plan marked [x]
 - All unit stories implemented according to plan
-- All code and tests generated (tests will be executed in Build & Test phase)
+- All code and tests generated
+- **Build passes** (Step 17.2)
+- **All unit tests pass** (Step 17.3)
+- **Lint clean** (Step 17.4)
 - Deployment artifacts generated
-- Complete unit ready for build and verification
+- Complete unit ready for integration with other units
