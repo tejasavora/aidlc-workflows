@@ -200,8 +200,7 @@ This stage generates code for each unit of work through two integrated parts:
 - Get explicit user approval before generation
 
 ### Generation Phase Rules
-- **NO HARDCODED LOGIC**: Only execute what's written in the unit plan
-- **FOLLOW PLAN EXACTLY**: Do not deviate from the step sequence
+- **FOLLOW THE PLAN**: Execute steps in the planned sequence. If you discover something needed that isn't in the plan (e.g., a missing utility function, a shared type), implement it and note the addition — but do not add unplanned features or scope.
 - **UPDATE CHECKBOXES**: Mark [x] immediately after completing each step
 - **STORY TRACEABILITY**: Mark unit stories [x] when functionality is implemented
 - **RESPECT DEPENDENCIES**: Only implement when unit dependencies are satisfied
