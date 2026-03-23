@@ -6,7 +6,7 @@
 
 **Skip when**: Greenfield project (no existing code)
 
-**Rerun behavior**: Always rerun when brownfield project detected, even if artifacts exist. This ensures artifacts reflect current code state
+**Rerun behavior**: If reverse engineering artifacts already exist, load them and skip to Requirements Analysis (do not rerun). If the user explicitly requests a re-analysis (e.g., "rerun reverse engineering" or "code has changed significantly"), then rerun and overwrite existing artifacts
 
 ## Step 1: Multi-Package Discovery
 
