@@ -6,3 +6,7 @@
 .env
 buildspec.yml
 codebuild_build.sh
+CLAUDE.md
+docs/**
+sa-enablement/**
+workshop/**
