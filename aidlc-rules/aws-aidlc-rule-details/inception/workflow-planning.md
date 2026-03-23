@@ -153,14 +153,16 @@ Evaluate risk level:
 - No new NFR requirements
 - Simple changes with no NFR impact
 
-## Step 4: Note Adaptive Detail
+## Step 4: Assign Depth Levels
 
 **See [depth-levels.md](../common/depth-levels.md) for adaptive depth explanation**
 
-For each stage that will execute:
-- All defined artifacts will be created
-- Detail level within artifacts adapts to problem complexity
-- Model determines appropriate detail based on problem characteristics
+For each stage that will execute, assign a depth level based on project complexity and the stage's relevance:
+- **Minimal** — Simple/low-risk areas where defaults suffice (e.g., NFR Design for a unit with no special performance requirements)
+- **Standard** — Most stages for production-grade projects (default)
+- **Comprehensive** — High-risk or critical areas requiring deep analysis (e.g., Infrastructure Design for a complex multi-service deployment)
+
+**MANDATORY**: Include the assigned depth level in the execution plan output for each stage. Format: `[Stage Name] - EXECUTE (depth: Standard)`. This helps participants understand the expected rigor and time investment per stage.
 
 ## Step 5: Multi-Module Coordination Analysis (Brownfield Only)
 
@@ -307,13 +309,13 @@ flowchart TD
   - **Rationale**: [Why executing or skipping]
 
 ### 🟢 CONSTRUCTION PHASE
-- [ ] Functional Design - [EXECUTE/SKIP]
+- [ ] Functional Design - [EXECUTE (depth: Minimal/Standard/Comprehensive) / SKIP]
   - **Rationale**: [Why executing or skipping]
-- [ ] NFR Requirements - [EXECUTE/SKIP]
+- [ ] NFR Requirements - [EXECUTE (depth: Minimal/Standard/Comprehensive) / SKIP]
   - **Rationale**: [Why executing or skipping]
-- [ ] NFR Design - [EXECUTE/SKIP]
+- [ ] NFR Design - [EXECUTE (depth: Minimal/Standard/Comprehensive) / SKIP]
   - **Rationale**: [Why executing or skipping]
-- [ ] Infrastructure Design - [EXECUTE/SKIP]
+- [ ] Infrastructure Design - [EXECUTE (depth: Minimal/Standard/Comprehensive) / SKIP]
   - **Rationale**: [Why executing or skipping]
 - [ ] Code Generation - EXECUTE (ALWAYS)
   - **Rationale**: Implementation planning and code generation needed
