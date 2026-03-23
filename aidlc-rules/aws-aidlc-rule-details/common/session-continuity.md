@@ -1,6 +1,9 @@
 # Session Continuity Templates
 
 ## Welcome Back Prompt Template
+
+**Note**: This is an intentional exception to the file-based question rule in question-format-guide.md. The welcome-back prompt is a one-time routing question presented in chat, not a design decision requiring file-based answers. The user's response determines which stage to resume, and the AI proceeds immediately.
+
 When a user returns to continue work on an existing AI-DLC project, present this prompt:
 
 ```markdown
