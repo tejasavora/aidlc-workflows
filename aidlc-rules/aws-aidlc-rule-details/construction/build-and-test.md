@@ -1,15 +1,90 @@
 # Build and Test
 
-**Purpose**: Build all units and execute comprehensive testing strategy
+**Purpose**: Build all units, execute tests, fix issues, and verify the complete system works.
+
+This stage has TWO modes:
+- **Execute Mode** (preferred): Actually run build, test, and deployment commands. Fix errors iteratively until everything passes.
+- **Instructions Mode** (fallback): Generate instruction documents for the user to execute manually. Use this only if the platform does not support command execution.
+
+**Default to Execute Mode.** Only fall back to Instructions Mode if command execution is not available.
 
 ## Prerequisites
-- Code Generation must be complete for all units
+- Code Generation must be complete for all units (including per-unit build verification in Step 17 of code-generation)
 - All code artifacts must be generated
-- Project is ready for build and testing
+- Project is ready for full build and testing
 
 ---
 
-## Step 1: Analyze Testing Requirements
+## EXECUTE MODE
+
+### Step E1: Full Build
+- [ ] Run dependency installation across all units (e.g., `npm install`)
+- [ ] Run full build (e.g., `npm run build`, `tsc --noEmit`, `mvn compile`)
+- [ ] If build fails:
+  1. Read error output
+  2. Fix compilation errors
+  3. Rebuild
+  4. Repeat up to 3 times
+- [ ] If build still fails after 3 attempts: present errors to user
+
+### Step E2: Run All Unit Tests
+- [ ] Run test suite (e.g., `npm test`, `pytest`, `mvn test`)
+- [ ] If tests fail:
+  1. Analyze failure output
+  2. Fix failing code or tests
+  3. Re-run tests
+  4. Repeat up to 3 times
+- [ ] Report: total tests, passed, failed, coverage percentage
+
+### Step E3: Run Linting and Static Analysis
+- [ ] Run linter (e.g., `npm run lint`, `eslint`, `flake8`)
+- [ ] Fix any linting errors
+- [ ] Run security audit (e.g., `npm audit`, `pip audit`, `mvn dependency-check:check`)
+- [ ] Report any high/critical vulnerabilities
+
+### Step E4: Deploy (Requires User Approval)
+
+**APPROVAL GATE**: Ask user before deploying.
+
+- [ ] Ask user: "Build and tests pass. Do you want to deploy to AWS? This will create real cloud resources."
+- [ ] If approved:
+  1. Synthesize IaC (e.g., `npx cdk synth`)
+  2. Show diff (e.g., `npx cdk diff`)
+  3. Deploy (e.g., `npx cdk deploy --all --require-approval broadening`)
+  4. If deployment fails: read errors, fix IaC code, retry up to 2 times
+  5. Report deployed resources and stack outputs
+- [ ] If declined: Skip deployment, note in summary
+
+### Step E5: Run Integration Tests (If Deployed)
+- [ ] If deployment succeeded:
+  1. Extract API endpoint URL from stack outputs
+  2. Run integration test commands (curl, httpie, or test scripts)
+  3. Test key scenarios: health check, CRUD operations, auth enforcement
+  4. Report results
+- [ ] If not deployed: Generate integration test instructions for manual execution
+
+### Step E6: Present Results
+
+Present actual results (not templates):
+
+```markdown
+# 🔨 Build and Test Complete!
+
+**Build**: ✅ PASS / ❌ FAIL
+**Unit Tests**: X passed, Y failed (Z% coverage)
+**Lint**: ✅ CLEAN / ❌ X issues
+**Security Audit**: ✅ No vulnerabilities / ⚠️ X findings
+**Deployment**: ✅ Deployed / ⏭️ Skipped
+**Integration Tests**: ✅ X/Y passed / ⏭️ Not run
+```
+
+---
+
+## INSTRUCTIONS MODE (Fallback)
+
+Use this mode only if the platform does not support command execution. Generate instruction documents for the user to execute manually.
+
+### Step 1: Analyze Testing Requirements
 
 Analyze the project to determine appropriate testing strategy:
 - **Unit tests**: Already generated per unit during code generation

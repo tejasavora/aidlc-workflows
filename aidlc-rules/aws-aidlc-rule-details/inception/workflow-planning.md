@@ -453,9 +453,7 @@ I recommend skipping [Y] stages:
 >
 > **You may:**
 >
-> 🔧 **Request Changes** - Ask for modifications to the execution plan if required
-> [IF any stages are skipped:]
-> 📝 **Add Skipped Stages** - Choose to include stages currently marked as SKIP
+> 🔧 **Request Changes** - Ask for modifications to the execution plan if required (including adding skipped stages)
 > ✅ **Approve & Continue** - Approve plan and proceed to **[Next Stage Name]**
 ```
 
