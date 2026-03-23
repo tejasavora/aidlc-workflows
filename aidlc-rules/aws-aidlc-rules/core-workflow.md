@@ -451,13 +451,14 @@ The Operations stage will eventually include:
 - **Transparent Planning**: Always show execution plan before starting
 - **User Control**: User can request stage inclusion/exclusion
 - **Progress Tracking**: Update aidlc-state.md with executed and skipped stages
-- **Complete Audit Trail**: Log ALL user inputs and AI responses in audit.md with timestamps
-  - **CRITICAL**: Capture user's COMPLETE RAW INPUT exactly as provided
+- **Audit Trail**: Log approval gate decisions and significant user inputs in audit.md with timestamps
+  - **CRITICAL**: Capture user's COMPLETE RAW INPUT exactly as provided at approval gates
   - **CRITICAL**: Never summarize or paraphrase user input in audit log
-  - **CRITICAL**: Log every interaction, not just approvals
+  - **EFFICIENCY**: Batch audit writes per stage completion, not per interaction
 - **Quality Focus**: Complex changes get full treatment, simple changes stay efficient
 - **Content Validation**: Always validate content before file creation per content-validation.md rules
 - **NO EMERGENT BEHAVIOR**: Construction phases MUST use standardized 2-option completion messages as defined in their respective rule files. DO NOT create 3-option menus or other emergent navigation patterns.
+- **Context Efficiency**: Prioritize output quality over process completeness. If context window is under pressure (many units completed, deep into construction), consolidate NFR Requirements + NFR Design + Infrastructure Design into a single review for units where prior units established the patterns. Always maintain separate Functional Design questions and Code Generation approval gates regardless of context pressure.
 
 ## MANDATORY: Plan-Level Checkbox Enforcement
 
@@ -473,10 +474,10 @@ The Operations stage will eventually include:
 - **Update immediately**: All progress updates in SAME interaction where work is completed
 
 ## Prompts Logging Requirements
-- **MANDATORY**: Log EVERY user input (prompts, questions, responses) with timestamp in audit.md
+- **MANDATORY**: Log at approval gates — when the user approves or requests changes at a stage transition
 - **MANDATORY**: Capture user's COMPLETE RAW INPUT exactly as provided (never summarize)
-- **MANDATORY**: Log every approval prompt with timestamp before asking the user
-- **MANDATORY**: Record every user response with timestamp after receiving it
+- **OPTIONAL**: Log intermediate interactions (questions asked, answers received) only if they contain significant decisions. Do not log routine acknowledgments or "proceed" responses.
+- **EFFICIENCY**: Batch audit writes — accumulate entries and write once per stage completion rather than after every interaction. This reduces file I/O overhead.
 - **CRITICAL**: ALWAYS append changes to EDIT audit.md file, NEVER use tools and commands that completely overwrite its contents
 - **CRITICAL**: Using file writing tools and commands that overwrite contents of the entire audit.md and cause duplication
 - Use ISO 8601 format for timestamps (YYYY-MM-DDTHH:MM:SSZ)
