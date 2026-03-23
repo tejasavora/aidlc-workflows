@@ -27,19 +27,16 @@ B) Review a previous stage ([Show available stages])
 ## MANDATORY: Session Continuity Instructions
 1. **Always read aidlc-state.md first** when detecting existing project
 2. **Parse current status** from the workflow file to populate the prompt
-3. **MANDATORY: Load Previous Stage Artifacts** - Before resuming any stage, automatically read all relevant artifacts from previous stages:
-   - **Reverse Engineering**: Read architecture.md, code-structure.md, api-documentation.md
-   - **Requirements Analysis**: Read requirements.md, requirement-verification-questions.md
-   - **User Stories**: Read stories.md, personas.md, story-generation-plan.md
-   - **Application Design**: Read application-design artifacts (components.md, component-methods.md, services.md)
-   - **Design (Units)**: Read unit-of-work.md, unit-of-work-dependency.md, unit-of-work-story-map.md
-   - **Per-Unit Design**: Read functional-design.md, nfr-requirements.md, nfr-design.md, infrastructure-design.md
-   - **Code Stages**: Read all code files, plans, AND all previous artifacts
-4. **Smart Context Loading by Stage**:
-   - **Early Stages (Workspace Detection, Reverse Engineering)**: Load workspace analysis
-   - **Requirements/Stories**: Load reverse engineering + requirements artifacts
-   - **Design Stages**: Load requirements + stories + architecture + design artifacts
-   - **Code Stages**: Load ALL artifacts + existing code files
+3. **Load Artifacts Selectively** - Load only what is needed for the current stage. Do not load everything — context window is finite and overloading it degrades output quality.
+   - **Always load**: aidlc-state.md, the current unit's definition from unit-of-work.md
+   - **Inception stages**: Load prior inception artifacts relevant to the current stage (e.g., requirements for stories, stories for design)
+   - **Construction stages**: Load the current unit's design artifacts + its assigned stories. Load inception-level artifacts (requirements, components) only when you need to reference cross-cutting decisions.
+   - **Code stages**: Load the current unit's design artifacts + code generation plan. Read existing code files only when modifying them.
+   - **Do NOT load**: All artifacts from all prior stages exhaustively. If you need a specific artifact, load it on demand.
+4. **Context Pressure Management**:
+   - If context usage is high (many units completed, deep into construction), prioritize loading the current unit's artifacts over historical inception artifacts
+   - Summarize key decisions from prior stages rather than re-reading full documents
+   - For later units, reference the patterns established in earlier units rather than re-reading all foundation artifacts
 5. **Adapt options** based on architectural choice and current phase
 6. **Show specific next steps** rather than generic descriptions
 7. **Log the continuity prompt** in audit.md with timestamp
