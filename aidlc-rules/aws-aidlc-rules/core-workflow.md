@@ -12,7 +12,7 @@ Load rule detail files from the first path that exists:
 All file references below are relative to the resolved directory.
 
 At workflow start, load:
-- `common/process-overview.md`, `common/session-continuity.md`, `common/content-validation.md`, `common/question-format-guide.md`
+- `common/process-overview.md`, `common/session-continuity.md`, `common/content-validation.md`, `common/question-format-guide.md`, `common/sdlc-toolchain.md`
 
 ## MANDATORY: Extensions (Progressive Disclosure)
 At workflow start, scan `extensions/` recursively. Load ONLY `*.opt-in.md` files — NOT full rule files.
