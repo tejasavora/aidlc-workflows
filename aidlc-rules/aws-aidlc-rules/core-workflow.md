@@ -23,6 +23,7 @@ All subsequent rule detail file references (e.g., `common/process-overview.md`, 
 - Load `common/session-continuity.md` for session resumption guidance
 - Load `common/content-validation.md` for content validation requirements
 - Load `common/question-format-guide.md` for question formatting rules
+- Load `common/sdlc-toolchain.md` for SDLC toolchain integration guidance
 - Reference these throughout the workflow execution
 
 ## MANDATORY: Extensions Loading (Context-Optimized)
