@@ -1,0 +1,61 @@
+# CLAUDE.md — AI-DLC v2
+
+This project uses the **AI-DLC v2** (AI-Driven Development Life Cycle) methodology for structured, agent-driven software development.
+
+## Quick Start
+
+Run `/aidlc` to start or resume an AI-DLC workflow. The orchestrator will guide you through intent capture, workflow composition, and skill execution.
+
+## Framework Location
+
+All AI-DLC framework files live under `.aidlc/`:
+
+- **Orchestrator protocol**: `.aidlc/aidlc-common/protocols/aidlc-orchestrator-protocol.md` — the core workflow engine
+- **Conventions**: `.aidlc/aidlc-common/conventions/` — folder structure, state schema, workflow format, question format
+- **Protocols**: `.aidlc/aidlc-common/protocols/` — orchestrator, builder, and validator protocols
+- **Skills**: `.aidlc/skills/` — the skill catalogue (loaded on-demand by the orchestrator)
+- **Extension Packs**: `.aidlc/packs/` — quality gates, meta-skills, and other capability bundles
+- **Scripts**: `.aidlc/aidlc-common/scripts/` — process-checker enforcement script
+
+## How It Works
+
+When you describe a development intent (build, create, fix, migrate, refactor), the orchestrator:
+
+1. Bootstraps an intent directory with clarification questions
+2. Discovers your toolchain (what tools you use for testing, linting, CI/CD, etc.)
+3. Composes an adaptive workflow from the skill catalogue
+4. Drives each skill through clarification → planning → execution → validation
+5. Runs quality gates after code generation (with self-healing remediation loops)
+6. Enforces correctness via `process_checker` after every step
+
+## Extension Packs
+
+Packs are bundles of capabilities activated based on project needs:
+
+- **quality-gates** (always active): static analysis, security scanning, testing, coverage, code review — each with autonomous fix loops
+- **meta-skills**: knowledge-acquisition (research unfamiliar tech via MCP), toolchain-discovery (detect project tools), data-discovery (map data sources)
+
+## Platform Mapping (Claude Code specifics)
+
+The orchestrator protocol was written for multiple platforms. When running in Claude Code:
+
+| Protocol Says | Claude Code Equivalent |
+|---------------|----------------------|
+| `invokeSubAgent` with `aidlc-builder-agent` | Use the **Agent** tool with `subagent_type: "aidlc-builder"` |
+| `invokeSubAgent` with `aidlc-validator-agent` | Use the **Agent** tool with `subagent_type: "aidlc-validator"` |
+| "AI-DLC install root: `.kiro/` for Kiro, `.claude/` for Claude" | In this build, the install root is **`.aidlc/`** (not `.claude/`) |
+| `process_checker` after every sub-agent invocation | A PostToolUse hook runs automatically on Edit/Write; also run manually after Agent tool returns |
+
+When the protocol instructs you to include file paths in a sub-agent invocation prompt, pass them as part of the `prompt` parameter to the Agent tool. The sub-agent will read them.
+
+## Path Convention
+
+All framework paths in protocols and skills use paths relative to `.aidlc/` (e.g., `aidlc-common/protocols/...`, `skills/...`, `packs/...`). Project artifacts are written to `aidlc-docs/` at the project root.
+
+## Important
+
+- Do NOT modify files under `.aidlc/` — they are the methodology framework
+- Project artifacts go in `aidlc-docs/` (created automatically by the workflow)
+- The orchestrator protocol is the single source of truth for workflow behaviour
+- Quality gate skills have self-healing loops — they fix issues autonomously before escalating
+- The system is tool-agnostic — it adapts to YOUR toolchain, not the other way around

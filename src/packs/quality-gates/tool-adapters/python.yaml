@@ -1,0 +1,49 @@
+# Quality Gates — Python Tool Adapter
+# Default tools for Python projects. User can override any field in toolchain.yaml.
+
+language: python
+
+static_analysis:
+  tool: ruff
+  run_command: "ruff check {source_dir}"
+  fix_command: "ruff check --fix {source_dir}"
+  config_file: pyproject.toml
+  output_format: json
+  severity_mapping:
+    E: error
+    W: warning
+    F: error
+    C: warning
+    I: info
+
+security:
+  sast:
+    - tool: bandit
+      run_command: "bandit -r {source_dir} -f json"
+      severity_mapping: {HIGH: critical, MEDIUM: high, LOW: medium}
+    - tool: semgrep
+      run_command: "semgrep --config auto {source_dir} --json"
+      severity_mapping: {ERROR: high, WARNING: medium, INFO: low}
+  sca:
+    tool: pip-audit
+    run_command: "pip-audit --format json"
+    fix_command: "pip-audit --fix"
+  secrets:
+    tool: detect-secrets
+    run_command: "detect-secrets scan {source_dir}"
+    baseline: .secrets.baseline
+
+testing:
+  framework: pytest
+  unit_command: "pytest {unit_dir} -v --tb=short"
+  integration_command: "pytest {integration_dir} -v --tb=short"
+  coverage_command: "pytest {unit_dir} --cov={source_dir} --cov-report=json --cov-report=term"
+  coverage_output: coverage.json
+
+review:
+  standards:
+    - type-hints required on all public functions
+    - docstrings on all public modules, classes, and functions
+    - no wildcard imports
+    - no mutable default arguments
+    - exception handling must be specific (no bare except)

@@ -1,0 +1,35 @@
+# Quality Gates — Go Tool Adapter
+
+language: go
+
+static_analysis:
+  tool: golangci-lint
+  run_command: "golangci-lint run --out-format json ./..."
+  fix_command: "golangci-lint run --fix ./..."
+  config_file: .golangci.yml
+
+security:
+  sast:
+    - tool: gosec
+      run_command: "gosec -fmt json ./..."
+  sca:
+    tool: govulncheck
+    run_command: "govulncheck ./..."
+  secrets:
+    tool: detect-secrets
+    run_command: "detect-secrets scan ."
+
+testing:
+  framework: go-test
+  unit_command: "go test ./... -v -short"
+  integration_command: "go test ./... -v -run Integration"
+  coverage_command: "go test ./... -coverprofile=coverage.out -covermode=atomic"
+  coverage_output: coverage.out
+
+review:
+  standards:
+    - follow Effective Go and Go Code Review Comments
+    - exported functions must have comments
+    - error wrapping with fmt.Errorf and %w
+    - no init() functions unless absolutely necessary
+    - context.Context as first parameter

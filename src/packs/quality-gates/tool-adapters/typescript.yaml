@@ -1,0 +1,40 @@
+# Quality Gates — TypeScript/Node.js Tool Adapter
+
+language: typescript
+
+static_analysis:
+  tool: eslint
+  run_command: "npx eslint {source_dir} --format json"
+  fix_command: "npx eslint {source_dir} --fix"
+  config_file: eslint.config.js
+  severity_mapping:
+    2: error
+    1: warning
+
+security:
+  sast:
+    - tool: eslint-plugin-security
+      run_command: "npx eslint {source_dir} --format json"
+      note: "Included via eslint config"
+  sca:
+    tool: npm-audit
+    run_command: "npm audit --json"
+    fix_command: "npm audit fix"
+  secrets:
+    tool: detect-secrets
+    run_command: "detect-secrets scan {source_dir}"
+
+testing:
+  framework: jest
+  unit_command: "npx jest {unit_dir} --passWithNoTests"
+  integration_command: "npx jest {integration_dir} --passWithNoTests"
+  coverage_command: "npx jest --coverage --coverageReporters=json-summary"
+  coverage_output: coverage/coverage-summary.json
+
+review:
+  standards:
+    - strict TypeScript (no any, no ts-ignore without comment)
+    - named exports preferred over default exports
+    - async/await over raw promises
+    - error handling must use typed errors
+    - no console.log in production code (use structured logger)

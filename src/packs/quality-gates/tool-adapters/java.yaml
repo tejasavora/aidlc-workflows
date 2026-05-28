@@ -1,0 +1,37 @@
+# Quality Gates — Java Tool Adapter
+
+language: java
+
+static_analysis:
+  tool: checkstyle
+  run_command: "mvn checkstyle:check -Dcheckstyle.output.format=xml"
+  alternative: spotbugs
+  config_file: checkstyle.xml
+
+security:
+  sast:
+    - tool: spotbugs
+      run_command: "mvn spotbugs:check"
+    - tool: semgrep
+      run_command: "semgrep --config auto {source_dir} --json"
+  sca:
+    tool: owasp-dependency-check
+    run_command: "mvn dependency-check:check"
+  secrets:
+    tool: detect-secrets
+    run_command: "detect-secrets scan {source_dir}"
+
+testing:
+  framework: junit5
+  unit_command: "mvn test -pl {module}"
+  integration_command: "mvn verify -pl {module} -Pintegration"
+  coverage_command: "mvn jacoco:report"
+  coverage_output: target/site/jacoco/jacoco.xml
+
+review:
+  standards:
+    - follow project's code style (Google Java Style or project-specific)
+    - no raw types (use generics)
+    - prefer immutable objects
+    - use Optional instead of null returns
+    - all public APIs must have Javadoc

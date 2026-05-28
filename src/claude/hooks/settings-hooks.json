@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .aidlc/aidlc-common/scripts/aidlc-process-checker.js --from-state $(find . -path '*/state/process-checkpoint.json' -not -path './.aidlc/*' -not -path './.git/*' 2>/dev/null | head -1)"
+          }
+        ]
+      }
+    ]
+  }
+}
