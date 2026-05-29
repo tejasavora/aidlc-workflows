@@ -25,6 +25,7 @@ Run a focused set of critical-path tests against the deployed environment to val
 - `aidlc-docs/<intent>/inception/stories.md` — source for critical paths (top-priority stories)
 - `aidlc-docs/<intent>/operations/deployment-design.md` — environment URLs and endpoints
 - `aidlc-docs/<intent>/toolchain.yaml` → `deployment.environments[<env>].smoke_test` (if configured)
+- `aidlc-docs/<intent>/construction/<unit>/quality/build-and-test-report.md` (know which unit tests already pass — smoke tests should validate the same critical paths pass in the deployed environment, not re-run test-framework tests)
 - Deployed environment base URL (passed by orchestrator)
 
 ## Execution

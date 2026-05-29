@@ -61,6 +61,24 @@ For greenfield with no RE-kb, slug + type may be all that's worth asking.
 8. Write `intent.md` at the intent root.
 9. Write `bootstrap-context.md` in `bootstrap/intent-bootstrap/`.
 
+### Step 10: Invoke Toolchain Discovery
+
+**If classification is brownfield or mixed:**
+1. Invoke the `toolchain-discovery` meta-skill (located at `packs/meta-skills/toolchain-discovery/`).
+2. `toolchain-discovery` scans the project workspace for config files and produces `toolchain.yaml` with all detected tools.
+3. Write the resulting `toolchain.yaml` to `aidlc-docs/<intent>/toolchain.yaml`.
+4. Record in `bootstrap-context.md`: toolchain detection method (auto-detected), number of tool categories detected.
+
+**If classification is greenfield:**
+1. Create a stub `toolchain.yaml` at `aidlc-docs/<intent>/toolchain.yaml` with only the `language:` field:
+   ```yaml
+   # toolchain.yaml — stub for greenfield project
+   # Full toolchain configuration will be completed during requirements-analysis.
+   language: <detected-from-intent-or-ask>
+   ```
+2. To detect `language`: inspect the intent statement for language mentions (Python, TypeScript, Go, Java, etc.). If unambiguous, populate it. If ambiguous or absent, ask the human as a single additional question before writing the stub.
+3. Note in `bootstrap-context.md`: "toolchain.yaml is a stub — full configuration deferred to requirements-analysis."
+
 ## Output
 
 ### intent.md (intent root)
@@ -77,9 +95,14 @@ For greenfield with no RE-kb, slug + type may be all that's worth asking.
 - **RE-kb status** — hydrated / partial / missing per repo, or "n/a"
 - **Reverse-engineering** — needed (per repo) or not needed
 
+### toolchain.yaml (at intent root `aidlc-docs/<intent>/toolchain.yaml`)
+
+- **Brownfield / mixed**: fully populated by `toolchain-discovery` meta-skill (all detected tool categories)
+- **Greenfield**: stub with only `language:` field set; marked for completion during requirements-analysis
+
 ## Return value
 
-Return to the orchestrator: `status: complete`, `intent_dir_path`, and the list of artefacts produced.
+Return to the orchestrator: `status: complete`, `intent_dir_path`, and the list of artefacts produced. Include `toolchain_stub: true` in the return value for greenfield intents so the orchestrator knows to complete toolchain configuration during requirements-analysis.
 
 ## Validation
 

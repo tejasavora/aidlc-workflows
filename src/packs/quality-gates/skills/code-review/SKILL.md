@@ -35,7 +35,17 @@ This is equivalent to a human reviewer who wasn't the author.
 - `aidlc-docs/<intent>/construction/<unit>/functional-design/` (expected behavior)
 - `aidlc-docs/<intent>/construction/<unit>/nfr-design/` (patterns and constraints)
 - `aidlc-docs/<intent>/toolchain.yaml` → `quality.review.standards`
+- `aidlc-docs/<intent>/construction/<unit>/quality/static-analysis-report.md` (skip findings already fixed by static-analysis)
+- `aidlc-docs/<intent>/construction/<unit>/quality/security-scan-report.md` (skip security findings already addressed)
 - Any active lenses (e.g., aidlc-owasp) — their validation rules apply here too
+
+## Prior Gate Awareness
+
+Before producing any findings, read the prior gate reports if they exist:
+- `static-analysis-report.md`: contains issues that were already auto-fixed or acknowledged. Do NOT re-flag issues that appear in this report as "fixed". If a finding appears in the static-analysis report as unresolved, treat it as an escalated item — do not duplicate it.
+- `security-scan-report.md`: contains security findings already addressed (secrets removed, dependencies upgraded). Do NOT re-raise security findings that this report marks as "fixed". Focus on design-level security concerns (auth logic, data exposure patterns, trust boundary violations) that automated scanners cannot catch.
+
+The code review's value is in what automated tools miss: design adherence, logic correctness, performance patterns, and code structure. Avoid producing noise by re-flagging already-handled findings.
 
 ## Review Categories
 

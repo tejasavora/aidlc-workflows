@@ -7,6 +7,7 @@
 #   src/kiro/agents/           → dist/kiro/.kiro/agents/
 #   src/kiro/aidlc-common/     → dist/kiro/.kiro/aidlc-common/
 #   src/skills/                → dist/kiro/.kiro/skills/
+#   src/packs/                 → dist/kiro/.kiro/packs/
 #   src/kiro/hooks/            → dist/kiro/.kiro/hooks/
 #
 # Source content uses repo-anchored paths (e.g. `aidlc-common/protocols/...`).
@@ -33,6 +34,11 @@ cp -R "$KIRO_SRC/aidlc-common"  "$OUT/aidlc-common"
 
 # 2. Copy shared skills.
 cp -R "$SRC/skills"             "$OUT/skills"
+
+# 2a. Copy extension packs (if they exist).
+if [ -d "$SRC/packs" ]; then
+  cp -R "$SRC/packs" "$OUT/packs"
+fi
 
 # 3. Copy Kiro-specific hooks.
 mkdir -p "$OUT/hooks"
@@ -67,6 +73,30 @@ while IFS= read -r skill; do
     fi
   done
 done < <(find "$OUT/skills" -name 'SKILL.md' -type f)
+
+# Also validate pack SKILL.md files. Meta-skills (type: meta-skill) require only name.
+# All other pack skills require name, phase, and stage.
+if [ -d "$OUT/packs" ]; then
+  while IFS= read -r skill; do
+    fields="name"
+    case "$skill" in
+      */aidlc-orchestrator/SKILL.md) ;;
+      *)
+        if grep -qE "^\s*type:\s*meta-skill" "$skill"; then
+          fields="name"
+        else
+          fields="name phase stage"
+        fi
+        ;;
+    esac
+    for field in $fields; do
+      if ! grep -qE "^\s*${field}:" "$skill"; then
+        echo "  FAIL: $skill missing frontmatter field '$field'" >&2
+        missing=$((missing+1))
+      fi
+    done
+  done < <(find "$OUT/packs" -name 'SKILL.md' -type f)
+fi
 [ "$missing" -eq 0 ] || exit 1
 
 # 4c. The process-checker script must syntax-check.

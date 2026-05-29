@@ -1,0 +1,51 @@
+# Quality Gates — Custom Tool Adapter Template
+# Copy this file and fill in your tool commands.
+# AI-DLC will use these commands when running quality gates.
+#
+# Usage:
+#   1. Copy this file to your project or reference it in toolchain.yaml
+#   2. Replace all <placeholder> values with your actual tool commands
+#   3. Set output_format to match your tool's output (json, text, sarif, checkstyle)
+#   4. Define severity_mapping to normalize tool-specific labels to: error, warning, info (static)
+#      or critical, high, medium, low (security)
+#
+# Null values: use null (not empty string) for fields that do not apply to your tool.
+# Placeholders in commands: use {source_dir}, {unit_dir}, {integration_dir} for paths.
+
+language: custom  # replace with your language: python, typescript, java, go, rust, csharp, etc.
+
+static_analysis:
+  tool: "<your-linter>"                           # tool name, e.g. "mypy", "pylint", "rubocop"
+  run_command: "<command to run linter>"          # e.g. "mypy {source_dir} --ignore-missing-imports"
+  fix_command: "<command to auto-fix, or null>"   # e.g. "autopep8 --in-place -r {source_dir}" or null
+  config_file: "<path to config, or null>"        # e.g. ".mypy.ini" or null
+  output_format: text                             # json, text, sarif, or checkstyle
+  severity_mapping: {}                            # map tool's severity labels to: error, warning, info
+                                                  # example: {Error: error, Warning: warning, Note: info}
+
+security:
+  sast:
+    - tool: "<your-sast-tool>"                    # e.g. "semgrep", "codeql", "sonarqube"
+      run_command: "<command>"                    # e.g. "semgrep --config auto {source_dir} --json"
+      severity_mapping: {}                        # map to: critical, high, medium, low
+  sca:
+    tool: "<your-sca-tool>"                       # e.g. "trivy", "snyk", "owasp-dependency-check"
+    run_command: "<command>"                      # e.g. "trivy fs --format json {source_dir}"
+    fix_command: "<command to auto-fix deps, or null>"  # e.g. "snyk fix" or null
+  secrets:
+    tool: "<your-secrets-scanner>"               # e.g. "gitleaks", "trufflehog", "detect-secrets"
+    run_command: "<command>"                     # e.g. "gitleaks detect --source {source_dir}"
+    baseline: null                               # path to baseline/allowlist file, or null
+
+testing:
+  framework: "<your-test-framework>"             # e.g. "pytest", "jest", "junit", "rspec", "go-test"
+  unit_command: "<command to run unit tests>"    # e.g. "pytest {unit_dir} -v"
+  integration_command: "<command to run integration tests, or null>"
+  coverage_command: "<command to run with coverage>"  # e.g. "pytest {unit_dir} --cov={source_dir}"
+  coverage_output: "<path to coverage report file>"   # e.g. "coverage.json", "lcov.info"
+
+review:
+  standards:
+    - "<your coding standard 1>"                 # e.g. "all public functions must have docstrings"
+    - "<your coding standard 2>"                 # e.g. "no magic numbers — use named constants"
+    - "<your coding standard 3>"                 # e.g. "error handling must be specific, not catch-all"

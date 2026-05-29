@@ -39,7 +39,33 @@ When `--scope` is present:
 
 `--scope` is mandatory for `reverse-engineering` (always scoped to a repo name, even with a single repo).
 
-`--phase`, `--unit`, and `--scope` are mutually exclusive. `--unit` implies `construction`. `--scope` preserves the skill's declared phase.
+For pack skills that need to identify their owning pack and route artifacts to pack-specific output paths, add `--pack <pack-name>` after the skill name:
+
+```
+<skill-name> --pack <pack-name> <input-file-1> [<input-file-2> ...]
+```
+
+`--pack` can be combined with `--unit` or `--phase` (but not `--scope`):
+
+```
+<skill-name> --unit <unit-name> --pack <pack-name> <input-file-1> [<input-file-2> ...]
+<skill-name> --phase <phase-name> --pack <pack-name> <input-file-1> [<input-file-2> ...]
+```
+
+When `--pack` is present:
+- Identifies which extension pack this skill belongs to (e.g., `quality-gates`, `operations`, `well-architected`, `resilience`)
+- Determines the artifact output subdirectory within the phase tree:
+  - `quality-gates` pack skills (per-unit): `construction/<unit>/quality/<skill-name>/`
+  - `operations` pack skills: `operations/<skill-name>/`
+  - `well-architected` pack skills: `construction/well-architected/<skill-name>/`
+  - `resilience` pack skills: `operations/resilience/<skill-name>/`
+  - Other packs: `<phase>/<pack-name>/<skill-name>/`
+- The state key becomes `<skill-name>:<pack-name>` when the same skill name could exist in multiple packs
+- Pack metadata in `SKILL.md` frontmatter (`pack: <pack-name>`) is authoritative; `--pack` in `workflow.md` is the runtime signal to the orchestrator confirming which pack is active for this invocation
+
+`--pack` without `--unit` or `--phase` uses the skill's declared `phase` from its frontmatter.
+
+`--phase`, `--unit`, and `--scope` are mutually exclusive with each other. `--pack` is additive and can be combined with `--unit` or `--phase`. `--unit` implies `construction`. `--scope` preserves the skill's declared phase.
 
 Lines starting with `#` are comments. Empty lines are ignored.
 

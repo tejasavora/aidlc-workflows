@@ -22,7 +22,8 @@ Execute the deployment to the target environment following the pipeline designed
 
 ## Inputs
 
-- `aidlc-docs/<intent>/operations/deployment-design.md` (pipeline definition)
+- `aidlc-docs/<intent>/operations/deployment-design.md` (pipeline definition — CI/CD workflow, deployment strategy, environment promotion gates)
+- `aidlc-docs/<intent>/construction/deployment-design/` (construction-phase deployment design artifacts — deployment architecture diagrams, environment-specific configs, rollback plan; produced by the `deployment-design` skill before construction begins)
 - `aidlc-docs/<intent>/operations/rollback-runbook.md` (rollback procedures)
 - `aidlc-docs/<intent>/toolchain.yaml` → `deployment` section
 - Target environment parameter (passed by orchestrator)
