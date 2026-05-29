@@ -18,6 +18,15 @@ metadata:
 
 Design the logical component structure of the system — components, their methods, their dependencies, and the services that orchestrate them. Captures what will be built at the component level, independent of technology choices.
 
+## Data Discovery Trigger
+
+When identifying data entities during component design, invoke the `data-discovery` meta-skill (`packs/meta-skills/data-discovery/SKILL.md`) to:
+- Map where each data entity currently lives (existing DB, API, file, or new)
+- Verify access to existing sources
+- Determine strategy per entity (use existing, migrate, federate, create new)
+
+This ensures the component design reflects reality — not assumptions about data availability.
+
 ## Prerequisites
 
 - `requirements.md` must be approved

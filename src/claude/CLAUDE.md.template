@@ -33,7 +33,16 @@ When you describe a development intent (build, create, fix, migrate, refactor), 
 Packs are bundles of capabilities activated based on project needs:
 
 - **quality-gates** (always active): static analysis, security scanning, testing, coverage, code review — each with autonomous fix loops
-- **meta-skills**: knowledge-acquisition (research unfamiliar tech via MCP), toolchain-discovery (detect project tools), data-discovery (map data sources)
+- **operations**: deployment design, deploy with health checks, smoke testing, release management, documentation generation
+- **well-architected**: HA design, DR design (RTO/RPO-driven), cost estimation, sustainability check
+- **resilience** (user-triggered): load test design/execution, chaos engineering, DR validation drills
+- **data-management**: data migration (zero-downtime), synthetic data seeding, data quality validation
+- **maintenance** (event-triggered): design-first bug triage, dependency updates, tech debt assessment
+- **governance** (regulated environments): audit trail, compliance evidence collection, change approval gates
+- **integration**: Jira/Linear sync, Confluence/Notion sync, Slack/Teams notifications
+- **meta-skills**: knowledge-acquisition (research via MCP), toolchain-discovery (detect tools), data-discovery (map sources)
+
+See `src/packs/README.md` for architecture details and how to add new packs.
 
 ## Platform Mapping (Claude Code specifics)
 

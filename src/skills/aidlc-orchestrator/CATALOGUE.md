@@ -159,6 +159,7 @@ Pack skills follow the same builder → validator loop as stage skills. Quality-
 | maintenance | event-triggered | maintenance | bug report, dep alert, tech debt review | ✅ |
 | governance | regulated environment | common | alongside all phases | ✅ |
 | integration | external tools configured | common | after each stage completes | ✅ |
+| well-architected | enterprise/production workloads | construction | after infrastructure-design | ✅ |
 
 ### Quality Gates Pack — `packs/quality-gates/`
 
@@ -234,6 +235,17 @@ Active when external tools are configured.
 | aidlc-task-sync | task-sync | No | true | false | — | ✅ |
 | aidlc-documentation-sync | documentation-sync | No | true | false | — | ✅ |
 | aidlc-notification | notification | No | true | false | — | ✅ |
+
+### Well-Architected Pack — `packs/well-architected/`
+
+Active for enterprise/production workloads. Runs after infrastructure-design.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-ha-design | ha-design | No | true | true | — | ✅ |
+| aidlc-dr-design | dr-design | No | true | true | — | ✅ |
+| aidlc-cost-estimation | cost-estimation | No | true | true | — | ✅ |
+| aidlc-sustainability-check | sustainability-check | No | false | true | — | ✅ |
 
 ---
 

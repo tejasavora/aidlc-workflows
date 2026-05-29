@@ -18,6 +18,16 @@ metadata:
 
 Generate production-ready code in small, testable chunks following a layered approach. Each layer is built, tested, and verified before proceeding to the next. Designed for re-invocation — state is tracked via per-layer checkboxes in the plan.
 
+## Research-First Requirement
+
+Before generating code for any service, framework, or API you are not fully confident about:
+1. Check `aidlc-docs/<intent>/research/` for cached research on the topic
+2. If not cached: invoke the `knowledge-acquisition` meta-skill (`packs/meta-skills/knowledge-acquisition/SKILL.md`)
+3. Use verified documentation (not training data) for API signatures, config formats, and integration patterns
+4. Reference: `aidlc-common/conventions/aidlc-toolchain-schema.md` for project tool configuration
+
+This prevents hallucinated APIs, deprecated methods, and incorrect configuration formats.
+
 ## Prerequisites
 
 - Application Design artifacts must be approved (from `inception/application-design/` or `inception/reverse-engineering/`)

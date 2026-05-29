@@ -20,6 +20,15 @@ Map logical software components to concrete infrastructure choices for deploymen
 
 Where nfr-assessment answered "what technology" and nfr-design answered "what patterns," infrastructure-design answers "where and how it runs."
 
+## Research-First Requirement
+
+Before specifying any cloud service configuration (especially newer services like AgentCore, Neptune Analytics, Bedrock Knowledge Bases):
+1. Check `aidlc-docs/<intent>/research/` for cached research
+2. If not cached: invoke the `knowledge-acquisition` meta-skill to verify current API, required IAM permissions, quotas, and pricing
+3. Use `aidlc-common/conventions/aidlc-toolchain-schema.md` for IaC tool selection
+
+Never assume service configurations from training data for services released or significantly updated in the last 12 months.
+
 ## Prerequisites
 
 - NFR assessment must be complete for this unit — `nfr-requirements.md`, `tech-stack-decisions.md` must be approved

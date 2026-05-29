@@ -14,6 +14,8 @@ metadata:
 
 # Quality Gates Extension Pack
 
+**Schema reference:** `aidlc-common/conventions/aidlc-toolchain-schema.md` defines the full `toolchain.yaml` structure that all gate skills read from.
+
 ## Activation
 
 Always active. Individual gates can be disabled during workflow-composition if the user explicitly opts out.
