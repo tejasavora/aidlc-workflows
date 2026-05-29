@@ -79,7 +79,7 @@ Both bootstrap skills set `human-clarification: false` and `plan-creation: false
 | aidlc-nfr-design             | nfr-design             | Yes | true | true | true | true | ✅ |
 | aidlc-infrastructure-design  | infrastructure-design  | Yes | true | true | true | true | ✅ |
 | aidlc-code-generation        | code-generation        | Yes | true | true | true | true | ✅ |
-| aidlc-build-and-test         | build-and-test         | No  | true | true | true | true | 🚧 |
+| ~~aidlc-build-and-test~~     | ~~build-and-test~~     | —   | —    | —    | —    | —    | Moved to quality-gates pack |
 
 The orchestrator or the human may override flags per-intent when composing the workflow.
 

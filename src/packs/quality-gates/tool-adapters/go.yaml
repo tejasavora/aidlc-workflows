@@ -7,11 +7,20 @@ static_analysis:
   run_command: "golangci-lint run --out-format json ./..."
   fix_command: "golangci-lint run --fix ./..."
   config_file: .golangci.yml
+  output_format: json
+  severity_mapping:
+    error: error
+    warning: warning
+    info: info
 
 security:
   sast:
     - tool: gosec
       run_command: "gosec -fmt json ./..."
+      severity_mapping:
+        HIGH: critical
+        MEDIUM: high
+        LOW: medium
   sca:
     tool: govulncheck
     run_command: "govulncheck ./..."
