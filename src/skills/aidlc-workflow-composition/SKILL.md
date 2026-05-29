@@ -153,6 +153,66 @@ This is the textbook full pipeline. Most intents are not this; reach for it only
 
 User-stories and application-design earn their place when the change spans repo boundaries — that's where the seams of the change get pinned down.
 
+## 4. Extension Pack Activation
+
+After composing the stage skill workflow, evaluate extension packs from `packs/` (or the CATALOGUE's Extension Packs section):
+
+### Pack activation rules
+
+1. **quality-gates** — ALWAYS active. Inject after each `code-generation` step. Order: static-analysis → security-scan → build-and-test → coverage-enforcement → code-review.
+2. **operations** — Active when `toolchain.yaml` has `ci_cd` or `deployment` sections, OR user mentions deploy/ship/release in the intent.
+3. **resilience** — Active only when user explicitly requests load/stress/chaos testing, OR NFR targets include performance capacity numbers.
+4. **data-management** — Active when `data-discovery` meta-skill identified existing data sources requiring migration, seeding, or quality validation.
+5. **maintenance** — NOT activated during initial build. Activated event-triggered post-build (bug reports, dependency alerts).
+6. **governance** — Active when user indicates regulated environment during requirements, OR `toolchain.yaml` has `compliance` section.
+7. **integration** — Active when `toolchain.yaml` has `project_management`, `documentation`, or `communication` sections.
+
+### Pack activation questions (ask during composition)
+
+For packs where activation is ambiguous:
+
+- "Should I include deployment and release management in this workflow? (You mentioned deploying to [environment])"
+- "I detected [Jira/Confluence/Slack] in your toolchain. Should I sync progress to these tools after each stage?"
+- "Are there compliance requirements (SOC2, HIPAA, PCI) that require audit trail and evidence collection?"
+- "Do you need load/stress testing as part of this workflow, or will that be a separate exercise later?"
+
+### Pack injection points in workflow.md
+
+Pack skills are written into `workflow.md` at their designated trigger points:
+
+```
+# After code-generation (per unit) — quality-gates pack:
+code-generation --unit api-service
+static-analysis --unit api-service --pack quality-gates
+security-scan --unit api-service --pack quality-gates
+build-and-test --unit api-service --pack quality-gates
+coverage-enforcement --unit api-service --pack quality-gates
+code-review --unit api-service --pack quality-gates
+
+# After all construction — operations pack:
+deployment-design --pack operations
+deploy --pack operations --env staging
+smoke-test --pack operations
+release-management --pack operations
+
+# User-triggered — resilience pack:
+load-test-design --pack resilience
+load-test-execute --pack resilience
+chaos-engineering --pack resilience
+
+# Alongside functional/infra design — data-management pack:
+data-migration --pack data-management
+data-seeding --pack data-management
+data-quality --pack data-management
+```
+
+### Meta-skill invocations (NOT in workflow.md)
+
+Meta-skills are NOT listed in workflow.md. They are invoked on-demand:
+- `toolchain-discovery` — called by intent-bootstrap to produce `toolchain.yaml`
+- `data-discovery` — called during application-design when data entities identified
+- `knowledge-acquisition` — called by any skill encountering unfamiliar tech
+
 ## Output
 
 ### workflow.md (rewritten at the intent root)

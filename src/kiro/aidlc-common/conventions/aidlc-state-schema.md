@@ -11,6 +11,12 @@ intent: <intent-name>
 created: <timestamp>
 updated: <timestamp>
 
+## Active Packs
+
+| Pack | Activated | Config |
+|---|---|---|
+| <pack-name> | <timestamp> | <config-reference or —> |
+
 ## Active Lenses
 
 | Lens | Activated | Answers |
@@ -23,6 +29,28 @@ updated: <timestamp>
 |---|---|---|---|---|
 | <skill-name> | <step> | <status> | <n> | <comma-separated bare filenames or —> |
 ```
+
+## Active Packs section
+
+The `## Active Packs` table records which extension packs are active for this intent. It is written by `workflow-composition` during its execution step. Each row contains:
+
+- **Pack** — the pack name (e.g., `quality-gates`)
+- **Activated** — timestamp when the pack was activated
+- **Config** — path to pack-specific configuration (typically `toolchain.yaml` section), or `—`
+
+Format:
+
+```markdown
+## Active Packs
+
+| Pack | Activated | Config |
+|---|---|---|
+| quality-gates | <timestamp> | toolchain.yaml#quality |
+| operations | <timestamp> | toolchain.yaml#ci_cd |
+| governance | <timestamp> | — |
+```
+
+The orchestrator reads this table to determine which pack skills to inject at their trigger points.
 
 ## Active Lenses section
 

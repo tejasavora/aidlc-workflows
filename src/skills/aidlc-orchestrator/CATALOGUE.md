@@ -127,3 +127,122 @@ Lens `validation-spec.md` files may organize rules into sections by stage applic
 | Lens | Applies To | Default Activation | Status |
 |---|---|---|---|
 | aidlc-owasp | all | true | ✅ |
+
+---
+
+## Extension Packs
+
+Extension packs are bundles of capabilities that activate based on project needs. Unlike stage skills (which run as discrete workflow steps), pack skills run at specific trigger points — typically after code-generation (quality gates) or after all construction is complete (operations).
+
+Packs are discovered in `packs/<pack-name>/` and configured during workflow-composition based on `toolchain.yaml` and user preferences.
+
+### Pack activation
+
+During `workflow-composition`, the orchestrator:
+1. Reads `toolchain.yaml` (produced by `toolchain-discovery` meta-skill during bootstrap)
+2. Determines which packs to activate based on configured tools and user preferences
+3. Records activation in `intent-state.md` under `## Active Packs`
+4. Pack skills are injected into the workflow at their designated trigger points
+
+### Pack skill execution
+
+Pack skills follow the same builder → validator loop as stage skills. Quality-gate pack skills additionally have **self-healing remediation loops** — they diagnose, fix, and re-validate up to `max-attempts` before escalating.
+
+### Available packs
+
+| Pack | Activation | Phase | Trigger Point | Status |
+|------|-----------|-------|---------------|--------|
+| quality-gates | always | construction | after code-generation (per unit) | ✅ |
+| operations | when deploy targets configured | operations | after all construction complete | ✅ |
+| resilience | user-triggered or NFR requires | operations | user-triggered post-deploy | ✅ |
+| data-management | when data sources identified | construction | alongside functional/infra design | ✅ |
+| maintenance | event-triggered | maintenance | bug report, dep alert, tech debt review | ✅ |
+| governance | regulated environment | common | alongside all phases | ✅ |
+| integration | external tools configured | common | after each stage completes | ✅ |
+
+### Quality Gates Pack — `packs/quality-gates/`
+
+Runs after code-generation for each unit. Always active.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-static-analysis | static-analysis | Yes | false | false | 3 | ✅ |
+| aidlc-security-scan | security-scan | Yes | false | true | 3 | ✅ |
+| aidlc-build-and-test | build-and-test | Yes | false | true | 3 | ✅ |
+| aidlc-coverage-enforcement | coverage-enforcement | Yes | false | false | 3 | ✅ |
+| aidlc-code-review | code-review | Yes | false | true | 2 | ✅ |
+
+### Operations Pack — `packs/operations/`
+
+Runs after all construction and quality gates pass.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-deployment-design | deployment-design | No | true | true | — | ✅ |
+| aidlc-deploy | deploy | No | false | true | 3 | ✅ |
+| aidlc-smoke-test | smoke-test | No | false | true | 3 | ✅ |
+| aidlc-release-management | release-management | No | false | true | — | ✅ |
+| aidlc-documentation-generation | documentation-generation | No | false | true | — | ✅ |
+
+### Resilience Pack — `packs/resilience/`
+
+User-triggered or when NFR targets include performance/load requirements.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-load-test-design | load-test-design | No | true | true | — | ✅ |
+| aidlc-load-test-execute | load-test-execute | No | false | true | 3 | ✅ |
+| aidlc-chaos-engineering | chaos-engineering | No | false | true | — | ✅ |
+| aidlc-dr-validation | dr-validation | No | false | true | 3 | ✅ |
+
+### Data Management Pack — `packs/data-management/`
+
+Active when data sources are identified during requirements.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-data-migration | data-migration | No | true | true | 3 | ✅ |
+| aidlc-data-seeding | data-seeding | No | true | false | 3 | ✅ |
+| aidlc-data-quality | data-quality | No | false | false | 3 | ✅ |
+
+### Maintenance Pack — `packs/maintenance/`
+
+Event-triggered (bug reports, dependency alerts, tech debt reviews).
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-bug-triage | bug-triage | No | true | true | 3 | ✅ |
+| aidlc-dependency-update | dependency-update | No | false | false | 3 | ✅ |
+| aidlc-tech-debt-assessment | tech-debt-assessment | No | true | true | — | ✅ |
+
+### Governance Pack — `packs/governance/`
+
+Active in regulated environments.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-audit-trail | audit-trail | No | false | false | — | ✅ |
+| aidlc-compliance-evidence | compliance-evidence | No | true | true | — | ✅ |
+| aidlc-change-approval | change-approval | No | false | true | — | ✅ |
+
+### Integration Pack — `packs/integration/`
+
+Active when external tools are configured.
+
+| Skill | Stage | Per-Unit | Human-Clar | Artefact-Verify | Max-Attempts | Status |
+|---|---|---|---|---|---|---|
+| aidlc-task-sync | task-sync | No | true | false | — | ✅ |
+| aidlc-documentation-sync | documentation-sync | No | true | false | — | ✅ |
+| aidlc-notification | notification | No | true | false | — | ✅ |
+
+---
+
+## Meta-Skills
+
+Meta-skills are invoked on-demand by other skills when they need specialized capabilities. They do not run as part of the normal workflow sequence — they are called when needed.
+
+| Skill | Stage | Type | Purpose | Status |
+|---|---|---|---|---|
+| aidlc-knowledge-acquisition | knowledge-acquisition | meta-skill | Research unfamiliar tech via MCP before generating | ✅ |
+| aidlc-toolchain-discovery | toolchain-discovery | meta-skill | Detect project tools → produce toolchain.yaml | ✅ |
+| aidlc-data-discovery | data-discovery | meta-skill | Map data sources, verify access, determine strategy | ✅ |
