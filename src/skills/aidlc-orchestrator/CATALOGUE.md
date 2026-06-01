@@ -171,7 +171,13 @@ Runs after code-generation for each unit. Always active.
 | aidlc-security-scan | security-scan | Yes | false | true | 3 | ✅ |
 | aidlc-build-and-test | build-and-test | Yes | false | true | 3 | ✅ |
 | aidlc-coverage-enforcement | coverage-enforcement | Yes | false | false | 3 | ✅ |
+| aidlc-e2e-test | e2e-test | No | false | true | 2 | ✅ |
+| aidlc-backward-compat | backward-compat | Yes | false | true | 1 | ✅ |
+| aidlc-visual-regression | visual-regression | No | false | true | 1 | ✅ |
+| aidlc-mutation-testing | mutation-testing | Yes | false | true | 2 | ✅ |
+| aidlc-contract-test | contract-test | No | true | true | 2 | ✅ |
 | aidlc-code-review | code-review | Yes | false | true | 2 | ✅ |
+| aidlc-dast | dast | No | false | true | 1 | ✅ |
 
 ### Operations Pack — `packs/operations/`
 
@@ -181,7 +187,9 @@ Runs after all construction and quality gates pass.
 |---|---|---|---|---|---|---|
 | aidlc-deployment-design | deployment-design | No | true | true | — | ✅ |
 | aidlc-deploy | deploy | No | false | true | 3 | ✅ |
+| aidlc-canary-analysis | canary-analysis | No | false | true | 1 | ✅ |
 | aidlc-smoke-test | smoke-test | No | false | true | 3 | ✅ |
+| aidlc-drift-detection | drift-detection | No | false | true | 1 | ✅ |
 | aidlc-release-management | release-management | No | false | true | — | ✅ |
 | aidlc-documentation-generation | documentation-generation | No | false | true | — | ✅ |
 
@@ -215,6 +223,7 @@ Event-triggered (bug reports, dependency alerts, tech debt reviews).
 | aidlc-bug-triage | bug-triage | No | true | true | 3 | ✅ |
 | aidlc-dependency-update | dependency-update | No | false | false | 3 | ✅ |
 | aidlc-tech-debt-assessment | tech-debt-assessment | No | true | true | — | ✅ |
+| aidlc-postmortem | postmortem | No | true | true | — | ✅ |
 
 ### Governance Pack — `packs/governance/`
 
@@ -225,6 +234,8 @@ Active in regulated environments.
 | aidlc-audit-trail | audit-trail | No | false | false | — | ✅ |
 | aidlc-compliance-evidence | compliance-evidence | No | true | true | — | ✅ |
 | aidlc-change-approval | change-approval | No | false | true | — | ✅ |
+| aidlc-dora-metrics | dora-metrics | No | true | true | — | ✅ |
+| aidlc-secrets-lifecycle | secrets-lifecycle | No | true | true | 2 | ✅ |
 
 ### Integration Pack — `packs/integration/`
 
