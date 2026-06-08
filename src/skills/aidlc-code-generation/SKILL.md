@@ -28,6 +28,17 @@ Before generating code for any service, framework, or API you are not fully conf
 
 This prevents hallucinated APIs, deprecated methods, and incorrect configuration formats.
 
+## Figma Design Reference (when available)
+
+When generating UI/frontend code, check if approved Figma wireframes exist:
+1. Look for `figma_url` in `aidlc-docs/<intent>/inception/wireframes/wireframe-guidance.md`
+2. If present: use `get_design_context` (Figma MCP) to read the approved design — extract layout, components, spacing, colors
+3. Generated frontend code MUST match the approved Figma wireframes (they are the visual contract)
+4. If no Figma URL: fall back to `wireframe-guidance.md` markdown specs for layout direction
+5. If neither exists: generate UI based on functional-design specs (no wireframe constraint)
+
+This ensures the deployed UI matches what was approved during inception — not a hallucinated layout.
+
 ## Prerequisites
 
 - Application Design artifacts must be approved (from `inception/application-design/` or `inception/reverse-engineering/`)

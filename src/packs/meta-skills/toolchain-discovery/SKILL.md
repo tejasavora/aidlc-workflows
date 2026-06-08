@@ -54,6 +54,7 @@ For each detected language, scan for tool configurations:
 | `terraform/` or `*.tf` | Terraform (IaC) |
 | `sonar-project.properties` | SonarQube (quality) |
 | `.secrets.baseline` | detect-secrets (secrets) |
+| Figma MCP server in available tools | Figma (design/wireframes) |
 
 ### Step 3: Identify Gaps
 

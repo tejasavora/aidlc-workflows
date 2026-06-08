@@ -28,6 +28,16 @@ Activates when BOTH conditions are true:
 1. The project has a frontend (detected by: `package.json` with a UI framework, or `toolchain.yaml` → `quality.testing.e2e_framework` is set)
 2. `toolchain.yaml` → `quality.testing.visual_regression` section is configured with at least `tool` and `baseline_dir`
 
+## Figma as Source of Truth (optional)
+
+When Figma wireframes were approved during inception (`figma_url` exists in `wireframe-guidance.md`):
+- Use `get_screenshot` (Figma MCP) to capture the APPROVED design as baseline
+- Compare deployed screenshots against the Figma design (not just previous deployment)
+- This catches drift between "what was designed" and "what was built" — not just "what changed since last deploy"
+- If both Figma baseline and deployment baseline exist, report both comparisons:
+  1. vs Figma (design fidelity)
+  2. vs previous deploy (regression detection)
+
 If either condition is false, this skill is silently skipped.
 
 ## Inputs

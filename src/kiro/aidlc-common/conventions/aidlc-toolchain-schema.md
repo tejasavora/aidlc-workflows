@@ -125,6 +125,12 @@ resilience:                         # populated by resilience pack (if active)
     soak: string                    # e.g., "30m"
   run_chaos: boolean
   run_dr_validation: boolean
+
+design:                             # populated by wireframes skill (if UI project)
+  figma: boolean                    # true if Figma MCP is available and user opted in
+  figma_file_url: string            # URL of the Figma file with approved wireframes (null if not using Figma)
+  design_system_library: string     # Figma library name or URL (null if no design system)
+  wireframe_format: string          # figma, svg, html (what format wireframes are in)
 ```
 
 ## Guidance Notes
