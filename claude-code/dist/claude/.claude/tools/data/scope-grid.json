@@ -57,7 +57,10 @@
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
       "frontend-verification": "SKIP",
-      "integration-verification": "EXECUTE"
+      "integration-verification": "EXECUTE",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "SKIP",
+      "environment-verification": "SKIP"
     }
   },
   "enterprise": {
@@ -118,7 +121,10 @@
       "compliance-evidence": "EXECUTE",
       "secrets-lifecycle": "EXECUTE",
       "frontend-verification": "EXECUTE",
-      "integration-verification": "EXECUTE"
+      "integration-verification": "EXECUTE",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "EXECUTE",
+      "environment-verification": "EXECUTE"
     }
   },
   "feature": {
@@ -179,7 +185,10 @@
       "compliance-evidence": "EXECUTE",
       "secrets-lifecycle": "EXECUTE",
       "frontend-verification": "EXECUTE",
-      "integration-verification": "EXECUTE"
+      "integration-verification": "EXECUTE",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "EXECUTE",
+      "environment-verification": "EXECUTE"
     }
   },
   "infra": {
@@ -240,7 +249,10 @@
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
       "frontend-verification": "SKIP",
-      "integration-verification": "SKIP"
+      "integration-verification": "SKIP",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "SKIP",
+      "environment-verification": "EXECUTE"
     }
   },
   "mvp": {
@@ -301,7 +313,10 @@
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
       "frontend-verification": "EXECUTE",
-      "integration-verification": "EXECUTE"
+      "integration-verification": "EXECUTE",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "EXECUTE",
+      "environment-verification": "SKIP"
     }
   },
   "poc": {
@@ -362,7 +377,10 @@
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
       "frontend-verification": "SKIP",
-      "integration-verification": "EXECUTE"
+      "integration-verification": "EXECUTE",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "SKIP",
+      "environment-verification": "SKIP"
     }
   },
   "refactor": {
@@ -423,7 +441,10 @@
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
       "frontend-verification": "SKIP",
-      "integration-verification": "SKIP"
+      "integration-verification": "SKIP",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "SKIP",
+      "environment-verification": "SKIP"
     }
   },
   "security-patch": {
@@ -484,7 +505,10 @@
       "compliance-evidence": "EXECUTE",
       "secrets-lifecycle": "EXECUTE",
       "frontend-verification": "SKIP",
-      "integration-verification": "SKIP"
+      "integration-verification": "SKIP",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "EXECUTE",
+      "environment-verification": "EXECUTE"
     }
   },
   "workshop": {
@@ -545,7 +569,10 @@
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
       "frontend-verification": "EXECUTE",
-      "integration-verification": "EXECUTE"
+      "integration-verification": "EXECUTE",
+      "production-readiness-review": "EXECUTE",
+      "runtime-validation": "EXECUTE",
+      "environment-verification": "EXECUTE"
     }
   }
 }
