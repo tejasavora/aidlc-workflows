@@ -56,7 +56,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
-      "frontend-verification": "SKIP"
+      "frontend-verification": "SKIP",
+      "integration-verification": "EXECUTE"
     }
   },
   "enterprise": {
@@ -116,7 +117,8 @@
       "dora-metrics": "EXECUTE",
       "compliance-evidence": "EXECUTE",
       "secrets-lifecycle": "EXECUTE",
-      "frontend-verification": "EXECUTE"
+      "frontend-verification": "EXECUTE",
+      "integration-verification": "EXECUTE"
     }
   },
   "feature": {
@@ -176,7 +178,8 @@
       "dora-metrics": "EXECUTE",
       "compliance-evidence": "EXECUTE",
       "secrets-lifecycle": "EXECUTE",
-      "frontend-verification": "EXECUTE"
+      "frontend-verification": "EXECUTE",
+      "integration-verification": "EXECUTE"
     }
   },
   "infra": {
@@ -236,7 +239,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
-      "frontend-verification": "SKIP"
+      "frontend-verification": "SKIP",
+      "integration-verification": "SKIP"
     }
   },
   "mvp": {
@@ -296,7 +300,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
-      "frontend-verification": "EXECUTE"
+      "frontend-verification": "EXECUTE",
+      "integration-verification": "EXECUTE"
     }
   },
   "poc": {
@@ -356,7 +361,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
-      "frontend-verification": "SKIP"
+      "frontend-verification": "SKIP",
+      "integration-verification": "EXECUTE"
     }
   },
   "refactor": {
@@ -416,7 +422,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
-      "frontend-verification": "SKIP"
+      "frontend-verification": "SKIP",
+      "integration-verification": "SKIP"
     }
   },
   "security-patch": {
@@ -476,7 +483,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "EXECUTE",
       "secrets-lifecycle": "EXECUTE",
-      "frontend-verification": "SKIP"
+      "frontend-verification": "SKIP",
+      "integration-verification": "SKIP"
     }
   },
   "workshop": {
@@ -536,7 +544,8 @@
       "dora-metrics": "SKIP",
       "compliance-evidence": "SKIP",
       "secrets-lifecycle": "SKIP",
-      "frontend-verification": "EXECUTE"
+      "frontend-verification": "EXECUTE",
+      "integration-verification": "EXECUTE"
     }
   }
 }
