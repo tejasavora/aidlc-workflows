@@ -74,7 +74,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "SKIP"
+      "sandbox-deploy": "SKIP",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "enterprise": {
@@ -152,7 +153,8 @@
       "database-operations": "EXECUTE",
       "change-management": "EXECUTE",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "EXECUTE"
+      "sandbox-deploy": "EXECUTE",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "feature": {
@@ -230,7 +232,8 @@
       "database-operations": "EXECUTE",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "EXECUTE"
+      "sandbox-deploy": "EXECUTE",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "infra": {
@@ -308,7 +311,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "SKIP"
+      "sandbox-deploy": "SKIP",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "mvp": {
@@ -386,7 +390,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "EXECUTE"
+      "sandbox-deploy": "EXECUTE",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "poc": {
@@ -464,7 +469,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "SKIP"
+      "sandbox-deploy": "SKIP",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "refactor": {
@@ -542,7 +548,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "SKIP"
+      "sandbox-deploy": "SKIP",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "security-patch": {
@@ -620,7 +627,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "SKIP"
+      "sandbox-deploy": "SKIP",
+      "workflow-telemetry": "EXECUTE"
     }
   },
   "workshop": {
@@ -698,7 +706,8 @@
       "database-operations": "SKIP",
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
-      "sandbox-deploy": "EXECUTE"
+      "sandbox-deploy": "EXECUTE",
+      "workflow-telemetry": "EXECUTE"
     }
   }
 }
