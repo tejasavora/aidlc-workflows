@@ -27,12 +27,21 @@ consumes:
     required: true
   - artifact: requirements
     required: true
+  - artifact: acceptance-tests
+    required: false
+  - artifact: api-contract-tests
+    required: false
+  - artifact: done-definition
+    required: false
+  - artifact: sandbox-endpoint
+    required: false
 requires_stage:
   - units-generation
   - functional-design
   - nfr-requirements
   - nfr-design
   - infrastructure-design
+  - contract-generation
 sensors:
   - linter
   - type-check
@@ -52,6 +61,28 @@ outputs: application code + aidlc-docs/construction/{unit-name}/code-generation/
 # Code Generation
 
 MANDATORY: Follow stage-protocol.md for approval gates, question format, and completion messages.
+
+## Contract-First Execution (V3)
+
+If `contract-generation` ran (contracts exist at `aidlc-docs/construction/{unit-name}/contract-generation/`):
+
+**The contracts are the TRUTH.** Code-generation's job is to produce code that makes the contract tests PASS — not to produce code that "looks correct" independently. The verification signal changes from "does it compile + lint clean?" to "do the contract tests pass?"
+
+**Per-function generation loop:**
+1. Read the done-definition for this unit
+2. For each endpoint/function defined in the contracts:
+   a. Generate the implementation for THIS ONE function
+   b. Run the contract test for THIS function
+   c. If PASS → proceed to next function
+   d. If FAIL → REGENERATE from scratch (not patch — fresh generation with the test failure as context)
+   e. After 3 failed regenerations → escalate
+3. After all functions pass their contracts → deploy to sandbox (if sandbox-endpoint exists)
+4. Run runtime verification against sandbox
+5. Mark increment as DONE only when: contracts pass + deployed + runtime healthy
+
+**Regeneration vs Fix:** When a contract test fails, do NOT patch the failing code. Regenerate the function from scratch with additional context: the contract test that must pass, the error message from the failed run, and the design specification. Fresh generation with constraints produces better code than iterative patching of wrong code.
+
+**Sandbox deployment:** If `sandbox-endpoint.md` exists (sandbox-deploy stage ran), deploy after each increment passes contracts. The sandbox is the continuous integration environment — it should always reflect the latest passing state.
 
 ## Steps
 

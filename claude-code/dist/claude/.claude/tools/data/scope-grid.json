@@ -72,7 +72,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "SKIP"
     }
   },
   "enterprise": {
@@ -148,7 +150,9 @@
       "on-call-operations": "EXECUTE",
       "cost-governance": "EXECUTE",
       "database-operations": "EXECUTE",
-      "change-management": "EXECUTE"
+      "change-management": "EXECUTE",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "EXECUTE"
     }
   },
   "feature": {
@@ -224,7 +228,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "EXECUTE",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "EXECUTE"
     }
   },
   "infra": {
@@ -300,7 +306,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "EXECUTE",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "SKIP"
     }
   },
   "mvp": {
@@ -376,7 +384,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "EXECUTE"
     }
   },
   "poc": {
@@ -452,7 +462,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "SKIP"
     }
   },
   "refactor": {
@@ -528,7 +540,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "SKIP"
     }
   },
   "security-patch": {
@@ -604,7 +618,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "SKIP"
     }
   },
   "workshop": {
@@ -680,7 +696,9 @@
       "on-call-operations": "SKIP",
       "cost-governance": "SKIP",
       "database-operations": "SKIP",
-      "change-management": "SKIP"
+      "change-management": "SKIP",
+      "contract-generation": "EXECUTE",
+      "sandbox-deploy": "EXECUTE"
     }
   }
 }
