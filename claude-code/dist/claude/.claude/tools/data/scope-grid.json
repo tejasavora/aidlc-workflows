@@ -75,7 +75,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "SKIP",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "SKIP",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "SKIP"
     }
   },
   "enterprise": {
@@ -154,7 +157,10 @@
       "change-management": "EXECUTE",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "EXECUTE",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "EXECUTE",
+      "adversarial-verification": "EXECUTE",
+      "user-journey-simulation": "EXECUTE"
     }
   },
   "feature": {
@@ -233,7 +239,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "EXECUTE",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "EXECUTE",
+      "adversarial-verification": "EXECUTE",
+      "user-journey-simulation": "EXECUTE"
     }
   },
   "infra": {
@@ -312,7 +321,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "SKIP",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "SKIP",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "SKIP"
     }
   },
   "mvp": {
@@ -391,7 +403,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "EXECUTE",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "EXECUTE",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "SKIP"
     }
   },
   "poc": {
@@ -470,7 +485,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "SKIP",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "SKIP",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "SKIP"
     }
   },
   "refactor": {
@@ -549,7 +567,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "SKIP",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "SKIP",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "SKIP"
     }
   },
   "security-patch": {
@@ -628,7 +649,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "SKIP",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "SKIP",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "SKIP"
     }
   },
   "workshop": {
@@ -707,7 +731,10 @@
       "change-management": "SKIP",
       "contract-generation": "EXECUTE",
       "sandbox-deploy": "EXECUTE",
-      "workflow-telemetry": "EXECUTE"
+      "workflow-telemetry": "EXECUTE",
+      "codebase-sync": "EXECUTE",
+      "adversarial-verification": "SKIP",
+      "user-journey-simulation": "EXECUTE"
     }
   }
 }
