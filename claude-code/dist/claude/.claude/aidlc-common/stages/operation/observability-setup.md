@@ -72,6 +72,44 @@ Follow stage-protocol.md question flow.
 
 Create CloudWatch dashboard configurations, alarm definitions (with severity, SNS routing, escalation), SLO/SLI tracking configuration, CloudWatch Logs Insights saved queries, X-Ray tracing configuration, and anomaly detection configuration.
 
+### Step 4b: Alert Fatigue Prevention
+
+For every alarm definition:
+- Validate threshold avoids false positives (use percentile-based, not absolute)
+- Define evaluation period long enough to avoid transient spikes triggering pages
+- Classify alarms: page-worthy (wakes someone up) vs warning (dashboard only) vs info (log only)
+- Maximum 5-7 page-worthy alarms per service (if more, thresholds are too sensitive)
+
+### Step 4c: Synthetic Monitoring
+
+For each critical user journey (derived from user stories):
+- Configure CloudWatch Synthetics canary or equivalent (Datadog Synthetic, etc.)
+- Canary runs every 5 minutes from external perspective (not internal)
+- Alerts on: journey failure, latency exceeding SLO, SSL certificate expiry within 30 days
+- Each canary tests the full user path (not just health check endpoint)
+
+### Step 4d: Structured Logging and Correlation
+
+Verify all services emit structured logs with:
+- Mandatory fields: timestamp, level, service, correlation_id, trace_id
+- No PII in log messages (verify against data classification)
+- Log sampling strategy for high-volume paths (sample debug, keep all errors)
+- Request/response logging at boundaries with body redaction for sensitive fields
+
+### Step 4e: Frontend Observability
+
+If UI exists:
+- Configure Real User Monitoring (RUM) for Core Web Vitals (LCP, INP, CLS)
+- JavaScript error tracking (source-mapped stack traces)
+- User session replay configuration (with PII masking)
+
+### Step 4f: Business Metrics
+
+Define and instrument custom business metrics:
+- Transaction completion rates (signups, orders, conversions)
+- Revenue-correlated metrics (if applicable)
+- Feature usage metrics (which features are actually used vs dead code)
+
 ### Step 5: Update State
 
 Mark observability-setup as `[x]` completed in `aidlc-docs/aidlc-state.md`.

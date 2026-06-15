@@ -66,6 +66,27 @@ Follow stage-protocol.md question flow.
 
 Create SSM Automation runbook library, incident response plan (integrated with AWS Incident Manager), escalation matrix, automated remediation documents, disaster recovery procedures, and AWS Backup configuration.
 
+### Step 4b: Severity Classification and Communication
+
+Define incident severity taxonomy:
+- **SEV1 (Critical):** Total service outage, data loss risk. Response: 15min. Exec notification.
+- **SEV2 (High):** Major feature degraded, >10% users affected. Response: 30min.
+- **SEV3 (Medium):** Minor feature degraded, workaround available. Response: 4hr.
+- **SEV4 (Low):** Cosmetic issue, no user impact. Response: next business day.
+
+For each severity level, generate:
+- Response SLA (time to acknowledge, time to mitigate, time to resolve)
+- Communication template (internal: Slack/Teams, external: status page update)
+- Escalation trigger (if not mitigated within SLA → auto-escalate to next level)
+
+### Step 4c: Status Page Configuration
+
+If customer-facing:
+- Configure status page (StatusPage.io, AWS Health Dashboard custom, or equivalent)
+- Define components that map to service health (API, Dashboard, Integrations)
+- Define incident templates per severity (investigating → identified → monitoring → resolved)
+- Configure auto-update from CloudWatch alarm state changes
+
 ### Step 5: Update State
 
 Mark incident-response as `[x]` completed in `aidlc-docs/aidlc-state.md`.

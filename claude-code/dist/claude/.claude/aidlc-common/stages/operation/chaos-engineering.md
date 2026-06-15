@@ -80,6 +80,8 @@ Progressive complexity:
 3. AZ failure simulation (HA design validation)
 4. Network partition (split-brain detection)
 5. Memory/CPU pressure (auto-scaling validation)
+6. Per-dependency circuit breaker tuning (inject latency at each dependency, verify breaker opens at configured threshold, verify half-open recovery)
+7. Game day exercise scenario (structured team exercise: inject failure, observe team response, measure MTTD/MTTR, compare against SLA)
 
 ### Step 5: Execute Experiments
 

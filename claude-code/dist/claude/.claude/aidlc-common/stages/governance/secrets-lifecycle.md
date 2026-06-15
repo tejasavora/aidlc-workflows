@@ -79,6 +79,8 @@ Create `rotation-plan.md`:
 - Automation configuration (Lambda rotation functions, Secrets Manager auto-rotation)
 - Monitoring: CloudWatch alarms for rotation failures, expiry warnings
 - Emergency rotation procedure (for compromised secrets)
+- Zero-downtime rotation verification: prove that rotating a secret does NOT cause service interruption (dual-credential period, hot-swap, connection pool refresh)
+- TLS certificate management: auto-renewal via ACM, expiry alerting at 30/14/7 days, certificate chain validation, no self-signed certs in production
 
 ### Step 6: Update State
 

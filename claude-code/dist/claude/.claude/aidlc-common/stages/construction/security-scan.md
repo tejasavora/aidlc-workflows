@@ -56,10 +56,12 @@ If no tools are detected, select defaults based on language:
 
 ### Step 3: Execute Scans
 
-Run all three scan categories:
+Run all five scan categories:
 1. **SAST** — analyze source code for vulnerability patterns (injection, XSS, path traversal, insecure crypto, hardcoded secrets)
 2. **SCA** — check dependencies for known CVEs (critical and high severity)
 3. **Secrets** — scan for accidentally committed credentials, tokens, keys
+4. **Container Image Scanning** — if Dockerfile exists, scan built image for OS-level CVEs (Trivy, Grype, ECR scanning). Block on critical/high CVEs in base image layers.
+5. **IAST (if runtime available)** — if the application can be started (sandbox exists), run interactive security testing by exercising endpoints while monitoring for runtime vulnerabilities (SQL injection confirmed via actual query execution, SSRF confirmed via outbound connection attempt)
 
 ### Step 4: Self-Healing Loop
 

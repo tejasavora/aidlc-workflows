@@ -85,6 +85,8 @@ Create `failover-strategy.md`:
 - Data consistency during failover (eventual consistency window, split-brain prevention)
 - Failback procedure (manual vs. automatic, verification steps)
 - Testing approach (how to validate failover works without impacting production)
+- **DNS configuration:** TTL values for failover records (low TTL = faster failover, higher DNS load), Route 53 health check type and evaluation period, failover routing policy configuration
+- **Session management:** Stateless design (preferred) or sticky sessions with session replication across AZs. If stateful: session store (Redis/DynamoDB) with cross-AZ replication, session failover verification
 
 ### Step 6: Update State
 

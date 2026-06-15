@@ -63,7 +63,16 @@
       "environment-verification": "SKIP",
       "runtime-fix-loop": "SKIP",
       "sandbox-provisioning": "SKIP",
-      "iac-execution": "SKIP"
+      "iac-execution": "SKIP",
+      "capacity-planning": "SKIP",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "SKIP",
+      "access-control-review": "SKIP",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   },
   "enterprise": {
@@ -130,7 +139,16 @@
       "environment-verification": "EXECUTE",
       "runtime-fix-loop": "EXECUTE",
       "sandbox-provisioning": "EXECUTE",
-      "iac-execution": "EXECUTE"
+      "iac-execution": "EXECUTE",
+      "capacity-planning": "EXECUTE",
+      "data-privacy-compliance": "EXECUTE",
+      "supply-chain-security": "EXECUTE",
+      "access-control-review": "EXECUTE",
+      "api-governance": "EXECUTE",
+      "on-call-operations": "EXECUTE",
+      "cost-governance": "EXECUTE",
+      "database-operations": "EXECUTE",
+      "change-management": "EXECUTE"
     }
   },
   "feature": {
@@ -197,7 +215,16 @@
       "environment-verification": "EXECUTE",
       "runtime-fix-loop": "EXECUTE",
       "sandbox-provisioning": "EXECUTE",
-      "iac-execution": "EXECUTE"
+      "iac-execution": "EXECUTE",
+      "capacity-planning": "EXECUTE",
+      "data-privacy-compliance": "EXECUTE",
+      "supply-chain-security": "EXECUTE",
+      "access-control-review": "SKIP",
+      "api-governance": "EXECUTE",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "EXECUTE",
+      "change-management": "SKIP"
     }
   },
   "infra": {
@@ -264,7 +291,16 @@
       "environment-verification": "EXECUTE",
       "runtime-fix-loop": "SKIP",
       "sandbox-provisioning": "SKIP",
-      "iac-execution": "EXECUTE"
+      "iac-execution": "EXECUTE",
+      "capacity-planning": "EXECUTE",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "SKIP",
+      "access-control-review": "SKIP",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "EXECUTE",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   },
   "mvp": {
@@ -331,7 +367,16 @@
       "environment-verification": "SKIP",
       "runtime-fix-loop": "EXECUTE",
       "sandbox-provisioning": "EXECUTE",
-      "iac-execution": "SKIP"
+      "iac-execution": "SKIP",
+      "capacity-planning": "SKIP",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "SKIP",
+      "access-control-review": "SKIP",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   },
   "poc": {
@@ -398,7 +443,16 @@
       "environment-verification": "SKIP",
       "runtime-fix-loop": "SKIP",
       "sandbox-provisioning": "SKIP",
-      "iac-execution": "SKIP"
+      "iac-execution": "SKIP",
+      "capacity-planning": "SKIP",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "SKIP",
+      "access-control-review": "SKIP",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   },
   "refactor": {
@@ -465,7 +519,16 @@
       "environment-verification": "SKIP",
       "runtime-fix-loop": "SKIP",
       "sandbox-provisioning": "SKIP",
-      "iac-execution": "SKIP"
+      "iac-execution": "SKIP",
+      "capacity-planning": "SKIP",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "SKIP",
+      "access-control-review": "SKIP",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   },
   "security-patch": {
@@ -532,7 +595,16 @@
       "environment-verification": "EXECUTE",
       "runtime-fix-loop": "SKIP",
       "sandbox-provisioning": "SKIP",
-      "iac-execution": "SKIP"
+      "iac-execution": "SKIP",
+      "capacity-planning": "SKIP",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "EXECUTE",
+      "access-control-review": "EXECUTE",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   },
   "workshop": {
@@ -599,7 +671,16 @@
       "environment-verification": "EXECUTE",
       "runtime-fix-loop": "EXECUTE",
       "sandbox-provisioning": "EXECUTE",
-      "iac-execution": "EXECUTE"
+      "iac-execution": "EXECUTE",
+      "capacity-planning": "SKIP",
+      "data-privacy-compliance": "SKIP",
+      "supply-chain-security": "SKIP",
+      "access-control-review": "SKIP",
+      "api-governance": "SKIP",
+      "on-call-operations": "SKIP",
+      "cost-governance": "SKIP",
+      "database-operations": "SKIP",
+      "change-management": "SKIP"
     }
   }
 }

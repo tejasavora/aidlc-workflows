@@ -67,6 +67,17 @@ Follow stage-protocol.md question flow.
 
 Design load test plan, execute performance tests against production-like environments, analyze results using CloudWatch/X-Ray evidence.
 
+### Step 4b: Auto-Scaling Validation
+
+Explicitly test the auto-scaling mechanism (not just the app under load):
+1. **Scale-up:** Ramp load until scaling trigger fires → verify new instances join within target time
+2. **Scale-down:** Reduce load → verify instances terminate after cooldown (not too aggressive)
+3. **Cooldown verification:** Rapid oscillation → verify no flapping (scale-up/down/up/down)
+4. **Cold start latency:** Measure time from new instance launch to first request served (Lambda cold start, container pull + start, EC2 boot + app init)
+5. **Scaling ceiling:** Determine maximum instance count × per-instance capacity = system ceiling
+
+Record: p50/p95/p99/p999 latency at each load level, throughput curve (requests/sec vs. latency), and the exact breaking point.
+
 ### Step 5: Generate Artifacts
 
 Create load test plan, performance test results (latency, throughput, error rates), bottleneck analysis, auto-scaling validation report, capacity planning recommendations, and NFR validation matrix (target vs. actual).

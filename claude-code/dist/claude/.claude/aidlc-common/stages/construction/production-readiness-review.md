@@ -147,6 +147,17 @@ Verify the system can actually start in a real environment:
 - Graceful shutdown handlers exist for SIGTERM/SIGINT
 - Liveness/readiness probes are distinguishable (ready = can serve, live = not stuck)
 
+### Step 5b: Container Orchestration Readiness (if containerized)
+
+- Liveness probe: simple (TCP/HTTP to /health), does NOT check dependencies
+- Readiness probe: checks dependencies (DB reachable, cache connected)
+- Startup probe: generous timeout for slow-starting apps (prevents restart loops)
+- Resource requests set (guaranteed CPU/memory for scheduling)
+- Resource limits set (prevent noisy-neighbor, OOMKill threshold)
+- Pod disruption budget defined (minAvailable during rolling updates)
+- Pre-stop hook: sleep 5s + drain in-flight requests before SIGTERM
+- Graceful shutdown: stop accepting new requests → finish in-flight → close connections → exit
+
 ### Step 6: Error Path Review
 
 Verify error handling is production-grade, not just present:
