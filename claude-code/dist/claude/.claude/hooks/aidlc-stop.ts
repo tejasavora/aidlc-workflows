@@ -330,9 +330,11 @@ try {
 }
 
 // Parked workflow — allow stop immediately. The agent explicitly parked the
-// workflow (via `aidlc-state.ts set Parked true`) to cleanly end the session.
-// The workflow will resume from the current stage in the next session.
-if (stateContent.includes("Parked") && stateContent.match(/Parked\*{0,2}:?\s*(true|yes)/i)) {
+// workflow by creating the park signal file. This is the ONLY reliable park
+// mechanism (the state file's setField silently fails for fields not in the
+// template). The park file is removed on next session start (resume clears it).
+const parkFile = join(projectDir, "aidlc-docs", ".aidlc-parked");
+if (existsSync(parkFile)) {
   allowStop();
 }
 

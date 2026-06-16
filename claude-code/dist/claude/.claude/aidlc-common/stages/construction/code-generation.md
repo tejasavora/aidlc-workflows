@@ -93,6 +93,27 @@ If `contract-generation` ran (contracts exist at `aidlc-docs/construction/{unit-
 - Brownfield: modify files in-place. NEVER create duplicates like ClassName_modified.java
 - Add data-testid attributes to interactive UI elements for test automation
 
+### MANDATORY: Per-Unit Iteration (for_each: unit-of-work)
+
+This stage has `for_each: unit-of-work`. The engine emits ONE directive but the conductor MUST iterate over ALL units. Do NOT generate code for one unit and approve. You must:
+
+1. Read `aidlc-docs/inception/units-generation/units-of-work.md` (or `unit-of-work.md`)
+2. Read `aidlc-docs/inception/delivery-planning/delivery-plan.md` for Bolt ordering
+3. For EACH unit in the delivery plan:
+   a. Spawn a developer-agent subagent (Task tool) for that unit
+   b. The subagent reads that unit's functional-design + nfr-design + infrastructure-design
+   c. The subagent writes real source code to `src/<unit-name>/` or the project's source structure
+   d. The subagent writes tests alongside the code
+   e. Verify: tests pass for that unit before moving to the next
+4. After ALL units have code:
+   a. Run full test suite (all units together)
+   b. Verify no import/dependency conflicts between units
+5. Only THEN present the approval gate
+
+**This stage CANNOT be approved unless source code exists for ALL units listed in the delivery plan.** The `workspace_requires: true` guard will block if src/ hasn't changed — but beyond that, the human expectation is that EVERY unit has implementation, not just one.
+
+**If context is limited:** Park the workflow by creating the park signal file: `touch aidlc-docs/.aidlc-parked` — this tells the stop hook to release immediately. The next session removes the file and resumes with the remaining units. Do NOT approve with partial implementation.
+
 ### Step 1: Read All Unit Artifacts
 
 Read all design artifacts for the current unit:

@@ -63,6 +63,24 @@ If awaiting human input:
   - L1/L2: save complete state, emit `WORKFLOW_PAUSED`, stop cleanly
 - NEVER leave a gate hanging indefinitely — it wastes resources and context
 
+## Rule 4b: Parking the Workflow (How to Stop Cleanly)
+
+When you need to end the session mid-workflow (context limit, human said stop, or you've done as much as one session allows):
+
+```bash
+touch aidlc-docs/.aidlc-parked
+```
+
+This creates a signal file that the stop hook checks. The hook sees it and releases immediately — no more blocking. The next session removes this file on resume and continues from the current stage.
+
+**Do NOT:**
+- Rubber-stamp remaining stages to reach "done"
+- Use `--test-run` to bypass guards on stages you haven't executed
+- Call `advance` or `approve` without producing output just to silence the hook
+- Call `complete-workflow` on a partially-done workflow
+
+**The stop hook WILL release after 2 blocks regardless** (CLAUDE_CODE_STOP_HOOK_BLOCK_CAP=2). But parking is cleaner and communicates intent.
+
 ## Rule 5: Canary Execution (Fail Fast)
 
 Before committing to the full pipeline, verify basic viability:
