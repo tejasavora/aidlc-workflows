@@ -372,10 +372,16 @@ function handleAdvance(args: string[]): void {
       try {
         const proc = Bun.spawnSync({ cmd: ["git", "diff", "--name-only", "HEAD", "--", "src/"], cwd: pd, stdout: "pipe", stderr: "pipe", timeout: 5000 });
         const output = new TextDecoder().decode(proc.stdout).trim();
-        if (output.length === 0) {
+        if (output.length > 0) { workspaceChanged = true; }
+        else {
           const proc2 = Bun.spawnSync({ cmd: ["git", "ls-files", "--others", "--exclude-standard", "--", "src/"], cwd: pd, stdout: "pipe", stderr: "pipe", timeout: 5000 });
-          workspaceChanged = new TextDecoder().decode(proc2.stdout).trim().length > 0;
-        } else { workspaceChanged = true; }
+          if (new TextDecoder().decode(proc2.stdout).trim().length > 0) { workspaceChanged = true; }
+          else {
+            // Check last commit (handles commit-before-approve pattern)
+            const proc3 = Bun.spawnSync({ cmd: ["git", "diff", "--name-only", "HEAD~1", "HEAD", "--", "src/"], cwd: pd, stdout: "pipe", stderr: "pipe", timeout: 5000 });
+            workspaceChanged = new TextDecoder().decode(proc3.stdout).trim().length > 0;
+          }
+        }
       } catch { /* */ }
       const workspaceRequired = (completedStage as any).workspace_requires === true;
       if (workspaceRequired && !workspaceChanged) {
@@ -823,25 +829,36 @@ function handleApprove(args: string[]): void {
       docsExist = true;
     }
 
-    // Check 2: Did any workspace source files change since last commit?
-    // Only counts actual source code changes, not config/metadata.
+    // Check 2: Did any workspace source files change?
+    // Checks: uncommitted changes, untracked files, AND recent commit (HEAD~1).
+    // The recent-commit check handles the case where the agent correctly commits
+    // code before calling approve — the working tree is clean but code WAS written.
     let workspaceChanged = false;
     try {
+      // Check uncommitted changes in src/
       const proc = Bun.spawnSync({
         cmd: ["git", "diff", "--name-only", "HEAD", "--", "src/"],
         cwd: pd2, stdout: "pipe", stderr: "pipe", timeout: 5000,
       });
       const output = new TextDecoder().decode(proc.stdout).trim();
-      if (output.length === 0) {
-        // Also check untracked files in src/
+      if (output.length > 0) {
+        workspaceChanged = true;
+      } else {
+        // Check untracked files in src/
         const proc2 = Bun.spawnSync({
           cmd: ["git", "ls-files", "--others", "--exclude-standard", "--", "src/"],
           cwd: pd2, stdout: "pipe", stderr: "pipe", timeout: 5000,
         });
-        const output2 = new TextDecoder().decode(proc2.stdout).trim();
-        workspaceChanged = output2.length > 0;
-      } else {
-        workspaceChanged = true;
+        if (new TextDecoder().decode(proc2.stdout).trim().length > 0) {
+          workspaceChanged = true;
+        } else {
+          // Check last commit — did it touch src/? (handles commit-before-approve)
+          const proc3 = Bun.spawnSync({
+            cmd: ["git", "diff", "--name-only", "HEAD~1", "HEAD", "--", "src/"],
+            cwd: pd2, stdout: "pipe", stderr: "pipe", timeout: 5000,
+          });
+          workspaceChanged = new TextDecoder().decode(proc3.stdout).trim().length > 0;
+        }
       }
     } catch { /* git not available — skip this check */ }
 
