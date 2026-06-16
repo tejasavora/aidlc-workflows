@@ -340,6 +340,54 @@ function handleAdvance(args: string[]): void {
     );
   }
 
+  // --- Artifact production guard (same as approve — prevents advance-to-skip) ---
+  // If the stage is being completed (not already [x]), verify it produced output.
+  const advCbCheck = parseCheckboxes(content).find((c) => c.slug === completedSlug);
+  if (advCbCheck?.state !== "completed") {
+    const produces = completedStage.produces ?? [];
+    if (produces.length > 0) {
+      const docsDir = join(pd, "aidlc-docs");
+      let docsExist = false;
+      const phaseDirs = ["ideation", "inception", "construction", "operation", "maintenance", "governance"];
+      for (const phase of phaseDirs) {
+        const stageDir = join(docsDir, phase, completedSlug);
+        try {
+          const files = readdirSync(stageDir);
+          if (files.filter((f: string) => f.endsWith(".md") && f !== "memory.md").length > 0) { docsExist = true; break; }
+        } catch { /* */ }
+      }
+      if (!docsExist) {
+        const constDir = join(docsDir, "construction");
+        try {
+          const units = readdirSync(constDir);
+          for (const unit of units) {
+            try {
+              const files = readdirSync(join(constDir, unit, completedSlug));
+              if (files.filter((f: string) => f.endsWith(".md")).length > 0) { docsExist = true; break; }
+            } catch { /* */ }
+          }
+        } catch { /* */ }
+      }
+      let workspaceChanged = false;
+      try {
+        const proc = Bun.spawnSync({ cmd: ["git", "diff", "--name-only", "HEAD", "--", "src/"], cwd: pd, stdout: "pipe", stderr: "pipe", timeout: 5000 });
+        const output = new TextDecoder().decode(proc.stdout).trim();
+        if (output.length === 0) {
+          const proc2 = Bun.spawnSync({ cmd: ["git", "ls-files", "--others", "--exclude-standard", "--", "src/"], cwd: pd, stdout: "pipe", stderr: "pipe", timeout: 5000 });
+          workspaceChanged = new TextDecoder().decode(proc2.stdout).trim().length > 0;
+        } else { workspaceChanged = true; }
+      } catch { /* */ }
+      if (!docsExist && !workspaceChanged) {
+        error(
+          `Cannot advance past "${completedSlug}" — no output detected. ` +
+          `Expected artifacts: ${produces.join(", ")}. ` +
+          `Produce output before advancing. Use approve (not advance) for the normal flow.`
+        );
+      }
+    }
+  }
+  // --- End artifact production guard ---
+
   // Slug validation — `advance <slug>` is a post-gate-approval transition.
   // The caller must have just finished <completedSlug>. Silently accepting
   // any slug (even ones unrelated to the current state) would mutate
