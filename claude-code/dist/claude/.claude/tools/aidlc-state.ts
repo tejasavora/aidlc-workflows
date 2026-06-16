@@ -377,6 +377,14 @@ function handleAdvance(args: string[]): void {
           workspaceChanged = new TextDecoder().decode(proc2.stdout).trim().length > 0;
         } else { workspaceChanged = true; }
       } catch { /* */ }
+      const workspaceRequired = (completedStage as any).workspace_requires === true;
+      if (workspaceRequired && !workspaceChanged) {
+        error(
+          `Cannot advance past "${completedSlug}" — workspace_requires is true but no source files changed. ` +
+          `This stage must produce real code/config files outside aidlc-docs/. ` +
+          `Writing only markdown docs is not sufficient.`
+        );
+      }
       if (!docsExist && !workspaceChanged) {
         error(
           `Cannot advance past "${completedSlug}" — no output detected. ` +
@@ -836,6 +844,17 @@ function handleApprove(args: string[]): void {
         workspaceChanged = true;
       }
     } catch { /* git not available — skip this check */ }
+
+    // Check 3: If workspace_requires: true, workspace changes are MANDATORY
+    // (docs alone are not sufficient — real code must be written)
+    const workspaceRequired = (stage as any).workspace_requires === true;
+    if (workspaceRequired && !workspaceChanged) {
+      error(
+        `Cannot approve stage "${slug}" — workspace_requires is true but no source files changed. ` +
+        `This stage must produce real code/config files outside aidlc-docs/ (in src/, tests/, etc). ` +
+        `Writing only markdown docs is not sufficient. Use --test-run to bypass in CI.`
+      );
+    }
 
     // Block if NEITHER docs nor workspace changes exist
     if (!docsExist && !workspaceChanged) {

@@ -1919,7 +1919,8 @@
         "path": ".claude/sensors/aidlc-type-check.md",
         "matches": "**/*.{ts,tsx}"
       }
-    ]
+    ],
+    "workspace_requires": true
   },
   {
     "slug": "build-and-test",
@@ -2094,7 +2095,8 @@
         "path": ".claude/sensors/aidlc-type-check.md",
         "matches": "**/*.{ts,tsx}"
       }
-    ]
+    ],
+    "workspace_requires": true
   },
   {
     "slug": "deployment-pipeline",
@@ -2876,7 +2878,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "cost-estimation",
@@ -2966,7 +2969,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "dast",
@@ -3056,7 +3060,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "data-seeding",
@@ -3102,7 +3107,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "dr-design",
@@ -3195,7 +3201,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "frontend-verification",
@@ -3242,7 +3249,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "ha-design",
@@ -3338,7 +3346,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "production-readiness-review",
@@ -3440,7 +3449,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "security-scan",
@@ -3486,7 +3496,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "static-analysis",
@@ -3533,7 +3544,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "canary-analysis",
@@ -3897,7 +3909,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "on-call-operations",
@@ -4129,7 +4142,8 @@
         "scope": "project"
       }
     ],
-    "sensors_applicable": []
+    "sensors_applicable": [],
+    "workspace_requires": true
   },
   {
     "slug": "user-journey-simulation",

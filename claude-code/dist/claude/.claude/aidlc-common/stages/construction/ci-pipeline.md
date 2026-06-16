@@ -19,6 +19,7 @@ consumes:
     required: true
 requires_stage:
   - build-and-test
+workspace_requires: true
 sensors:
   - required-sections
   - upstream-coverage

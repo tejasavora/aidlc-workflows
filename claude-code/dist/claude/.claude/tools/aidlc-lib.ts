@@ -31,6 +31,7 @@ export interface StageEntry {
   inputs?: string;
   outputs?: string;
   for_each?: string;
+  workspace_requires?: boolean;
 }
 
 export interface ScopeDefinition {

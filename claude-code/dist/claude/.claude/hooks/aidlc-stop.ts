@@ -329,6 +329,13 @@ try {
   allowStop();
 }
 
+// Parked workflow — allow stop immediately. The agent explicitly parked the
+// workflow (via `aidlc-state.ts set Parked true`) to cleanly end the session.
+// The workflow will resume from the current stage in the next session.
+if (stateContent.includes("Parked") && stateContent.match(/Parked\*{0,2}:?\s*(true|yes)/i)) {
+  allowStop();
+}
+
 // Parse the Stop-hook input. Garbage / empty stdin must NOT crash and must NOT
 // trap the turn — fail open. We only read stop_hook_active off it.
 let stopHookActive = false;

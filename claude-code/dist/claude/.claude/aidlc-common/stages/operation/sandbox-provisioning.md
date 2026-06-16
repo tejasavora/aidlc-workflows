@@ -21,6 +21,7 @@ consumes:
 requires_stage:
   - infrastructure-design
   - ci-pipeline
+workspace_requires: true
 sensors:
   - required-sections
 scopes:

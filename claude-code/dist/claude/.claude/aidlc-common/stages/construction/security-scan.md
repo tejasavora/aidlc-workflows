@@ -19,6 +19,7 @@ consumes:
     required: false
 requires_stage:
   - code-generation
+workspace_requires: true
 sensors:
   - required-sections
 scopes:

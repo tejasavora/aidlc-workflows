@@ -42,6 +42,7 @@ requires_stage:
   - nfr-design
   - infrastructure-design
   - contract-generation
+workspace_requires: true
 sensors:
   - linter
   - type-check

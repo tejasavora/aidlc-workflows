@@ -21,6 +21,7 @@ consumes:
     required: false
 requires_stage:
   - infrastructure-design
+workspace_requires: true
 sensors:
   - required-sections
 scopes:

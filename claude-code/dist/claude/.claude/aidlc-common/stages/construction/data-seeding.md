@@ -20,6 +20,7 @@ consumes:
     required: false
 requires_stage:
   - functional-design
+workspace_requires: true
 sensors:
   - required-sections
 scopes:

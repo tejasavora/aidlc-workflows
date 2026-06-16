@@ -16,6 +16,7 @@ consumes:
     required: true
 requires_stage:
   - code-generation
+workspace_requires: true
 sensors:
   - linter
 scopes:

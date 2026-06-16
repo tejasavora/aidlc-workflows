@@ -24,6 +24,7 @@ consumes:
 requires_stage:
   - code-generation
   - build-and-test
+workspace_requires: true
 sensors:
   - required-sections
 scopes:
