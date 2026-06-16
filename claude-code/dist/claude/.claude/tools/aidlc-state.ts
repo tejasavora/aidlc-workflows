@@ -960,6 +960,17 @@ function getFlagValue(args: string[], flag: string): string | undefined {
 
 // Flag parser for approve — handles --user-input (value) and --test-run (boolean).
 function parseApproveFlags(args: string[]): { userInput?: string; testRun: boolean } {
+  // --test-run only works when AIDLC_CI=true is set in the environment.
+  // This prevents agents from using --test-run to bypass artifact guards
+  // in human sessions. CI pipelines set AIDLC_CI=true explicitly.
+  const ciMode = process.env.AIDLC_CI === "true";
+  const testRunRequested = args.includes("--test-run");
+  if (testRunRequested && !ciMode) {
+    error(
+      `--test-run is only available in CI mode (AIDLC_CI=true). ` +
+      `In human sessions, produce the required artifacts before approving.`
+    );
+  }
   return {
     userInput: getFlagValue(args, "--user-input"),
     testRun: args.includes("--test-run"),
