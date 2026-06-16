@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { appendAuditEntry, appendAuditEntryUnlocked } from "./aidlc-audit.ts";
 import {
@@ -725,6 +725,81 @@ function handleApprove(args: string[]): void {
   const stage = findStageBySlug(slug);
   if (!stage) error(`Unknown stage: ${slug}`);
   validateSlugInState(content, slug, "awaiting-approval");
+
+  // --- Artifact production guard (prevents rubber-stamp approvals) ---
+  // A stage cannot be approved unless it produced SOMETHING — either its
+  // declared aidlc-docs artifacts OR workspace file changes. An agent that
+  // calls approve without generating output is blocked here.
+  if (!testRun) {
+    const pd2 = resolveProjectDir(projectDir);
+    const docsDir = join(pd2, "aidlc-docs");
+    const produces = stage.produces ?? [];
+
+    // Check 1: Do any declared artifact files exist under aidlc-docs/?
+    let docsExist = false;
+    if (produces.length > 0) {
+      // Look for files in the stage's artifact directory
+      const phaseDirs = ["ideation", "inception", "construction", "operation", "maintenance", "governance"];
+      for (const phase of phaseDirs) {
+        const stageDir = join(docsDir, phase, slug);
+        try {
+          const files = readdirSync(stageDir);
+          const mdFiles = files.filter((f: string) => f.endsWith(".md") && f !== "memory.md");
+          if (mdFiles.length > 0) { docsExist = true; break; }
+        } catch { /* dir doesn't exist — continue */ }
+      }
+      // Also check construction/<unit>/<stage>/ pattern
+      if (!docsExist) {
+        const constDir = join(docsDir, "construction");
+        try {
+          const units = readdirSync(constDir);
+          for (const unit of units) {
+            const unitStageDir = join(constDir, unit, slug);
+            try {
+              const files = readdirSync(unitStageDir);
+              if (files.filter((f: string) => f.endsWith(".md")).length > 0) { docsExist = true; break; }
+            } catch { /* not found */ }
+          }
+        } catch { /* construction dir doesn't exist */ }
+      }
+    } else {
+      // Stage declares no produces — skip artifact check (e.g., init stages)
+      docsExist = true;
+    }
+
+    // Check 2: Did any workspace source files change since last commit?
+    // Only counts actual source code changes, not config/metadata.
+    let workspaceChanged = false;
+    try {
+      const proc = Bun.spawnSync({
+        cmd: ["git", "diff", "--name-only", "HEAD", "--", "src/"],
+        cwd: pd2, stdout: "pipe", stderr: "pipe", timeout: 5000,
+      });
+      const output = new TextDecoder().decode(proc.stdout).trim();
+      if (output.length === 0) {
+        // Also check untracked files in src/
+        const proc2 = Bun.spawnSync({
+          cmd: ["git", "ls-files", "--others", "--exclude-standard", "--", "src/"],
+          cwd: pd2, stdout: "pipe", stderr: "pipe", timeout: 5000,
+        });
+        const output2 = new TextDecoder().decode(proc2.stdout).trim();
+        workspaceChanged = output2.length > 0;
+      } else {
+        workspaceChanged = true;
+      }
+    } catch { /* git not available — skip this check */ }
+
+    // Block if NEITHER docs nor workspace changes exist
+    if (!docsExist && !workspaceChanged) {
+      error(
+        `Cannot approve stage "${slug}" — no output detected. ` +
+        `Expected artifacts: ${produces.join(", ")}. ` +
+        `No aidlc-docs artifacts found and no workspace file changes. ` +
+        `Generate the stage's output before approving. Use --test-run to bypass in CI.`
+      );
+    }
+  }
+  // --- End artifact production guard ---
 
   const timestamp = isoTimestamp();
 
