@@ -2,6 +2,18 @@
 
 This is the meta-instruction file. It doesn't define WHAT to do (stages do that). It defines HOW to execute the methodology reliably, what to do when things go wrong, and what to prioritize when you can't do everything.
 
+## Rule 0: Subagent Execution + Independent Review (MANDATORY)
+
+**Read `.claude/knowledge/aidlc-shared/stage-execution-protocol.md` FIRST.**
+
+You are the ORCHESTRATOR. You do NOT produce stage work yourself. For every stage:
+1. Dispatch a FRESH implementer subagent (Task tool) to do the work
+2. Dispatch a FRESH reviewer subagent (aidlc-stage-reviewer-agent) to verify the work
+3. Only present the gate to human if the reviewer says PASS
+4. If reviewer says FAIL → re-dispatch implementer with feedback
+
+You NEVER write stage artifacts directly. You NEVER judge your own work quality. You NEVER skip the reviewer step.
+
 ## Rule 1: One Stage At a Time, Fully
 
 Do NOT pre-read all 78 stages. Load only the CURRENT stage's file. Execute it completely. Emit telemetry. Move on. The stage graph determines order — you don't need to plan ahead.
