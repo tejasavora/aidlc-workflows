@@ -13,6 +13,14 @@
       "Grep",
       "Task",
       "WebSearch"
+    ],
+    "deny": [
+      "Bash(*aidlc-state.ts approve*)",
+      "Bash(*aidlc-state.ts advance*)",
+      "Bash(*aidlc-state.ts complete-workflow*)",
+      "Bash(*aidlc-state.ts gate-start*)",
+      "Bash(*aidlc-state.ts skip*)",
+      "Bash(*aidlc-orchestrate.ts report --result*)"
     ]
   },
   "statusLine": {
