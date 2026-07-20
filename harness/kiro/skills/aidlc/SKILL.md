@@ -143,15 +143,15 @@ The engine resolves scope-level stage routing internally (it reads the compiled 
 
 | Scope          | Depth         | TestStrategy | EXECUTE / Total |
 |----------------|---------------|--------------|-----------------|
-| bugfix         | Minimal       | (default)    | 7 / 32          |
-| enterprise     | Comprehensive | (default)    | 32 / 32         |
-| feature        | Standard      | (default)    | 32 / 32         |
-| infra          | Standard      | (default)    | 13 / 32         |
-| mvp            | Standard      | (default)    | 22 / 32         |
-| poc            | Minimal       | (default)    | 8 / 32          |
-| refactor       | Minimal       | (default)    | 8 / 32          |
-| security-patch | Minimal       | (default)    | 10 / 32         |
-| workshop       | Standard      | Minimal      | 25 / 32         |
+| bugfix         | Minimal       | (default)    | 13 / 78         |
+| enterprise     | Comprehensive | (default)    | 78 / 78         |
+| feature        | Standard      | (default)    | 72 / 78         |
+| infra          | Standard      | (default)    | 22 / 78         |
+| mvp            | Standard      | (default)    | 42 / 78         |
+| poc            | Minimal       | (default)    | 14 / 78         |
+| refactor       | Minimal       | (default)    | 12 / 78         |
+| security-patch | Minimal       | (default)    | 25 / 78         |
+| workshop       | Standard      | Minimal      | 52 / 78         |
 
 <!-- END: compiled scope grid -->
 
@@ -190,6 +190,24 @@ The engine reads the compiled `data/stage-graph.json` directly for all routing; 
 | code-generation | 3.5 | Code Generation | Construction | ALWAYS | aidlc-developer-agent | — | subagent |
 | build-and-test | 3.6 | Build and Test | Construction | ALWAYS | aidlc-quality-agent | aidlc-devsecops-agent | inline |
 | ci-pipeline | 3.7 | CI Pipeline | Construction | CONDITIONAL | aidlc-pipeline-deploy-agent | — | inline |
+| backward-compat | 3.82 | Backward Compat | Construction | CONDITIONAL | aidlc-architect-agent | aidlc-developer-agent | inline |
+| codebase-sync | 3.83 | Codebase Sync | Construction | CONDITIONAL | aidlc-developer-agent | aidlc-architect-agent | inline |
+| contract-generation | 3.84 | Contract Generation | Construction | ALWAYS | aidlc-quality-agent | aidlc-developer-agent, aidlc-architect-agent | inline |
+| cost-estimation | 3.85 | Cost Estimation | Construction | CONDITIONAL | aidlc-aws-platform-agent | aidlc-architect-agent | inline |
+| coverage-enforcement | 3.86 | Coverage Enforcement | Construction | CONDITIONAL | aidlc-quality-agent | — | inline |
+| data-migration | 3.88 | Data Migration | Construction | CONDITIONAL | aidlc-developer-agent | aidlc-architect-agent | inline |
+| data-seeding | 3.89 | Data Seeding | Construction | CONDITIONAL | aidlc-developer-agent | aidlc-quality-agent | inline |
+| dr-design | 3.90 | Dr Design | Construction | CONDITIONAL | aidlc-architect-agent | aidlc-aws-platform-agent, aidlc-operations-agent | inline |
+| e2e-test | 3.91 | E2E Test | Construction | CONDITIONAL | aidlc-quality-agent | aidlc-developer-agent | inline |
+| frontend-verification | 3.92 | Frontend Verification | Construction | CONDITIONAL | aidlc-quality-agent | aidlc-design-agent, aidlc-developer-agent | inline |
+| ha-design | 3.93 | Ha Design | Construction | CONDITIONAL | aidlc-architect-agent | aidlc-aws-platform-agent | inline |
+| integration-verification | 3.94 | Integration Verification | Construction | ALWAYS | aidlc-quality-agent | aidlc-developer-agent, aidlc-architect-agent | inline |
+| production-readiness-review | 3.95 | Production Readiness Review | Construction | ALWAYS | aidlc-architect-agent | aidlc-quality-agent, aidlc-devsecops-agent, aidlc-developer-agent | inline |
+| sandbox-deploy | 3.96 | Sandbox Deploy | Construction | CONDITIONAL | aidlc-pipeline-deploy-agent | aidlc-aws-platform-agent | inline |
+| security-scan | 3.97 | Security Scan | Construction | ALWAYS | aidlc-devsecops-agent | aidlc-quality-agent | inline |
+| static-analysis | 3.98 | Static Analysis | Construction | ALWAYS | aidlc-quality-agent | — | inline |
+| adversarial-verification | 3.99 | Adversarial Verification | Construction | CONDITIONAL | aidlc-quality-agent | aidlc-devsecops-agent, aidlc-developer-agent | inline |
+| dast | 3.975 | Dast | Construction | CONDITIONAL | aidlc-devsecops-agent | aidlc-quality-agent | inline |
 | deployment-pipeline | 4.1 | Deployment Pipeline | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | — | inline |
 | environment-provisioning | 4.2 | Environment Provisioning | Operation | CONDITIONAL | aidlc-aws-platform-agent | aidlc-devsecops-agent, aidlc-compliance-agent | inline |
 | deployment-execution | 4.3 | Deployment Execution | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | aidlc-developer-agent | inline |
@@ -197,6 +215,34 @@ The engine reads the compiled `data/stage-graph.json` directly for all routing; 
 | incident-response | 4.5 | Incident Response | Operation | CONDITIONAL | aidlc-operations-agent | — | inline |
 | performance-validation | 4.6 | Performance Validation | Operation | CONDITIONAL | aidlc-quality-agent | — | inline |
 | feedback-optimization | 4.7 | Feedback & Optimization | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent | inline |
+| canary-analysis | 4.81 | Canary Analysis | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | aidlc-operations-agent | inline |
+| capacity-planning | 4.82 | Capacity Planning | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent | inline |
+| chaos-engineering | 4.83 | Chaos Engineering | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent | inline |
+| database-operations | 4.84 | Database Operations | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent | inline |
+| dr-validation | 4.85 | Dr Validation | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent, aidlc-pipeline-deploy-agent | inline |
+| drift-detection | 4.86 | Drift Detection | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent | inline |
+| environment-verification | 4.87 | Environment Verification | Operation | CONDITIONAL | aidlc-aws-platform-agent | aidlc-operations-agent, aidlc-devsecops-agent | inline |
+| iac-execution | 4.88 | Iac Execution | Operation | CONDITIONAL | aidlc-aws-platform-agent | aidlc-pipeline-deploy-agent, aidlc-devsecops-agent | inline |
+| on-call-operations | 4.89 | On Call Operations | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-delivery-agent | inline |
+| release-management | 4.90 | Release Management | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | aidlc-developer-agent | inline |
+| runtime-validation | 4.92 | Runtime Validation | Operation | ALWAYS | aidlc-quality-agent | aidlc-developer-agent, aidlc-operations-agent | inline |
+| sandbox-provisioning | 4.93 | Sandbox Provisioning | Operation | CONDITIONAL | aidlc-aws-platform-agent | aidlc-pipeline-deploy-agent | inline |
+| user-journey-simulation | 4.94 | User Journey Simulation | Operation | CONDITIONAL | aidlc-quality-agent | aidlc-design-agent | inline |
+| bug-triage | 4.95 | Bug Triage | Operation | CONDITIONAL | aidlc-developer-agent | aidlc-quality-agent, aidlc-architect-agent | inline |
+| dependency-update | 4.96 | Dependency Update | Operation | CONDITIONAL | aidlc-devsecops-agent | aidlc-developer-agent, aidlc-quality-agent | inline |
+| postmortem | 4.97 | Postmortem | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-architect-agent | inline |
+| tech-debt-assessment | 4.98 | Tech Debt Assessment | Operation | CONDITIONAL | aidlc-architect-agent | aidlc-quality-agent, aidlc-developer-agent | inline |
+| access-control-review | 4.99 | Access Control Review | Operation | CONDITIONAL | aidlc-devsecops-agent | aidlc-aws-platform-agent | inline |
+| runtime-fix-loop | 4.925 | Runtime Fix Loop | Operation | CONDITIONAL | aidlc-developer-agent | aidlc-quality-agent, aidlc-operations-agent | inline |
+| api-governance | 5.00 | Api Governance | Operation | CONDITIONAL | aidlc-architect-agent | aidlc-developer-agent | inline |
+| change-management | 5.01 | Change Management | Operation | CONDITIONAL | aidlc-compliance-agent | aidlc-pipeline-deploy-agent | inline |
+| compliance-evidence | 5.02 | Compliance Evidence | Operation | CONDITIONAL | aidlc-compliance-agent | aidlc-devsecops-agent | inline |
+| cost-governance | 5.03 | Cost Governance | Operation | CONDITIONAL | aidlc-operations-agent | aidlc-aws-platform-agent | inline |
+| data-privacy-compliance | 5.04 | Data Privacy Compliance | Operation | CONDITIONAL | aidlc-compliance-agent | aidlc-devsecops-agent, aidlc-developer-agent | inline |
+| dora-metrics | 5.05 | Dora Metrics | Operation | CONDITIONAL | aidlc-pipeline-deploy-agent | aidlc-operations-agent | inline |
+| secrets-lifecycle | 5.06 | Secrets Lifecycle | Operation | CONDITIONAL | aidlc-devsecops-agent | aidlc-aws-platform-agent | inline |
+| supply-chain-security | 5.07 | Supply Chain Security | Construction | CONDITIONAL | aidlc-devsecops-agent | aidlc-pipeline-deploy-agent | inline |
+| workflow-telemetry | 5.08 | Workflow Telemetry | Operation | ALWAYS | aidlc-operations-agent | — | inline |
 
 <!-- END: compiled stage graph -->
 

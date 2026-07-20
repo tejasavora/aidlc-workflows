@@ -102,13 +102,17 @@ const agentNames = readdirSync(at("core", "agents"))
   .map((name) => basename(name, ".md"))
   .sort();
 const reviewerNames = [
-  ...new Set(
-    filesBelow(at("core", "aidlc-common", "stages"), ".md").flatMap((file) =>
+  ...new Set([
+    ...filesBelow(at("core", "aidlc-common", "stages"), ".md").flatMap((file) =>
       [...readFileSync(file, "utf8").matchAll(/^reviewer:\s*(aidlc-[a-z-]+-agent)\s*$/gm)].map(
         (match) => match[1],
       ),
     ),
-  ),
+    // The stage-reviewer is review-only but is dispatched by aidlc-present-gate.ts
+    // (Task tool), not named in any stage's `reviewer:` frontmatter, so it is not
+    // discoverable by the scan above — classify it explicitly.
+    "aidlc-stage-reviewer-agent",
+  ]),
 ].sort();
 const composerNames: string[] = agentNames.filter((name) => name === "aidlc-composer-agent");
 const domainNames = agentNames.filter(
@@ -260,13 +264,13 @@ describe("documentation parity derives current behavior from authored implementa
   });
 
   test("documented agent roster matches agent files and reviewer frontmatter", () => {
-    expect(agentNames.length).toBe(14);
+    expect(agentNames.length).toBe(15);
     expect(domainNames.length).toBe(11);
-    expect(reviewerNames.length).toBe(2);
+    expect(reviewerNames.length).toBe(3);
     expect(composerNames.length).toBe(1);
 
     const index = read("docs", "reference", "agents", "README.md");
-    const roster = sliceBetween(index, "## The 14 Agents", "## Shared Configuration");
+    const roster = sliceBetween(index, "## The 15 Agents", "## Shared Configuration");
     expect(agentTokens(roster)).toEqual(agentNames);
 
     for (const doc of [

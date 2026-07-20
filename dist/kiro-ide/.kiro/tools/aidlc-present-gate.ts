@@ -16,6 +16,7 @@ import { join } from "node:path";
 import {
   findStageBySlug,
   getField,
+  harnessDir,
   isoTimestamp,
   readStateFile,
   resolveProjectDir,
@@ -68,7 +69,7 @@ if (args.includes("--confirm")) {
       status: "approved",
       slug,
       engine_result: result,
-      message: `Stage "${slug}" approved and advanced. Call \`bun .claude/tools/aidlc-orchestrate.ts next\` for the next directive.`
+      message: `Stage "${slug}" approved and advanced. Call \`bun ${harnessDir()}/tools/aidlc-orchestrate.ts next\` for the next directive.`
     }));
   } else {
     const err = new TextDecoder().decode(approveProc.stderr).trim();
@@ -216,8 +217,8 @@ console.log(JSON.stringify({
   message: `Stage "${slug}" is ready for approval. Present the completion summary to the human using AskUserQuestion.`,
   next_steps: [
     "1. Present AskUserQuestion with options: Approve / Request Changes",
-    `2. AFTER human clicks Approve, call: bun .claude/tools/aidlc-present-gate.ts ${slug} --confirm`,
-    "3. Then call: bun .claude/tools/aidlc-orchestrate.ts next",
+    `2. AFTER human clicks Approve, call: bun ${harnessDir()}/tools/aidlc-present-gate.ts ${slug} --confirm`,
+    `3. Then call: bun ${harnessDir()}/tools/aidlc-orchestrate.ts next`,
     "DO NOT skip step 2. DO NOT call next without calling --confirm first. The workflow will not advance without --confirm."
   ]
 }));

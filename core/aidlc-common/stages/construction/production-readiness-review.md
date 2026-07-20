@@ -72,7 +72,7 @@ A human doing a real PR review catches these through experience and context. Thi
 
 ### Step 1: Load Agent Personas
 
-Load aidlc-architect-agent persona from `agents/aidlc-architect-agent.md` and knowledge from `.claude/knowledge/aidlc-architect-agent/`.
+Load aidlc-architect-agent persona from `agents/aidlc-architect-agent.md` and knowledge from `{{HARNESS_DIR}}/knowledge/aidlc-architect-agent/`.
 Load supporting agents for security, quality, and implementation perspectives.
 
 ### Step 2: Load All Prior Gate Results
@@ -262,16 +262,51 @@ Create `readiness-report.md`:
 - Risks accepted (items that are known gaps with mitigation)
 - Comparison to prior runs (if metrics from previous workflows available)
 
-### Step 11: Update State
+### Step 11: Present Completion & Request Approval
 
-Mark production-readiness-review as `[x]` completed in `aidlc-docs/aidlc-state.md`.
+Use stage-protocol.md completion template with completion emoji: :white_check_mark:
+- Summary of readiness-report, readiness-checklist, readiness-metrics
+- Review path: `<record>/construction/production-readiness-review/`
+- Structured approval question with options: Approve (continue to `directive.next_stage`) / Request Changes
 
-### Step 12: Present Completion & Request Approval
-
-Completion emoji: :white_check_mark:
-Review path: `aidlc-docs/construction/production-readiness-review/`
-Standard 2-option approval (Approve / Request Changes).
+STOP for the human response. Report **Approve** with
+`bun {{HARNESS_DIR}}/tools/aidlc-orchestrate.ts report --stage production-readiness-review --result approved --user-input "<exact choice>"`; report
+**Request Changes** with `--result rejected --user-input "<feedback>"`, run the
+revision loop, and report `--result revised` before re-presenting. The engine
+owns every lifecycle transition and advancement — never call `aidlc-state.ts`
+directly, never hand-edit the state file, never mark checkboxes yourself.
 
 ## Sensors
 
 All four sensors fire on this stage — it is the integration point that verifies the cumulative output of all prior construction stages.
+
+## Learn
+
+While running this stage, maintain a running log in
+`<record>/<phase>/<stage>/memory.md` (create on stage start if absent).
+Append entries under four standard headings:
+
+- **Interpretations** — choices made where the stage prose was ambiguous
+- **Deviations** — places you intentionally departed from the stage prose, and why
+- **Tradeoffs** — alternatives considered and why you picked what you did
+- **Open questions** — anything to confirm before next run, or uncertain context
+
+Format each entry with an ISO 8601 timestamp:
+`- 2026-05-20T10:14:32Z — <summary>; <context>`
+
+Before the approval gate, read memory.md and surface candidates as a
+structured question. For each entry the user keeps, write to the appropriate
+harness destination per `stage-protocol.md` §13 — never to this stage file:
+
+- Prescriptive rule → a practice line under the routed heading in
+  `aidlc/spaces/<active-space>/memory/project.md` (default) or `team.md` (promoted)
+- Verification check → new manifest at `{{HARNESS_DIR}}/sensors/aidlc-<id>.md`
+  (capability descriptor only — no `applies_to`); add the new id to
+  the relevant stage's `sensors: [...]` frontmatter list to wire it
+
+Even when nothing surfaces, still ask the mandatory "Anything to add for next time?" question from stage-protocol.md section 13. Do not infer "Nothing to add." Only after the human answers that question may you proceed to the gate. The memory.md
+file stays in the artefact directory as part of the stage's permanent record.
+
+Stage files are immutable framework artefacts — the ritual writes into the
+harness, not into this file. Next time this stage runs, the new rules and
+sensors load automatically.

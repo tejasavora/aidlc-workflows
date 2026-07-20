@@ -68,6 +68,7 @@ const AGENTS = [
   "product-lead",
   "architecture-reviewer",
   "composer",
+  "stage-reviewer",
 ] as const;
 
 // The 10 framework hooks, exactly as the .sh listed them.
@@ -111,22 +112,68 @@ const STAGES: Record<string, readonly string[]> = {
     "delivery-planning",
   ],
   construction: [
-    "functional-design",
-    "nfr-requirements",
-    "nfr-design",
-    "infrastructure-design",
-    "code-generation",
+    "adversarial-verification",
+    "backward-compat",
     "build-and-test",
     "ci-pipeline",
+    "code-generation",
+    "codebase-sync",
+    "contract-generation",
+    "cost-estimation",
+    "coverage-enforcement",
+    "dast",
+    "data-migration",
+    "data-seeding",
+    "dr-design",
+    "e2e-test",
+    "frontend-verification",
+    "functional-design",
+    "ha-design",
+    "infrastructure-design",
+    "integration-verification",
+    "nfr-design",
+    "nfr-requirements",
+    "production-readiness-review",
+    "sandbox-deploy",
+    "security-scan",
+    "static-analysis",
+    "supply-chain-security",
   ],
   operation: [
-    "deployment-pipeline",
-    "environment-provisioning",
+    "access-control-review",
+    "api-governance",
+    "bug-triage",
+    "canary-analysis",
+    "capacity-planning",
+    "change-management",
+    "chaos-engineering",
+    "compliance-evidence",
+    "cost-governance",
+    "data-privacy-compliance",
+    "database-operations",
+    "dependency-update",
     "deployment-execution",
-    "observability-setup",
-    "incident-response",
-    "performance-validation",
+    "deployment-pipeline",
+    "dora-metrics",
+    "dr-validation",
+    "drift-detection",
+    "environment-provisioning",
+    "environment-verification",
     "feedback-optimization",
+    "iac-execution",
+    "incident-response",
+    "observability-setup",
+    "on-call-operations",
+    "performance-validation",
+    "postmortem",
+    "release-management",
+    "runtime-fix-loop",
+    "runtime-validation",
+    "sandbox-provisioning",
+    "secrets-lifecycle",
+    "tech-debt-assessment",
+    "user-journey-simulation",
+    "workflow-telemetry",
   ],
 };
 
@@ -167,13 +214,14 @@ describe("t01 — shipped-tree file-structure invariant (mechanism: none)", () =
     }
   });
 
-  // STRONGER than the .sh: the agents dir holds EXACTLY 14 aidlc-*-agent.md
-  // files — pins the roster size, not only the named members.
-  test("ships EXACTLY 14 aidlc-*-agent.md files [.sh L32-34 — count strengthening]", () => {
+  // STRONGER than the .sh: the agents dir holds EXACTLY 15 aidlc-*-agent.md
+  // files — pins the roster size, not only the named members. (Fork: upstream
+  // ships 14; our port adds aidlc-stage-reviewer-agent → 15.)
+  test("ships EXACTLY 15 aidlc-*-agent.md files [.sh L32-34 — count strengthening]", () => {
     const shipped = readdirSync(at("agents")).filter(
       (f) => f.startsWith("aidlc-") && f.endsWith("-agent.md"),
     );
-    expect(shipped.length).toBe(14);
+    expect(shipped.length).toBe(15);
     const expected = AGENTS.map((a) => `aidlc-${a}-agent.md`).sort();
     expect(shipped.sort()).toEqual(expected);
   });
@@ -198,7 +246,7 @@ describe("t01 — shipped-tree file-structure invariant (mechanism: none)", () =
     }
   });
 
-  test("ships the 7 construction stages [.sh L53-55]", () => {
+  test("ships the 26 construction stages [.sh L53-55]", () => {
     for (const s of STAGES.construction) {
       expect(existsSync(at("aidlc-common", "stages", "construction", `${s}.md`))).toBe(
         true,
@@ -206,16 +254,18 @@ describe("t01 — shipped-tree file-structure invariant (mechanism: none)", () =
     }
   });
 
-  test("ships the 7 operation stages [.sh L58-60]", () => {
+  test("ships the 34 operation stages [.sh L58-60]", () => {
     for (const s of STAGES.operation) {
       expect(existsSync(at("aidlc-common", "stages", "operation", `${s}.md`))).toBe(true);
     }
   });
 
-  // STRONGER: the 5 phase dirs together hold EXACTLY 32 .md stage files, and
+  // STRONGER: the 5 phase dirs together hold EXACTLY 78 .md stage files, and
   // each phase dir holds exactly its expected count. The .sh's per-phase loops
   // asserted membership; this also pins that no extra stage file ships.
-  test("ships EXACTLY 32 stage files across the 5 phases [.sh all stages — count strengthening]", () => {
+  // (Fork: upstream ships 32 across 3+7+8+7+7; our port adds 46 (19 construction
+  // + 27 operation, the latter incl. remapped governance/maintenance) → 78.)
+  test("ships EXACTLY 78 stage files across the 5 phases [.sh all stages — count strengthening]", () => {
     let total = 0;
     for (const [phase, stages] of Object.entries(STAGES)) {
       const dir = at("aidlc-common", "stages", phase);
@@ -225,7 +275,7 @@ describe("t01 — shipped-tree file-structure invariant (mechanism: none)", () =
       expect(shipped).toEqual([...stages].map((s) => `${s}.md`).sort());
       total += shipped.length;
     }
-    expect(total).toBe(32);
+    expect(total).toBe(78);
   });
 
   test("ships settings.json and settings.local.json.example [.sh L63-64]", () => {
@@ -258,7 +308,7 @@ describe("t01 — shipped-tree file-structure invariant (mechanism: none)", () =
   // the reviewer-scope hook to 68, then the state-transition guard to 69.
   // data the loops drove and pin its length, so the migrated suite cannot
   // silently shrink the structural surface the .sh enforced.
-  test("asserts EXACTLY 69 shipped paths (TAP plan 63 + 2 reviewer agents + 3 hooks + the composer) [.sh L9]", () => {
+  test("asserts EXACTLY 116 shipped paths (upstream 69 + fork port: 1 stage-reviewer agent + 46 stages) [.sh L9]", () => {
     const paths: string[] = [
       at("skills", "aidlc", "SKILL.md"), // 1
       at("aidlc-common", "protocols", "stage-protocol.md"), // 2
@@ -276,8 +326,8 @@ describe("t01 — shipped-tree file-structure invariant (mechanism: none)", () =
       mem("project.md"), // 66
       at("CLAUDE.md"), // 67
     ];
-    expect(paths.length).toBe(69);
-    // Every one of the 69 must exist — the .sh's full TAP plan, re-proven as a
+    expect(paths.length).toBe(116);
+    // Every one of the 116 must exist — the .sh's full TAP plan, re-proven as a
     // single set so the count and the existence checks cannot drift apart.
     for (const p of paths) {
       expect(existsSync(p)).toBe(true);

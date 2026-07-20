@@ -4,7 +4,7 @@ This is the meta-instruction file. It doesn't define WHAT to do (stages do that)
 
 ## Rule 0: Subagent Execution + Independent Review (MANDATORY)
 
-**Read `.claude/knowledge/aidlc-shared/stage-execution-protocol.md` FIRST.**
+**Read `.aidlc/knowledge/aidlc-shared/stage-execution-protocol.md` FIRST.**
 
 You are the ORCHESTRATOR. You do NOT produce stage work yourself. For every stage:
 1. Dispatch a FRESH implementer subagent (Task tool) to do the work

@@ -5,7 +5,7 @@ At workflow START, before any stage executes, the agent MUST check for prior run
 ## On Workflow Start
 
 1. Check for `aidlc-docs/methodology-improvement-log.jsonl` in the workspace (from prior runs)
-2. Check for `.claude/rules/aidlc-project-learnings.md` (persisted learnings from prior sessions)
+2. Check for `aidlc/spaces/<active-space>/memory/project.md` (persisted learnings from prior sessions)
 3. If found, extract and load as constraints:
 
 ```

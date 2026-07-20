@@ -6,7 +6,6 @@ description: >
   Dispatched AFTER an implementer subagent completes a stage.
   Never sees the implementer's process — only its output and the requirements.
   Returns PASS or FAIL with specific justification.
-modelOverride: sonnet
 model: amazon-bedrock/global.anthropic.claude-sonnet-4-6
 mode: subagent
 permission:

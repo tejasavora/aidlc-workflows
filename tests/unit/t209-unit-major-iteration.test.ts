@@ -92,13 +92,30 @@ const PRODUCES: Record<string, string[]> = {
     "cicd-pipeline",
     "shared-infrastructure",
   ],
+  "contract-generation": [
+    "acceptance-tests",
+    "api-contract-tests",
+    "integration-fixtures",
+    "done-definition",
+    "contract-generation-questions",
+  ],
+  "data-migration": [
+    "migration-plan",
+    "migration-scripts",
+    "data-migration-questions",
+  ],
 };
-// The four inline design stages, in graph order (the walk's inner list).
+// The inline design stages, in graph order (the walk's inner list).
+// The per-unit design block = every construction stage with
+// `for_each: unit-of-work` + `mode: inline`, in numeric order. The port added
+// contract-generation (3.84) and data-migration (3.88) to the original four.
 const BLOCK = [
   "functional-design",
   "nfr-requirements",
   "nfr-design",
   "infrastructure-design",
+  "contract-generation",
+  "data-migration",
 ];
 
 const tempDirs: string[] = [];

@@ -153,7 +153,11 @@ describe("t232 Phase Progress - birth seed", () => {
     expect(rowStatus(proj, "Initialization")).toBe("Verified");
     expect(rowStatus(proj, "Ideation")).toBe("Skipped");
     expect(rowStatus(proj, "Inception")).toBe("Active");
-    expect(rowStatus(proj, "Operation")).toBe("Skipped");
+    // The port gave bugfix scope construction + operation work (bug-triage,
+    // build-and-test, code-generation, workflow-telemetry, ...), so those
+    // phases are now Pending (will execute), not Skipped.
+    expect(rowStatus(proj, "Construction")).toBe("Pending");
+    expect(rowStatus(proj, "Operation")).toBe("Pending");
   });
 });
 
@@ -260,7 +264,9 @@ describe("t232 Phase Progress - plan re-shaping re-derives unreached rows", () =
     tempDirs.push(proj);
     expect(birth(proj, "feature").rc).toBe(0);
     expect(run(UTILITY_TOOL, proj, ["scope-change", "--scope", "bugfix"]).rc).toBe(0);
-    expect(rowStatus(proj, "Operation")).toBe("Skipped");
+    // bugfix now retains operation-phase work (bug-triage, workflow-telemetry),
+    // so Operation stays Pending after the scope change, not Skipped.
+    expect(rowStatus(proj, "Operation")).toBe("Pending");
     // The Active/Verified rows record history the plan change cannot rewrite.
     expect(rowStatus(proj, "Initialization")).toBe("Verified");
     expect(rowStatus(proj, "Ideation")).toBe("Active");
@@ -270,10 +276,18 @@ describe("t232 Phase Progress - plan re-shaping re-derives unreached rows", () =
     const proj = createTestProject();
     tempDirs.push(proj);
     expect(birth(proj, "feature").rc).toBe(0);
+    // Every operation-phase stage (the port grew operation from 7 to 34);
+    // skipping the whole set is what empties the phase.
     const allOperation =
-      "deployment-pipeline,environment-provisioning,deployment-execution," +
-      "observability-setup,incident-response,performance-validation," +
-      "feedback-optimization";
+      "access-control-review,api-governance,bug-triage,canary-analysis," +
+      "capacity-planning,change-management,chaos-engineering,compliance-evidence," +
+      "cost-governance,data-privacy-compliance,database-operations,dependency-update," +
+      "deployment-execution,deployment-pipeline,dora-metrics,dr-validation," +
+      "drift-detection,environment-provisioning,environment-verification," +
+      "feedback-optimization,iac-execution,incident-response,observability-setup," +
+      "on-call-operations,performance-validation,postmortem,release-management," +
+      "runtime-fix-loop,runtime-validation,sandbox-provisioning,secrets-lifecycle," +
+      "tech-debt-assessment,user-journey-simulation,workflow-telemetry";
     expect(run(UTILITY_TOOL, proj, ["recompose", "--skip", allOperation]).rc).toBe(0);
     expect(rowStatus(proj, "Operation")).toBe("Skipped");
     // Add the whole set back - a lone add is refused by the strict validator

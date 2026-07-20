@@ -15,7 +15,7 @@ This document contains all Mermaid diagrams that visualize the AI-DLC (AI-Driven
 
 ## 1. End-to-End Lifecycle
 
-The AI-DLC methodology organizes work into five sequential phases. Each phase has a verification gate at its boundary that must pass before the next phase begins. The full lifecycle spans 32 stages across the five phases, with scope determining which stages actually execute.
+The AI-DLC methodology organizes work into five sequential phases. Each phase has a verification gate at its boundary that must pass before the next phase begins. The full lifecycle spans 78 stages across the five phases, with scope determining which stages actually execute.
 
 ```mermaid
 graph LR
@@ -246,10 +246,10 @@ flowchart TD
 
 ## 6. Agent Collaboration Map
 
-The full 14-agent roster comprises 11 domain agents, 2 review-only agents, and
+The full 15-agent roster comprises 11 domain agents, 3 review-only agents, and
 the adaptive-workflows composer. This diagram intentionally covers the 11
 domain agents and their primary artifact flows. The review-only agents perform
-independent product and architecture checks, while the composer proposes and
+independent product, architecture, and stage-output checks, while the composer proposes and
 reshapes adaptive stage plans; see the [Agent Reference](agents/README.md) and
 [Reviewer Invocation](04-stage-protocol.md#reviewer-invocation).
 

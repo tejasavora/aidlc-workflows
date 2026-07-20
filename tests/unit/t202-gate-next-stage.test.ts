@@ -212,14 +212,15 @@ describe("t202 gate next-stage name (issue: approval option always said Code Gen
     expect(d.next_stage).toBe("NFR Design");
   }, 30000);
 
-  // 3: the final in-scope stage carries next_stage = null. feedback-optimization
-  // is the last stage in the graph, so no EXECUTE stage follows it regardless of
-  // scope -> the conductor renders "Complete workflow".
+  // 3: the final in-scope stage carries next_stage = null. workflow-telemetry
+  // is the last stage in the graph (ALWAYS-execution self-assessment stage,
+  // number 5.08), so no EXECUTE stage follows it regardless of scope -> the
+  // conductor renders "Complete workflow".
   test("3: the final in-scope stage carries next_stage null", () => {
-    const proj = seedProject("feedback-optimization");
+    const proj = seedProject("workflow-telemetry");
     const d = runNext(proj);
     expect(d.kind).toBe("run-stage");
-    expect(d.stage).toBe("feedback-optimization");
+    expect(d.stage).toBe("workflow-telemetry");
     expect(d.next_stage).toBeNull();
   }, 30000);
 

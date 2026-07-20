@@ -1,12 +1,12 @@
 # Agent Deep Dives
 
 A page per domain agent: its domain, the stages it leads and supports, the
-knowledge it loads, and how it collaborates. The full 14-agent roster comprises
-11 domain agents, 2 review-only agents, and the adaptive-workflows composer.
+knowledge it loads, and how it collaborates. The full 15-agent roster comprises
+11 domain agents, 3 review-only agents, and the adaptive-workflows composer.
 This index covers the 11 domain agents that execute stage work.
 
-The review-only agents perform independent product and architecture checks;
-the composer proposes and reshapes adaptive stage plans. See the
+The review-only agents perform independent product, architecture, and
+stage-output checks; the composer proposes and reshapes adaptive stage plans. See the
 [Agents chapter](../06-agents.md) for all three role groups and the philosophy
 behind 11 broad domain agents rather than 30 narrow ones. For the frontmatter
 contract, tool allowlists, and complete comparison matrix, see the Developer

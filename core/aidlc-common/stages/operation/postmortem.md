@@ -39,7 +39,7 @@ This postmortem follows a blameless approach: focus on systemic causes and proce
 
 ### Step 1: Load Agent Personas
 
-Load aidlc-operations-agent persona from `agents/aidlc-operations-agent.md` and knowledge from `.claude/knowledge/aidlc-operations-agent/`.
+Load aidlc-operations-agent persona from `agents/aidlc-operations-agent.md` and knowledge from `{{HARNESS_DIR}}/knowledge/aidlc-operations-agent/`.
 
 ### Step 2: Gather Incident Context
 
@@ -110,12 +110,55 @@ Each action item linked to an AI-DLC stage for implementation:
 | 2 | Add circuit breaker for [dependency] | [team] | P2 | code-generation | [date] |
 | 3 | Update runbook for [scenario] | [team] | P2 | incident-response | [date] |
 
-### Step 6: Update State
+### Step 6: Present Completion & Request Approval
 
-Mark postmortem as `[x]` completed in `aidlc-docs/aidlc-state.md`.
+Use stage-protocol.md completion template with completion emoji: :memo:
+- Summary of postmortem-report, action-items
+- Review path: `<record>/operation/postmortem/`
+- Structured approval question with options: Approve (continue to `directive.next_stage`) / Request Changes
 
-### Step 7: Present Completion & Request Approval
+STOP for the human response. Report **Approve** with
+`bun {{HARNESS_DIR}}/tools/aidlc-orchestrate.ts report --stage postmortem --result approved --user-input "<exact choice>"`; report
+**Request Changes** with `--result rejected --user-input "<feedback>"`, run the
+revision loop, and report `--result revised` before re-presenting. The engine
+owns every lifecycle transition and advancement — never call `aidlc-state.ts`
+directly, never hand-edit the state file, never mark checkboxes yourself.
 
-Completion emoji: :memo:
-Review path: `aidlc-docs/maintenance/postmortem/`
-Standard 2-option approval (Approve / Request Changes).
+## Sensors
+
+This stage's outputs are markdown artefacts under `<record>/operation/postmortem/`.
+
+The imported sensors check those outputs:
+
+- **`required-sections`** verifies the output contains the registry default (≥2 H2 headings). Failure mode: missing headings emit `SENSOR_FAILED` with detail at `<record>/.aidlc-sensors/postmortem/required-sections-<iso>.md`.
+
+## Learn
+
+While running this stage, maintain a running log in
+`<record>/<phase>/<stage>/memory.md` (create on stage start if absent).
+Append entries under four standard headings:
+
+- **Interpretations** — choices made where the stage prose was ambiguous
+- **Deviations** — places you intentionally departed from the stage prose, and why
+- **Tradeoffs** — alternatives considered and why you picked what you did
+- **Open questions** — anything to confirm before next run, or uncertain context
+
+Format each entry with an ISO 8601 timestamp:
+`- 2026-05-20T10:14:32Z — <summary>; <context>`
+
+Before the approval gate, read memory.md and surface candidates as a
+structured question. For each entry the user keeps, write to the appropriate
+harness destination per `stage-protocol.md` §13 — never to this stage file:
+
+- Prescriptive rule → a practice line under the routed heading in
+  `aidlc/spaces/<active-space>/memory/project.md` (default) or `team.md` (promoted)
+- Verification check → new manifest at `{{HARNESS_DIR}}/sensors/aidlc-<id>.md`
+  (capability descriptor only — no `applies_to`); add the new id to
+  the relevant stage's `sensors: [...]` frontmatter list to wire it
+
+Even when nothing surfaces, still ask the mandatory "Anything to add for next time?" question from stage-protocol.md section 13. Do not infer "Nothing to add." Only after the human answers that question may you proceed to the gate. The memory.md
+file stays in the artefact directory as part of the stage's permanent record.
+
+Stage files are immutable framework artefacts — the ritual writes into the
+harness, not into this file. Next time this stage runs, the new rules and
+sensors load automatically.

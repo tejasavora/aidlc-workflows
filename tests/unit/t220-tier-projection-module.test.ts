@@ -361,10 +361,10 @@ describe("t220 shipped projection bytes (codex TOML, kiro JSON + md)", () => {
   // written) would surface on the kiro/codex .md copies first - e.g. a future
   // agent authored with tier: mid-frontmatter instead of last.
   for (const harness of HARNESS_MATRIX) {
-    test(`${harness.name}: no shipped agent .md carries a raw tier: line (all 14)`, () => {
+    test(`${harness.name}: no shipped agent .md carries a raw tier: line (all 15)`, () => {
       const dir = join(harness.engineRoot, "agents");
       const mds = readdirSync(dir).filter((f) => f.endsWith("-agent.md"));
-      expect(mds.length).toBe(14);
+      expect(mds.length).toBe(15);
       for (const f of mds) {
         const raw = readFileSync(join(dir, f), "utf-8");
         expect(
@@ -378,17 +378,17 @@ describe("t220 shipped projection bytes (codex TOML, kiro JSON + md)", () => {
   test("opencode-shell: the emitted .opencode/agents subagent twins carry the projection too", () => {
     const dir = dist("opencode", ".opencode", "agents");
     const mds = readdirSync(dir).filter((f) => f.endsWith("-agent.md"));
-    expect(mds.length).toBe(14);
+    expect(mds.length).toBe(15);
     for (const f of mds) {
       const raw = readFileSync(join(dir, f), "utf-8");
       expect(/^tier:/m.test(raw), `opencode-shell/${f}: raw tier: leaked into dist`).toBe(false);
     }
   });
 
-  test("codex: no shipped agent TOML carries a tier key (all 14)", () => {
+  test("codex: no shipped agent TOML carries a tier key (all 15)", () => {
     const dir = dist("codex", ".codex", "agents");
     const tomls = readdirSync(dir).filter((f) => f.endsWith(".toml"));
-    expect(tomls.length).toBe(14);
+    expect(tomls.length).toBe(15);
     for (const f of tomls) {
       const raw = readFileSync(join(dir, f), "utf-8");
       expect(/^tier\s*=/m.test(raw), `codex/${f}: tier key leaked into TOML`).toBe(false);

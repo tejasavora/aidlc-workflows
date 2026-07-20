@@ -57,20 +57,20 @@ const KNOWLEDGE_DIR = join(AIDLC_SRC, "knowledge");
 // The 11 agent knowledge dirs, in the order the .sh's AGENT_NAMES listed them
 // (.sh L10), each paired with the exact .md count the .sh asserted (.sh L29-39).
 const AGENT_COUNTS: ReadonlyArray<readonly [string, number]> = [
-  ["aidlc-architect-agent", 6],
+  ["aidlc-architect-agent", 12],
   ["aidlc-architecture-reviewer-agent", 1],
-  ["aidlc-aws-platform-agent", 4],
-  ["aidlc-compliance-agent", 1],
+  ["aidlc-aws-platform-agent", 5],
+  ["aidlc-compliance-agent", 2],
   ["aidlc-composer-agent", 1],
   ["aidlc-delivery-agent", 3],
-  ["aidlc-design-agent", 5],
-  ["aidlc-developer-agent", 6],
-  ["aidlc-devsecops-agent", 4],
-  ["aidlc-operations-agent", 4],
+  ["aidlc-design-agent", 6],
+  ["aidlc-developer-agent", 9],
+  ["aidlc-devsecops-agent", 5],
+  ["aidlc-operations-agent", 6],
   ["aidlc-pipeline-deploy-agent", 3],
   ["aidlc-product-agent", 7],
   ["aidlc-product-lead-agent", 1],
-  ["aidlc-quality-agent", 4],
+  ["aidlc-quality-agent", 6],
 ];
 
 // The 7 named cross-agent files the .sh existence-checked (.sh L45).
@@ -154,10 +154,10 @@ describe("t15 — knowledge-file inventory + non-emptiness (mechanism: none)", (
   // .sh L11-14: dynamic TAP plan = 11 + 11 + 7 + TOTAL_FILES. Re-derive that
   // arithmetic from the live tree so the migrated suite cannot silently shrink
   // the surface: pin the total .md count at 56 and the summed plan at 85.
-  test("TAP-plan parity: 14 + 14 + 7 + TOTAL == 94 with TOTAL == 59 [.sh L11-14]", () => {
+  test("TAP-plan parity: 14 + 14 + 7 + TOTAL == 120 with TOTAL == 85 [.sh L11-14]", () => {
     const total = findMd(KNOWLEDGE_DIR).length;
-    expect(total).toBe(59);
+    expect(total).toBe(85);
     const plan = 14 + 14 + 7 + total;
-    expect(plan).toBe(94);
+    expect(plan).toBe(120);
   });
 });

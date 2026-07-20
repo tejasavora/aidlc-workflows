@@ -7,7 +7,6 @@ description: >
   Never sees the implementer's process — only its output and the requirements.
   Returns PASS or FAIL with specific justification.
 disallowedTools: Task
-modelOverride: sonnet
 model: claude-sonnet-4.5
 ---
 

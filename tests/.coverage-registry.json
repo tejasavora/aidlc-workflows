@@ -20,12 +20,12 @@
     "render-surface": "tui"
   },
   "counts": {
-    "total": 473,
+    "total": 519,
     "enumeratedByClass": {
       "function": 245,
       "audit": 72,
       "scope": 9,
-      "stage": 32,
+      "stage": 78,
       "hook": 13,
       "subcommand": 95,
       "render-surface": 7
@@ -3750,6 +3750,20 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "construction/adversarial-verification",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/backward-compat",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "construction/build-and-test",
       "minMechanism": "none",
       "coveredBy": [
@@ -3776,6 +3790,76 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "construction/codebase-sync",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/contract-generation",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/cost-estimation",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/coverage-enforcement",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/dast",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/data-migration",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/data-seeding",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/dr-design",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/e2e-test",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/frontend-verification",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "construction/functional-design",
       "minMechanism": "none",
       "coveredBy": [],
@@ -3783,7 +3867,21 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "construction/ha-design",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "construction/infrastructure-design",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/integration-verification",
       "minMechanism": "none",
       "coveredBy": [],
       "status": "UNCOVERED"
@@ -3798,6 +3896,41 @@
     {
       "unitClass": "stage",
       "unitId": "construction/nfr-requirements",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/production-readiness-review",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/sandbox-deploy",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/security-scan",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/static-analysis",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "construction/supply-chain-security",
       "minMechanism": "none",
       "coveredBy": [],
       "status": "UNCOVERED"
@@ -3989,6 +4122,90 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "operation/access-control-review",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/api-governance",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/bug-triage",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/canary-analysis",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/capacity-planning",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/change-management",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/chaos-engineering",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/compliance-evidence",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/cost-governance",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/data-privacy-compliance",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/database-operations",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/dependency-update",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "operation/deployment-execution",
       "minMechanism": "none",
       "coveredBy": [
@@ -4008,6 +4225,27 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "operation/dora-metrics",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/dr-validation",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/drift-detection",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "operation/environment-provisioning",
       "minMechanism": "none",
       "coveredBy": [],
@@ -4015,7 +4253,21 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "operation/environment-verification",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "operation/feedback-optimization",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/iac-execution",
       "minMechanism": "none",
       "coveredBy": [],
       "status": "UNCOVERED"
@@ -4036,7 +4288,77 @@
     },
     {
       "unitClass": "stage",
+      "unitId": "operation/on-call-operations",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
       "unitId": "operation/performance-validation",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/postmortem",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/release-management",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/runtime-fix-loop",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/runtime-validation",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/sandbox-provisioning",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/secrets-lifecycle",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/tech-debt-assessment",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/user-journey-simulation",
+      "minMechanism": "none",
+      "coveredBy": [],
+      "status": "UNCOVERED"
+    },
+    {
+      "unitClass": "stage",
+      "unitId": "operation/workflow-telemetry",
       "minMechanism": "none",
       "coveredBy": [],
       "status": "UNCOVERED"

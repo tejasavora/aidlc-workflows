@@ -96,7 +96,7 @@ describe("t240 dist/opencode packaging parity + shell shape", () => {
 
   test("4: every emitted subagent twin is mode: subagent with the projected tier keys", () => {
     const agents = readdirSync(join(SHELL, "agents")).filter((f) => f.endsWith("-agent.md"));
-    expect(agents.length).toBe(14);
+    expect(agents.length).toBe(15);
     for (const f of agents) {
       const raw = readFileSync(join(SHELL, "agents", f), "utf-8");
       const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? "";

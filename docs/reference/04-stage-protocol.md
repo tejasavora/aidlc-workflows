@@ -54,7 +54,7 @@ corrections as durable Rules is handled by the §13 Learnings Ritual in
 ## Overview
 
 The stage protocol is the mandatory behavioral contract governing how every
-stage in the AI-DLC workflow executes. All 32 stages across five phases
+stage in the AI-DLC workflow executes. All 78 stages across five phases
 (Initialization, Ideation, Inception, Construction, Operation) follow this protocol without
 exception. The conductor (`SKILL.md`) hands stage execution to agent
 personas; the protocol stays independent of phase and agent, defining
@@ -438,7 +438,7 @@ Before beginning any stage, transition sidebar tasks:
 2. Current stage task -> mark `in_progress` with `activeForm: "Running [Stage Name]"`
 
 Rules: task must be `in_progress` for spinner to display. Update BEFORE
-reading stage file. Applies to all 32 stages. If task IDs lost (compaction),
+reading stage file. Applies to all 78 stages. If task IDs lost (compaction),
 use `TaskList` to find by subject. For skipped stages:
 `TaskUpdate({ taskId: [ID], status: "completed", description: "[original] -- Skipped: [reason]" })`
 
@@ -604,7 +604,7 @@ conductor reports the stage approved.
 
 ### The 11 Domain Agents
 
-The full 14-agent roster comprises 11 domain agents, 2 review-only agents, and
+The full 15-agent roster comprises 11 domain agents, 3 review-only agents, and
 the adaptive-workflows composer. The domain agents that lead and support stage
 work are:
 
