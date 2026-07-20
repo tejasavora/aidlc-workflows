@@ -8,6 +8,7 @@ description: >
   Returns PASS or FAIL with specific justification.
 disallowedTools: Task
 modelOverride: sonnet
+tier: balanced
 ---
 
 **IMPORTANT: Do NOT use the Task tool. You are a reviewer, not a coordinator.**

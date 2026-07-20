@@ -141,6 +141,7 @@ const shippedAidlcEntrypoints: ReadonlySet<string> = new Set<string>(
     "tools/aidlc-lib.ts",
     "tools/aidlc-log.ts",
     "tools/aidlc-orchestrate.ts",
+    "tools/aidlc-present-gate.ts",
     "tools/aidlc-rule-schema.ts",
     "tools/aidlc-runner-gen.ts",
     "tools/aidlc-runtime-paths.ts",
