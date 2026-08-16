@@ -88,6 +88,20 @@ describe("devin distribution shape", () => {
   });
 });
 
+  test("the method include lives in AGENTS.md, not .devin/rules/", () => {
+    // MEASURED on CLI v3000.4.25: `devin rules paths` reports ONLY
+    // `.windsurf/rules/*.md` as the always-on rule directory — not `.devin/rules/`,
+    // despite the docs calling .devin/ preferred. A pointer placed there may never
+    // load. AGENTS.md is documented AND observed as Devin's primary rules file on
+    // all three surfaces, and it is the surface aidlc-includes.ts repoints on a
+    // space switch (same rewriter Copilot uses).
+    expect(existsSync(join(TREE, "rules"))).toBe(false);
+    const md = readFileSync(join(DIST, "AGENTS.md"), "utf-8");
+    const pointers = md.split("\n").filter((l) => l.startsWith("@aidlc/spaces/"));
+    expect(pointers.length).toBe(7); // org, team, project + 4 phases
+    expect(pointers).toContain("@aidlc/spaces/default/memory/org.md");
+  });
+
 describe("devin hooks.v1.json", () => {
   test("the hooks object is the whole file, with no wrapper key", () => {
     // hooks.v1.json is the one location where the hooks object IS the document;

@@ -64,9 +64,12 @@ const manifest: HarnessManifest = {
     // The orchestrator skill. Devin discovers .devin/skills/<name>/SKILL.md.
     { src: "skills/aidlc/SKILL.md", dst: "skills/aidlc/SKILL.md" },
     { src: "skills/aidlc/question-rendering.md", dst: "skills/aidlc/question-rendering.md" },
-    // The method pointer rule. Devin loads .devin/rules/*.md with `trigger:`
-    // frontmatter; always_on is the equivalent of Claude's @-import stub.
-    { src: "rules-aidlc.md", dst: "rules/aidlc.md" },
+    // NO rules/aidlc.md. Measured on CLI v3000.4.25: `devin rules paths` reports
+    // only `.windsurf/rules/*.md` as the always-on rule dir, NOT `.devin/rules/`
+    // — so a pointer placed there may never load. The method pointer therefore
+    // lives in the project-root AGENTS.md (Devin's primary rules file, documented
+    // and observed on CLI, Devin Local and Devin Cloud), which is also the surface
+    // aidlc-includes.ts repoints on a space switch. One always-on surface, not two.
     { src: "dot-gitignore", dst: ".gitignore", projectRoot: true },
   ],
 

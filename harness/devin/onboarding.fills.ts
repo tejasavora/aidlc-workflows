@@ -62,6 +62,35 @@ const fills: OnboardingFills = {
       "  on stderr\" convention already match.",
     ].join("\n"),
 
+    // The METHOD INCLUDE. These @-prefixed lines are the surface
+    // aidlc-includes.ts repoints on a space switch (same rewriter as Copilot's
+    // AGENTS.md). Devin has NO documented @-import expansion, so unlike Claude
+    // these lines are read as an instruction to OPEN the files, not as a host-level
+    // include — hence the explicit "read these" framing. Keeping the @-shape is
+    // what makes the space-switch repointer work.
+    sections_before_resumption: [
+      "## The AI-DLC method",
+      "",
+      "The method is authored once at the workspace root and is identical on every harness.",
+      "**Read these before acting on a development request**, and re-read the phase file when a",
+      "workflow enters a new phase:",
+      "",
+      "@aidlc/spaces/default/memory/org.md",
+      "@aidlc/spaces/default/memory/team.md",
+      "@aidlc/spaces/default/memory/project.md",
+      "@aidlc/spaces/default/memory/phases/ideation.md",
+      "@aidlc/spaces/default/memory/phases/inception.md",
+      "@aidlc/spaces/default/memory/phases/construction.md",
+      "@aidlc/spaces/default/memory/phases/operation.md",
+      "",
+      "Resolution is strict-additive: `org → team → project → phase → stage`. A narrower layer",
+      "specialises a broader one; it never contradicts it.",
+      "",
+      "> Devin has no file-include mechanism inside a rule, so the lines above NAME the method",
+      "> rather than embedding it — the agent must open them. An AI-DLC stage does not depend on",
+      "> this: the engine resolves the same tree directly.",
+    ].join("\n"),
+
     sections_after_resumption: [
       "## Known limits on this harness",
       "",

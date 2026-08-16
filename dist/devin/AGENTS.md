@@ -74,6 +74,26 @@ AI-DLC is open-world. Plugins under `plugins/<name>/` contribute additional stag
 ## Documentation
 
 For full documentation, see `docs/guide/` (User Guide), `docs/harness-engineering/` (Harness Engineer Guide), and `docs/reference/` (Developer Reference); start at `docs/README.md`.
+## The AI-DLC method
+
+The method is authored once at the workspace root and is identical on every harness.
+**Read these before acting on a development request**, and re-read the phase file when a
+workflow enters a new phase:
+
+@aidlc/spaces/default/memory/org.md
+@aidlc/spaces/default/memory/team.md
+@aidlc/spaces/default/memory/project.md
+@aidlc/spaces/default/memory/phases/ideation.md
+@aidlc/spaces/default/memory/phases/inception.md
+@aidlc/spaces/default/memory/phases/construction.md
+@aidlc/spaces/default/memory/phases/operation.md
+
+Resolution is strict-additive: `org → team → project → phase → stage`. A narrower layer
+specialises a broader one; it never contradicts it.
+
+> Devin has no file-include mechanism inside a rule, so the lines above NAME the method
+> rather than embedding it — the agent must open them. An AI-DLC stage does not depend on
+> this: the engine resolves the same tree directly.
 ## Session Resumption
 
 On startup, resolve the active intent (the `aidlc/spaces/<active-space>/intents/active-intent` cursor) and check for its `<record>/aidlc-state.md`. If found, load prior context and offer to resume from last checkpoint. (A brand-new project has no work recorded yet; the first `/aidlc` creates that record for you.)
