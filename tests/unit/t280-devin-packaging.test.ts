@@ -177,6 +177,16 @@ describe("devin subagent profiles", () => {
 });
 
 describe("devin harness re-identification", () => {
+  test("the shipped .gitignore names Devin's local files, not another harness's", () => {
+    // harness/devin/dot-gitignore was seeded from harness/claude/ and carried
+    // `.claude/settings.local.json` — a file Devin does not have. Devin's
+    // gitignorable local surfaces are config.local.json / mcp_config.local.json
+    // (docs.devin.ai/cli/reference/configuration/global-vs-local).
+    const gi = readFileSync(join(DIST, ".gitignore"), "utf-8");
+    expect(gi).not.toMatch(/\.claude|\.codex|\.kiro|\.cursor|\.opencode/);
+    expect(gi).toContain(".devin/config.local.json");
+  });
+
   test("no Codex identity leaks into Devin's OWN surfaces", () => {
     // The projection approach renamed the directory and left 506 `.codex/` path
     // references across 119 files, 61 `$aidlc` (Codex's invoke prefix), and an

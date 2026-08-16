@@ -58,4 +58,7 @@ aidlc/diagnostics/
 # concurrent appends — there is intentionally NO .gitattributes merge=union,
 # which was proven to corrupt the multi-line audit blocks) ·
 # aidlc/spaces/*/intents/*/<phase>/<stage>/*.md (artifacts + diary).
-.claude/settings.local.json
+# Devin local overrides (gitignored by design; the committed pair is
+# .devin/config.json + .devin/mcp_config.json)
+.devin/config.local.json
+.devin/mcp_config.local.json
