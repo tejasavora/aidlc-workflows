@@ -1,8 +1,9 @@
 // harness/devin/onboarding.fills.ts — Devin's fills for the shared onboarding
 // skeleton (core/templates/onboarding.md), rendered to dist/devin/AGENTS.md.
 //
-// AGENTS.md is Devin's PRIMARY rules file and is read automatically by Devin CLI,
-// Devin Local and Devin Cloud. It is also ALWAYS-ON, and Devin CLI caps an
+// AGENTS.md is Devin's PRIMARY rules file, read automatically by Devin CLI and
+// Devin Local. (Devin Cloud reads it too per the vendor docs, but this distribution
+// makes no cloud claim — untested.) It is also ALWAYS-ON, and Devin CLI caps an
 // always-on rule file at 32 KiB, TRUNCATING the overflow with a path hint rather
 // than erroring (CLI changelog v2026.4.17-0). So these fills stay tight; a test
 // asserts the rendered file is under the cap.
@@ -21,7 +22,7 @@ const fills: OnboardingFills = {
       "# AI-DLC — AI-Driven Development Life Cycle",
       "",
       "Run **`/aidlc`** to start or resume a workflow. Describe what to build and the scope is",
-      "auto-detected. In Devin Cloud, `@skills:aidlc` also works.",
+      "auto-detected.",
       "",
       "Every stage stops at an approval gate. Nothing advances without your decision.",
     ].join("\n"),
@@ -105,9 +106,6 @@ const fills: OnboardingFills = {
       "- **Restricted Mode disables everything, silently.** A workspace open in Restricted Mode",
       "  has all agents *and* all hooks disabled. That is indistinguishable from a broken",
       "  install — check workspace trust first.",
-      "- **Devin Cloud is partial.** Cloud has no repo-level hooks, no subagents, and allows only",
-      "  one active skill at a time, so the orchestrator cannot dispatch stage skills there.",
-      "  Cloud also needs a blueprint `initialize:` step and a snapshot build before `bun` exists.",
       "",
       "Where a hook is absent, gate discipline is a human responsibility.",
     ].join("\n"),

@@ -1,7 +1,7 @@
 # AI-DLC — AI-Driven Development Life Cycle
 
 Run **`/aidlc`** to start or resume a workflow. Describe what to build and the scope is
-auto-detected. In Devin Cloud, `@skills:aidlc` also works.
+auto-detected.
 
 Every stage stops at an approval gate. Nothing advances without your decision.
 
@@ -110,9 +110,6 @@ and are not worked around:
 - **Restricted Mode disables everything, silently.** A workspace open in Restricted Mode
   has all agents *and* all hooks disabled. That is indistinguishable from a broken
   install — check workspace trust first.
-- **Devin Cloud is partial.** Cloud has no repo-level hooks, no subagents, and allows only
-  one active skill at a time, so the orchestrator cannot dispatch stage skills there.
-  Cloud also needs a blueprint `initialize:` step and a snapshot build before `bun` exists.
 
 Where a hook is absent, gate discipline is a human responsibility.
 ## Git Integration
