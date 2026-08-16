@@ -13,6 +13,7 @@ type ReviewerScopeRegistration =
   | "cursor-hooks"
   | "kiro-agent-json"
   | "opencode-plugin"
+  | "devin-hooks"
   | "unsupported";
 
 type HarnessCapabilities = {
@@ -36,7 +37,8 @@ type HarnessCapabilities = {
     | "cursor-rule"
     | "kiro-resources"
     | "kiro-steering"
-    | "opencode-instructions";
+    | "opencode-instructions"
+    | "devin-rule-pointer";
   kiroAgentJson: boolean;
   ideAgentTools: boolean;
   reviewerScopeRegistration: ReviewerScopeRegistration;
@@ -83,6 +85,28 @@ const HARNESS_CAPABILITIES = {
     kiroAgentJson: false,
     ideAgentTools: false,
     reviewerScopeRegistration: "codex-hooks",
+  },
+  devin: {
+    harnessDir: ".devin",
+    onboarding: {
+      mode: "manifest",
+      fills: "onboarding.fills.ts",
+      dist: "AGENTS.md",
+    },
+    rootFiles: [".gitignore", "AGENTS.md"],
+    skillsRoot: ".devin/skills",
+    plugin: {
+      kind: "store",
+      manifestDir: ".devin-plugin",
+      wiringFile: "hooks/hooks.json",
+    },
+    // Devin has no documented file-include mechanism inside a rule, so the method
+    // reaches ambient context through an always_on POINTER rule that names the
+    // memory files (agent compliance), not a host-level include.
+    memoryInclude: "devin-rule-pointer",
+    kiroAgentJson: false,
+    ideAgentTools: false,
+    reviewerScopeRegistration: "devin-hooks",
   },
   copilot: {
     harnessDir: ".aidlc",

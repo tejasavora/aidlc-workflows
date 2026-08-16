@@ -1594,6 +1594,21 @@ function handleDoctor(projectDir: string, flags: Record<string, string> = {}): v
       label: ".opencode/command/aidlc.md present (/aidlc entry point)",
       fix: "copy from `dist/opencode/.opencode/command/aidlc.md`",
     });
+  } else if (harness === ".devin") {
+    // Devin: the wiring config is .devin/hooks.v1.json — Devin's own hook file,
+    // where the hooks object IS the whole document (no "hooks" wrapper key). There
+    // is no settings.json equivalent: model/permission choices are the user's
+    // session config, not a shipped file.
+    results.push({
+      pass: existsSync(join(projectDir, harness, "hooks.v1.json")),
+      label: "hooks.v1.json present (Devin hook wiring)",
+      fix: "copy from `dist/devin/.devin/hooks.v1.json`",
+    });
+    results.push({
+      pass: existsSync(join(projectDir, harness, "hooks", "aidlc-devin-adapter.ts")),
+      label: "aidlc-devin-adapter.ts present (tool-name translation for the core hooks)",
+      fix: "copy from `dist/devin/.devin/hooks/aidlc-devin-adapter.ts`",
+    });
   } else {
     const settingsPath = join(projectDir, harness, "settings.json");
     results.push({
@@ -1606,7 +1621,7 @@ function handleDoctor(projectDir: string, flags: Record<string, string> = {}): v
   // 4b. Dual-harness coexistence (D-11): another harness tree installed AND a
   // workflow active is supported-but-untested — warn (advisory pass with a
   // visible label), never block.
-  const otherTrees = [".claude", ".kiro", ".codex", ".aidlc", ".cursor"].filter(
+  const otherTrees = [".claude", ".kiro", ".codex", ".aidlc", ".cursor", ".devin"].filter(
     (h) => h !== harness && existsSync(join(projectDir, h, "tools", "aidlc-lib.ts")),
   );
   if (
