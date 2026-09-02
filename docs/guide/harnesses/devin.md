@@ -9,11 +9,20 @@ every distribution — only the shell differs. The tree is **generated** from
 
 ## Prerequisites
 
-- **Devin CLI ≥ 3000.3.0** — earlier versions lack the dedicated
-  `mcp_config.json` files and the modern `.devin/` config layout
-  (`hooks.v1.json` as the whole-hooks-object file, project config limited to
-  permissions/read_config_from/hooks). `/aidlc --doctor` enforces the pin. Check
-  with `devin --version`.
+- **Devin CLI ≥ 3000.3.22** — two things are version-gated, and the pin is the
+  higher of them. 3000.3.0 introduced the dedicated `mcp_config.json` files and
+  the modern `.devin/` config layout (`hooks.v1.json` as the whole-hooks-object
+  file, project config limited to permissions/read_config_from/hooks).
+  **3000.3.22 is where a hook first became able to block** — exit 2 with the
+  reason on stderr. On anything older, every `PreToolUse` guard still loads and
+  still matches and simply cannot refuse a tool call, which is worse than a
+  broken install: enforcement looks present and silently permits what it was
+  added to stop. `/aidlc --doctor` enforces the pin. Check with
+  `devin --version`.
+- **Devin Desktop ("Devin Local") needs no CLI.** Desktop runs a server-pinned
+  agent build and installs no `devin` binary, so there is nothing on PATH to
+  version-check. `/aidlc --doctor` treats a *missing* binary as advisory and says
+  so; it still fails a binary that is present but older than the pin.
 - **bun** — same requirement as every harness; every tool and hook runs via
   bun. Install via `curl -fsSL https://bun.sh/install | bash` (or
   `npm install -g bun` / `powershell -c "irm bun.sh/install.ps1 | iex"` on

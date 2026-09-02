@@ -85,6 +85,15 @@ const manifest: HarnessManifest = {
   // Devin renames no core dir.
   rulesRename: null,
 
+  // Runners generate into .devin/skills/ and must stay explicit-only. Devin's
+  // skill `triggers` field defaults to `[user, model]`, so without this the model
+  // can auto-fire a state-mutating stage or scope runner off an ordinary coding
+  // prompt — the same hazard cursor pins with `disable-model-invocation`. That key
+  // does NOT exist on Devin; `triggers` is the documented equivalent, and it must
+  // be flow style ([user]) because the harness.json validator requires each entry
+  // to be a `key:` line.
+  runnerFrontmatterAdditions: ["triggers: [user]"],
+
   // No emit() plugin: Devin's runners come from the shared runner-gen
   // composition and its compiled data from graph compile, both driven by the
   // packager. Every Devin-specific surface is an authored harnessFile. (Codex is

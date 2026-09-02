@@ -67,7 +67,7 @@ Ad-hoc AI coding works until the project gets real. Then context drifts between 
 | **Cursor** | `bun dist/cursor/install.ts <project>` | `/aidlc` | [Quick Start](#quick-start) below + [AI-DLC on Cursor](docs/guide/harnesses/cursor.md). |
 | **opencode** (≥ 1.17) | `dist/opencode/` → `<project>/` (`.aidlc/` + `.opencode/` + `aidlc/` + `opencode.json` + `AGENTS.md`) | `/aidlc` | [Quick Start](#quick-start) below + [AI-DLC on opencode](docs/guide/harnesses/opencode.md). |
 | **GitHub Copilot** (CLI ≥ 1.0.74 / VS Code ≥ 1.130) | `dist/copilot/` → `<project>/` (`.aidlc/` + `aidlc/` + `AGENTS.md`; MERGE `.github/`) | `/aidlc` | [Quick Start](#quick-start) below + [AI-DLC on GitHub Copilot](docs/guide/harnesses/copilot.md). |
-| **Devin CLI** (≥ 3000.3.0) | `dist/devin/` → `<project>/` (`.devin/` + `aidlc/` + `AGENTS.md`) | `/aidlc` | [Quick Start](#quick-start) below + [AI-DLC on Devin CLI](docs/guide/harnesses/devin.md). |
+| **Devin CLI** (≥ 3000.3.22) | `dist/devin/` → `<project>/` (`.devin/` + `aidlc/` + `AGENTS.md`) | `/aidlc` | [Quick Start](#quick-start) below + [AI-DLC on Devin CLI](docs/guide/harnesses/devin.md). |
 
 The deterministic engine — state machine, audit log, and the referee that coordinates parallel agents — is byte-identical across every harness; only the shell differs. Each section in the [Quick Start](#quick-start) installs one harness end to end, and its guide above goes deeper on prerequisites and differences.
 

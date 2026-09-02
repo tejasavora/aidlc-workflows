@@ -2730,7 +2730,16 @@ function handleDoctor(projectDir: string, flags: Record<string, string> = {}): v
     // config limited to permissions/read_config_from/hooks). Older versions
     // store MCP servers under the main config's mcpServers key and use a
     // different hooks file shape — the wiring would silently no-op.
-    const MIN_DEVIN = [3000, 3, 0] as const;
+    // The floor is 3000.3.22, not 3000.3.0, because two separate things are
+    // version-gated and the later one is load-bearing for ENFORCEMENT:
+    //   3000.3.0  — the config layout above.
+    //   3000.3.22 — exit-2-blocks-with-reason-on-stderr. Below this, every
+    //               PreToolUse guard still loads and still matches, and simply
+    //               cannot refuse anything. That is worse than a broken install:
+    //               it looks installed and silently permits what it was added to
+    //               stop. Since the layout floor is a prerequisite of the block
+    //               floor, pinning the higher one covers both.
+    const MIN_DEVIN = [3000, 3, 22] as const;
     const devinBin = Bun.which("devin");
     const devinVer = devinBin
       ? Bun.spawnSync([devinBin, "--version"], { stdout: "pipe", stderr: "ignore" })
@@ -2738,10 +2747,19 @@ function handleDoctor(projectDir: string, flags: Record<string, string> = {}): v
     const devinVerText = (devinVer?.stdout?.toString() ?? "").trim();
     const devinVerMatch = devinVerText.match(/(\d+)\.(\d+)\.(\d+)/);
     if (!devinVerMatch) {
+      // ADVISORY, not a failure. A missing `devin` binary does not mean a broken
+      // install: Devin Desktop ("Devin Local") runs a server-pinned agent build
+      // and ships no CLI on PATH, so a legitimate Desktop-only install has
+      // nothing to read a version from. Hard-failing here tells those users
+      // their install is wrong when it is fine, and there is no way for them to
+      // act on the fix. An OLD binary is still a hard failure (below) — that one
+      // is real and actionable.
       results.push({
-        pass: false,
-        label: "devin CLI on PATH",
-        fix: "install Devin CLI >= 3000.3.0 (https://devin.ai)",
+        pass: true,
+        label:
+          "devin CLI not on PATH — expected on a Devin Desktop-only install, whose agent " +
+          "build is server-pinned and cannot be version-checked from a session. On the CLI, " +
+          ">= 3000.3.22 is required for hooks to be able to block",
       });
     } else {
       const v = [Number(devinVerMatch[1]), Number(devinVerMatch[2]), Number(devinVerMatch[3])];
@@ -2751,8 +2769,8 @@ function handleDoctor(projectDir: string, flags: Record<string, string> = {}): v
           (v[1] > MIN_DEVIN[1] || (v[1] === MIN_DEVIN[1] && v[2] >= MIN_DEVIN[2])));
       results.push({
         pass: ok,
-        label: `devin CLI version ${devinVerMatch[0]} >= 3000.3.0 (modern .devin/ config layout: hooks.v1.json + dedicated mcp_config.json)`,
-        fix: "upgrade Devin CLI to 3000.3.0 or later",
+        label: `devin CLI version ${devinVerMatch[0]} >= 3000.3.22 (exit-2 hook block channel; also covers the modern .devin/ config layout: hooks.v1.json + dedicated mcp_config.json)`,
+        fix: "upgrade Devin CLI (`devin update`) — below 3000.3.22 no hook can refuse a tool call",
       });
     }
     // Hook approval reminder (advisory pass-with-label): Devin CLI prompts to
