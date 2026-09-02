@@ -2740,26 +2740,41 @@ function handleDoctor(projectDir: string, flags: Record<string, string> = {}): v
     //               stop. Since the layout floor is a prerequisite of the block
     //               floor, pinning the higher one covers both.
     const MIN_DEVIN = [3000, 3, 22] as const;
-    const devinBin = Bun.which("devin");
+
+    // Devin Desktop ("Devin Local") DOES bundle a real devin CLI — measured on
+    // Devin.app 3.7.25 (bundle id com.exafunction.windsurf), a 148 MB Mach-O
+    // arm64 binary reporting 3000.4.25 — but it does NOT put it on PATH. So
+    // `Bun.which` alone reports "no devin" on a perfectly healthy Desktop-only
+    // machine, while an OLD bundled CLI is exactly the case the floor exists to
+    // catch. Probing the bundle turns a blind advisory into a real version read.
+    //
+    // Best-effort and macOS-only: this is the documented default install location
+    // and the only one measured. A Desktop install elsewhere, or on another OS,
+    // falls through to the advisory branch rather than guessing.
+    const DESKTOP_BUNDLE_BINS = [
+      "/Applications/Devin.app/Contents/Resources/app/extensions/windsurf/devin/bin/devin",
+    ];
+    const devinBin =
+      Bun.which("devin") ?? DESKTOP_BUNDLE_BINS.find((p) => existsSync(p)) ?? null;
     const devinVer = devinBin
       ? Bun.spawnSync([devinBin, "--version"], { stdout: "pipe", stderr: "ignore" })
       : null;
     const devinVerText = (devinVer?.stdout?.toString() ?? "").trim();
     const devinVerMatch = devinVerText.match(/(\d+)\.(\d+)\.(\d+)/);
     if (!devinVerMatch) {
-      // ADVISORY, not a failure. A missing `devin` binary does not mean a broken
-      // install: Devin Desktop ("Devin Local") runs a server-pinned agent build
-      // and ships no CLI on PATH, so a legitimate Desktop-only install has
-      // nothing to read a version from. Hard-failing here tells those users
-      // their install is wrong when it is fine, and there is no way for them to
-      // act on the fix. An OLD binary is still a hard failure (below) — that one
-      // is real and actionable.
+      // ADVISORY, not a failure. No binary found on PATH and none at the known
+      // Desktop bundle path — which a legitimate install can still be: Desktop
+      // installed outside /Applications, or on Windows/Linux where the bundle
+      // layout differs and has not been measured. Hard-failing tells those users
+      // their install is broken when it is fine, and hands them a fix they cannot
+      // apply. A binary that IS found but is too old stays a hard failure below;
+      // that one is real and actionable.
       results.push({
         pass: true,
         label:
-          "devin CLI not on PATH — expected on a Devin Desktop-only install, whose agent " +
-          "build is server-pinned and cannot be version-checked from a session. On the CLI, " +
-          ">= 3000.3.22 is required for hooks to be able to block",
+          "devin CLI not found on PATH or at the known Devin Desktop bundle path — a " +
+          "Desktop-only install can be healthy without one. On the CLI, >= 3000.3.22 is " +
+          "required for hooks to be able to block",
       });
     } else {
       const v = [Number(devinVerMatch[1]), Number(devinVerMatch[2]), Number(devinVerMatch[3])];

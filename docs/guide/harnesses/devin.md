@@ -19,10 +19,21 @@ every distribution — only the shell differs. The tree is **generated** from
   broken install: enforcement looks present and silently permits what it was
   added to stop. `/aidlc --doctor` enforces the pin. Check with
   `devin --version`.
-- **Devin Desktop ("Devin Local") needs no CLI.** Desktop runs a server-pinned
-  agent build and installs no `devin` binary, so there is nothing on PATH to
-  version-check. `/aidlc --doctor` treats a *missing* binary as advisory and says
-  so; it still fails a binary that is present but older than the pin.
+- **Devin Desktop ("Devin Local") needs no separately installed CLI.** Desktop
+  *does* bundle a real `devin` binary — measured on Devin.app 3.7.25 (bundle id
+  `com.exafunction.windsurf`): a 148 MB Mach-O arm64 executable reporting
+  **3000.4.25**, at
+  `/Applications/Devin.app/Contents/Resources/app/extensions/windsurf/devin/bin/devin`.
+  It is simply **not on PATH**. `/aidlc --doctor` therefore checks PATH first and
+  then that bundle path, so a Desktop-only install still gets a real version read
+  rather than a blind pass. If neither is found — Desktop installed outside
+  `/Applications`, or on Windows/Linux where the bundle layout has not been
+  measured — the check degrades to advisory rather than failing a healthy install.
+  A binary that *is* found but is older than the pin remains a hard failure.
+
+  > Note the bundled CLI can lag the standalone one (3000.4.25 bundled vs 3000.6.7
+  > standalone at time of measurement), which is precisely why the floor is worth
+  > checking on Desktop instead of assumed.
 - **bun** — same requirement as every harness; every tool and hook runs via
   bun. Install via `curl -fsSL https://bun.sh/install | bash` (or
   `npm install -g bun` / `powershell -c "irm bun.sh/install.ps1 | iex"` on
