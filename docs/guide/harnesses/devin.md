@@ -151,9 +151,17 @@ Always-on rules this install adds (as `devin rules list` reports them):
   which records `HUMAN_TURN` (verified live).
 - **Permissions.** `Exec(...)` grants match whole words, so a directory prefix
   such as `Exec(bun .devin/tools)` does not cover `bun .devin/tools/aidlc.ts`.
-  The shipped `config.json` lists AI-DLC's own engine routes, read-only checks,
-  and tool scripts; every other command still asks. Avoid
+  The shipped `config.json` lists AI-DLC's own engine routes, read-only checks
+  (including the `--version`, `--status` and `--help` spellings), and tool
+  scripts; every other command still asks. Avoid
   `--permission-mode accept-edits` outside a scratch project.
+- **Print mode (`devin -p`) cannot answer a prompt.** A reviewer subagent that
+  needs a shell command outside the shipped list is refused ("Subagent error:
+  Tool was rejected", CLI 3000.11.3), and the engine then refuses the gate with
+  `REVIEW_EVIDENCE_MISSING`. A Devin permission applies to every agent in the
+  session, not only the reviewer, so the package does not ship broader rules;
+  grant read-only shell commands in your own `.devin/config.local.json` for an
+  unattended run.
 - **No statusline.** Use `/aidlc --status` and the progress lines at gates.
 - **`devin doctor` is not the AI-DLC doctor.** Use `/aidlc --doctor`.
 

@@ -224,6 +224,28 @@ describe("devin subagent profiles", () => {
   });
 });
 
+describe("devin config.json permissions", () => {
+  test("the read-only commands people are told to run are pre-approved, word for word", () => {
+    // MEASURED on CLI 3000.11.3 (2026-10-06): `bun .devin/tools/aidlc.ts --version`
+    // was refused in print mode ("Tool execution was rejected by the user") while
+    // `version` and `--doctor` ran, because `Exec(prefix)` matches whole words and
+    // the generated list carried no `--version` entry. The install guide and the
+    // doctor both tell people to run `--version`.
+    const allow: string[] = JSON.parse(readFileSync(join(TREE, "config.json"), "utf-8")).permissions.allow;
+    for (const command of ["--version", "version", "--doctor", "doctor", "--status", "--help"]) {
+      expect(allow, command).toContain(`Exec(bun .devin/tools/aidlc.ts ${command})`);
+    }
+    expect(allow).toContain("Exec(bun .devin/tools/aidlc.ts engine)");
+    // No blanket grant rides along: no bare tool name, no Write/Read glob, no
+    // un-prefixed shell. The reviewer's print-mode needs are documented for the
+    // person to grant in config.local.json, not shipped, because a Devin
+    // permission applies to every agent in the session, not only the reviewer.
+    for (const entry of allow) {
+      expect(entry, entry).toMatch(/^Exec\((bun \.devin\/tools\/aidlc[a-z-]*\.ts( .+)?|date -u)\)$/);
+    }
+  });
+});
+
 describe("devin harness re-identification", () => {
   test("the shipped .gitignore names Devin's local files, not another harness's", () => {
     // harness/devin/dot-gitignore was seeded from harness/claude/ and carried

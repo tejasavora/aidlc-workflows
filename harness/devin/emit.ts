@@ -32,7 +32,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import type { EmitContext } from "../../scripts/manifest-types.ts";
-import { copyChannelDispatcherCommands, copyChannelToolScripts } from "../../core/tools/aidlc.ts";
+import { copyChannelDispatcherCommands, copyChannelToolScripts, resolveAction } from "../../core/tools/aidlc.ts";
 
 // Devin's documented matchable tool names (docs.devin.ai/cli/extensibility/hooks/
 // lifecycle-hooks). Kept as a constant so the hooks.v1.json matchers below and the
@@ -140,6 +140,42 @@ function assertNoDevinModel(raw: string, srcPath: string): void {
   }
 }
 
+/**
+ * The dispatcher's top-level FLAG spellings of read-only commands that the shared
+ * copy-channel list leaves out.
+ *
+ * Measured on Devin CLI 3000.11.3: `bun .devin/tools/aidlc.ts --version` was
+ * refused in print mode, because the generated list carries `version` and
+ * `--doctor` but not `--version`; the install guide and the doctor's own output
+ * tell people to run `--version`. `--status` and `--help` are the same shape.
+ *
+ * Whole-word `Exec(prefix)` matching means each spelling needs its own entry. A
+ * candidate ships ONLY if the dispatcher resolves it to a pure print (version or
+ * help text) or to a tool script this allowlist already pre-approves, so adding it
+ * grants nothing the list did not already grant. Anything else fails the build.
+ */
+const DEVIN_READ_ONLY_FLAG_CANDIDATES = ["--version", "--status", "--help"] as const;
+
+function devinReadOnlyFlagForms(): string[] {
+  const listed = new Set(copyChannelDispatcherCommands());
+  const scripts = new Set(copyChannelToolScripts());
+  const out: string[] = [];
+  for (const flag of DEVIN_READ_ONLY_FLAG_CANDIDATES) {
+    if (listed.has(flag)) continue;
+    const action = resolveAction([flag], false) as { type: string; tool?: string };
+    const pure = action.type === "version" || action.type === "help";
+    const covered = action.type === "delegate" && typeof action.tool === "string" && scripts.has(action.tool);
+    if (!pure && !covered) {
+      throw new Error(
+        `devin emission: "${flag}" resolves to ${JSON.stringify(action)}, which is neither a ` +
+          `pure print nor a tool script the allowlist already grants; refusing to pre-approve it.`,
+      );
+    }
+    out.push(flag);
+  }
+  return out;
+}
+
 export default function emit(ctx: EmitContext): void {
   const { coreRoot, harnessRoot, distRoot } = ctx;
   const TREE = join(distRoot, ".devin");
@@ -185,6 +221,7 @@ export default function emit(ctx: EmitContext): void {
       : [
           `${tool("aidlc.ts")} ${ctx.trustedRouteNamespace})`,
           ...copyChannelDispatcherCommands().map((command) => `${tool("aidlc.ts")} ${command})`),
+          ...devinReadOnlyFlagForms().map((command) => `${tool("aidlc.ts")} ${command})`),
           ...copyChannelToolScripts().map((script) => `${tool(script)})`),
         ];
     config.permissions = { ...config.permissions, allow: [...framework, ...kept] };
