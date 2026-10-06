@@ -25,7 +25,7 @@ export interface ProjectHarness {
   frameworkVersion?: string;
 }
 
-const HARNESS_PRECEDENCE = [".claude", ".kiro", ".codex", ".cursor", ".aidlc"] as const;
+const HARNESS_PRECEDENCE = [".claude", ".kiro", ".codex", ".cursor", ".devin", ".aidlc"] as const;
 
 function markerRecord(path: string): Record<string, unknown> {
   let value: unknown;
@@ -341,6 +341,7 @@ export function runtimeHarnessName(
   if (harnessDir === ".codex") return "codex";
   if (harnessDir === ".kiro") return "kiro";
   if (harnessDir === ".cursor") return "cursor";
+  if (harnessDir === ".devin") return "devin";
   return "claude";
 }
 
@@ -426,6 +427,7 @@ const HOST_LABELS: Readonly<Record<string, string>> = {
   codex: "Codex CLI",
   copilot: "GitHub Copilot",
   cursor: "Cursor",
+  devin: "Devin",
   kiro: "Kiro CLI",
   "kiro-ide": "Kiro IDE",
   opencode: "opencode",
@@ -508,7 +510,7 @@ export function linkOnTheWay(projectDir: string, target: string): string | null 
 // as far as it is made of these, so no name a repository chose reaches the
 // reader: a link deeper down is named by the AI-DLC folder that holds it.
 const AIDLC_FOLDER_NAMES = new Set([
-  ".aidlc", ".agents", ".claude", ".codex", ".cursor", ".github", ".kiro", ".opencode",
+  ".aidlc", ".agents", ".claude", ".codex", ".cursor", ".devin", ".github", ".kiro", ".opencode",
   "agents", "aidlc", "aidlc-common", "command", "data", "hooks", "knowledge", "plugin",
   "rules", "scopes", "sensors", "settings", "skills", "spaces", "stages", "steering", "tools",
 ]);

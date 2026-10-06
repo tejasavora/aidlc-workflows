@@ -666,6 +666,7 @@ function modelHarness(value: string): ModelHarness {
     value === "codex" ||
     value === "copilot" ||
     value === "cursor" ||
+    value === "devin" ||
     value === "kiro" ||
     value === "kiro-ide" ||
     value === "opencode"
@@ -6566,6 +6567,9 @@ function firstRunNextCommands(distribution: string): [string, string] {
   }
   if (distribution === "kiro-ide") {
     return ["kiro                          open Kiro IDE (or kiro-cli) in this repo", '/aidlc "what you want built"  describe your first intent'];
+  }
+  if (distribution === "devin") {
+    return ["devin                          open Devin CLI (or Devin Desktop) in this repo", '/aidlc "what you want built"  describe your first intent'];
   }
   if (distribution === "copilot") {
     return ["copilot                        open Copilot CLI in this repo", '/aidlc "what you want built"  describe your first intent'];

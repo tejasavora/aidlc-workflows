@@ -1,0 +1,327 @@
+{
+  "_comment": "Devin hook payloads RE-MEASURED 2026-10-05 with a stdin-capture hook on every event in a trusted workspace, on Devin CLI 3000.6.12 and 3000.11.3 (the CLI self-updated mid-capture; the shapes agree). Every KEY and nesting is as delivered; ids and paths are anonymized and long text is shortened. This corrects the 2026-09-02 corpus, which had write/edit/read keyed on `path` (live: `file_path`), edit on `old_str`/`new_str` (live: `old_string`/`new_string`), todo_write as `{status, activeForm}` (live: `{todos: [{content, status}]}`), run_subagent as `{profile, prompt}` (live: `{title, task, profile, is_background}`), and an `agent_type` on the run_subagent result (live: none). Every tool_response is an object `{success, output, error}`; a refused spawn still fires PostToolUse with `success: false`. No payload carries `cwd` or `transcript_path`. Not captured live (the default model was not offered the tool, or no event occurred): apply_patch, notebook_read, notebook_edit, postCompaction. Those entries keep Claude-shaped inputs and are marked `_shape: \"not-captured\"`.",
+  "sessionStart": {
+    "hook_event_name": "SessionStart",
+    "source": "startup",
+    "session_id": "probe-session-0001"
+  },
+  "sessionStartResume": {
+    "hook_event_name": "SessionStart",
+    "source": "resume",
+    "session_id": "probe-session-0001"
+  },
+  "userPromptSubmit": {
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "/aidlc --status",
+    "prompt_id": "probe-prompt-0001",
+    "session_id": "probe-session-0001"
+  },
+  "preToolUseExec": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "exec",
+    "tool_input": {
+      "command": "bun .devin/tools/aidlc-state.ts approve"
+    },
+    "tool_use_id": "probe-tooluse-0001",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseExec": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "exec",
+    "tool_input": {
+      "command": "bun .devin/tools/aidlc.ts engine orchestrate next"
+    },
+    "tool_use_id": "probe-tooluse-0002",
+    "tool_response": {
+      "success": true,
+      "output": "Output from command in shell 000001:\n{}\n\n\nExit code: 0",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseWrite": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "write",
+    "tool_input": {
+      "file_path": "aidlc/spaces/default/intents/probe/requirements.md",
+      "content": "x"
+    },
+    "tool_use_id": "probe-tooluse-0003",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseWrite": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "write",
+    "tool_input": {
+      "file_path": "aidlc/spaces/default/intents/probe/requirements.md",
+      "content": "x"
+    },
+    "tool_use_id": "probe-tooluse-0003",
+    "tool_response": {
+      "success": true,
+      "output": "File created successfully at: aidlc/spaces/default/intents/probe/requirements.md",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseEdit": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "edit",
+    "tool_input": {
+      "file_path": "src/app.ts",
+      "old_string": "a",
+      "new_string": "b"
+    },
+    "tool_use_id": "probe-tooluse-0004",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseEdit": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "edit",
+    "tool_input": {
+      "file_path": "src/app.ts",
+      "old_string": "a",
+      "new_string": "b"
+    },
+    "tool_use_id": "probe-tooluse-0004",
+    "tool_response": {
+      "success": true,
+      "output": "The file src/app.ts has been updated.",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseRead": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "read",
+    "tool_input": {
+      "file_path": "AGENTS.md"
+    },
+    "tool_use_id": "probe-tooluse-0005",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseGlob": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "glob",
+    "tool_input": {
+      "pattern": "*.txt"
+    },
+    "tool_use_id": "probe-tooluse-0006",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseGrep": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "grep",
+    "tool_input": {
+      "pattern": "Status",
+      "output_mode": "content"
+    },
+    "tool_use_id": "probe-tooluse-0007",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseTodoWrite": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "todo_write",
+    "tool_input": {
+      "todos": [
+        {
+          "content": "Running domain design [domain-design]",
+          "status": "in_progress"
+        }
+      ]
+    },
+    "tool_use_id": "probe-tooluse-0008",
+    "tool_response": {
+      "success": true,
+      "output": "Todos have been modified successfully.",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseRunSubagent": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "run_subagent",
+    "tool_input": {
+      "title": "Implement unit",
+      "task": "implement unit",
+      "profile": "aidlc-developer-agent",
+      "is_background": false
+    },
+    "tool_use_id": "probe-tooluse-0009",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseRunSubagent": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "run_subagent",
+    "tool_input": {
+      "title": "Implement unit",
+      "task": "implement unit",
+      "profile": "aidlc-developer-agent",
+      "is_background": false
+    },
+    "tool_use_id": "probe-tooluse-0009",
+    "tool_response": {
+      "success": true,
+      "output": "Subagent agent_id=a1b2c3d4 completed successfully:\n\nunit implemented",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseRunSubagentRefused": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "run_subagent",
+    "tool_input": {
+      "title": "Implement unit",
+      "task": "implement unit",
+      "profile": "aidlc-developer-agent",
+      "is_background": false
+    },
+    "tool_use_id": "probe-tooluse-0010",
+    "tool_response": {
+      "success": false,
+      "output": null,
+      "error": "Subagent error: Permission denied: an internal error occurred (trace ID: 00000000000000000000000000000000)"
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseRunSubagentBackground": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "run_subagent",
+    "tool_input": {
+      "profile": "aidlc-product-agent",
+      "title": "bg check",
+      "task": "Reply with the single word READY.",
+      "is_background": true
+    },
+    "tool_use_id": "probe-tooluse-0011",
+    "tool_response": {
+      "success": true,
+      "output": "Background subagent started with agent_id=e5f6a7b8. You can wait for this agent to finish using the read_subagent tool, otherwise you will automatically be notified with a <subagent_completion_notification> when it completes.",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseReadSubagent": {
+    "hook_event_name": "PostToolUse",
+    "tool_name": "read_subagent",
+    "tool_input": {
+      "agent_id": "e5f6a7b8",
+      "block": true
+    },
+    "tool_use_id": "probe-tooluse-0012",
+    "tool_response": {
+      "success": true,
+      "output": "Subagent e5f6a7b8 completed. Its full report is delivered in the <subagent_completion_notification> message; you do not need to read it again.",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseAskUserQuestion": {
+    "hook_event_name": "PreToolUse",
+    "tool_name": "ask_user_question",
+    "tool_input": {
+      "questions": [
+        {
+          "header": "Pick",
+          "options": [
+            {
+              "description": "Option A",
+              "label": "A"
+            },
+            {
+              "description": "Option B",
+              "label": "B"
+            }
+          ],
+          "question": "Pick one"
+        }
+      ]
+    },
+    "tool_use_id": "probe-tooluse-0013",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseApplyPatch": {
+    "_shape": "not-captured",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "file_path": "src/app.ts"
+    },
+    "tool_use_id": "probe-tooluse-0014",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postToolUseApplyPatch": {
+    "_shape": "not-captured",
+    "hook_event_name": "PostToolUse",
+    "tool_name": "apply_patch",
+    "tool_input": {
+      "file_path": "src/app.ts"
+    },
+    "tool_use_id": "probe-tooluse-0014",
+    "tool_response": {
+      "success": true,
+      "output": "patched",
+      "error": null
+    },
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseNotebookRead": {
+    "_shape": "not-captured",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "notebook_read",
+    "tool_input": {
+      "notebook_path": "analysis.ipynb"
+    },
+    "tool_use_id": "probe-tooluse-0015",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "preToolUseNotebookEdit": {
+    "_shape": "not-captured",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "notebook_edit",
+    "tool_input": {
+      "notebook_path": "analysis.ipynb",
+      "new_source": "print(1)"
+    },
+    "tool_use_id": "probe-tooluse-0016",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "postCompaction": {
+    "_shape": "not-captured",
+    "hook_event_name": "PostCompaction",
+    "session_id": "probe-session-0001"
+  },
+  "stop": {
+    "hook_event_name": "Stop",
+    "stop_hook_active": false,
+    "last_assistant_message": "DONE",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  },
+  "sessionEnd": {
+    "hook_event_name": "SessionEnd",
+    "reason": "other",
+    "session_id": "probe-session-0001",
+    "prompt_id": "probe-prompt-0001"
+  }
+}

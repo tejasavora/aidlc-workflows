@@ -4291,6 +4291,9 @@ export async function collectDoctorReport(
       );
     }
     if (harness === ".cursor") tsHooks.push("aidlc-cursor-adapter");
+    // Devin: the one hand-authored runtime file - it translates Devin's
+    // snake_case tool names for the core hooks that compare tool_name.
+    if (harness === ".devin") tsHooks.push("aidlc-devin-adapter");
     for (const h of tsHooks) {
       const hookPath = join(projectDir, harness, "hooks", `${h}.ts`);
       results.push({
@@ -4494,6 +4497,84 @@ export async function collectDoctorReport(
       label: ".opencode/command/aidlc.md present (/aidlc entry point)",
       fix: projectedFileRepair("opencode", ".opencode/command/aidlc.md"),
     });
+  } else if (harness === ".devin") {
+    // Devin: the wiring config is .devin/hooks.v1.json — Devin's own hook file,
+    // where the hooks object IS the whole document (no "hooks" wrapper key).
+    // Permissions ride .devin/config.json, the way codex checks
+    // rules/default.rules and cursor checks cli.json. The adapter is checked
+    // with the hook roster above.
+    results.push({
+      pass: existsSync(join(projectDir, harness, "config.json")),
+      label: "config.json present (scoped Exec allowlist for the framework's tools)",
+      fix: projectedFileRepair("devin", ".devin/config.json") +
+        " (MERGE it into an existing file: it carries only `permissions`)",
+    });
+    results.push({
+      pass: existsSync(join(projectDir, harness, "hooks.v1.json")),
+      label: "hooks.v1.json present (Devin hook wiring)",
+      fix: projectedFileRepair("devin", ".devin/hooks.v1.json"),
+    });
+    // Version floor. Devin AUTO-UPDATES, and the whole block channel is
+    // version-gated: exit-2-blocks-with-reason-on-stderr arrived in v3000.3.22.
+    // Below that, every PreToolUse guard loads, matches, and cannot refuse
+    // anything — enforcement that looks installed and silently does nothing, with
+    // no diagnostic. codex and copilot both carry a floor for the same reason.
+    //
+    // Devin Desktop ("Devin Local") DOES bundle a real devin CLI — measured on
+    // Devin.app 3.7.25 (bundle id com.exafunction.windsurf): a 148 MB Mach-O arm64
+    // binary reporting 3000.4.25 — it just is not on PATH. So PATH alone reports
+    // "no devin" on a perfectly healthy Desktop-only machine, AND the bundled CLI
+    // can LAG the standalone one (3000.4.25 bundled vs 3000.6.12 standalone,
+    // measured the same day), which is exactly the case this floor exists to catch.
+    // Probing the bundle turns a blind advisory into a real version read.
+    //
+    // Best-effort and macOS-only: this is the default install location and the only
+    // one measured. Desktop installed elsewhere, or on Windows/Linux where the
+    // bundle layout is unverified, falls through to the advisory arm rather than
+    // guessing at a path.
+    const MIN_DEVIN = [3000, 3, 22] as const;
+    const DESKTOP_BUNDLE_BINS = [
+      "/Applications/Devin.app/Contents/Resources/app/extensions/windsurf/devin/bin/devin",
+    ];
+    // Bun.which returns null rather than throwing, unlike Bun.spawnSync, which
+    // THROWS ("Executable not found in $PATH") when the binary is absent and would
+    // crash the whole doctor on a Desktop-only install instead of degrading to the
+    // advisory arm. Resolve the path FIRST, then only spawn something that exists.
+    const devinBin =
+      Bun.which("devin") ?? DESKTOP_BUNDLE_BINS.find((p) => existsSync(p)) ?? null;
+    let devinVerText = "";
+    if (devinBin) {
+      try {
+        const devinVer = Bun.spawnSync([devinBin, "--version"], {
+          stdout: "pipe",
+          stderr: "ignore",
+        });
+        devinVerText = (devinVer.stdout?.toString() ?? "").trim();
+      } catch {
+        devinVerText = ""; // unreadable -> advisory arm
+      }
+    }
+    const devinMatch = devinVerText.match(/(\d+)\.(\d+)\.(\d+)/);
+    if (!devinMatch) {
+      results.push({
+        pass: true,
+        label:
+          "devin CLI version: not probeable (no `devin` on PATH and none at the known " +
+          "Devin Desktop bundle path) — a Desktop-only install can be healthy without " +
+          "one. On the CLI, >= 3000.3.22 is required for hooks to block",
+      });
+    } else {
+      const v = [Number(devinMatch[1]), Number(devinMatch[2]), Number(devinMatch[3])];
+      const ok =
+        v[0] > MIN_DEVIN[0] ||
+        (v[0] === MIN_DEVIN[0] &&
+          (v[1] > MIN_DEVIN[1] || (v[1] === MIN_DEVIN[1] && v[2] >= MIN_DEVIN[2])));
+      results.push({
+        pass: ok,
+        label: `devin CLI version ${devinMatch[0]} >= 3000.3.22 (exit-2 hook block channel)`,
+        fix: "upgrade Devin CLI (`devin update`) — below 3000.3.22 no hook can refuse a tool call",
+      });
+    }
   } else {
     const settingsPath = join(projectDir, harness, "settings.json");
     results.push({
@@ -6889,6 +6970,7 @@ const SCAN_EXCLUDE = new Set([
   ".opencode",
   ".aidlc",
   ".cursor",
+  ".devin",
   "aidlc-docs",
   "node_modules",
   ".git",

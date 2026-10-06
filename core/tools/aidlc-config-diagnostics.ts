@@ -35,6 +35,7 @@ import {
 import { readBoundedRegularFile } from "./aidlc-inline-context.ts";
 import {
   HARNESS_PRODUCT_NAMES,
+  isModelHarness,
   sessionSetsAgentModels,
   type ModelHarness,
 } from "./aidlc-model-policy.ts";
@@ -62,13 +63,16 @@ export type RuntimeRecord = {
 // answers use `current`, `amazon-bedrock`, or `other`.
 export type ProviderKind = "current" | "amazon-bedrock" | "builtin" | "other";
 
-// Kiro CLI and Kiro IDE provide their own model access. AI-DLC has no provider
-// decision to ask, write, or check for them, even when a legacy answer exists.
-export type BedrockOrientedHarness = Exclude<ModelHarness, "kiro" | "kiro-ide">;
+// Kiro CLI, Kiro IDE and Devin provide their own model access (Devin through
+// the signed-in Devin account and its organization's model settings). AI-DLC
+// has no provider decision to ask, write, or check for them, even when a legacy
+// answer exists.
+export type BedrockOrientedHarness = Exclude<ModelHarness, "kiro" | "kiro-ide" | "devin">;
 
 const HARNESS_OWNED_MODEL_ACCESS: ReadonlySet<ModelHarness> = new Set<ModelHarness>([
   "kiro",
   "kiro-ide",
+  "devin",
 ]);
 
 export function harnessOwnsModelAccess(
@@ -499,15 +503,7 @@ export function readConfigDiagnosticRecords(harnessRoot: string): ConfigDiagnost
     );
   }
   const distribution = value.distribution;
-  if (
-    distribution !== "claude" &&
-    distribution !== "codex" &&
-    distribution !== "copilot" &&
-    distribution !== "cursor" &&
-    distribution !== "kiro" &&
-    distribution !== "kiro-ide" &&
-    distribution !== "opencode"
-  ) {
+  if (typeof distribution !== "string" || !isModelHarness(distribution)) {
     throw new Error(`${path}: distribution must name a supported harness`);
   }
   const providers = normalizeProvidersRecord(value.providers);
@@ -874,6 +870,15 @@ const HARNESS_CLI: Record<
     command: "cursor",
     required: false,
     install: "Install the Cursor CLI and ensure `cursor --version` works; IDE-only installs may omit it.",
+  },
+  // 3000.3.22 is where a hook's exit 2 started refusing the tool call; below it
+  // every guard loads and cannot refuse anything. Optional: Devin Desktop
+  // bundles its own CLI off PATH, and doctor reads that one too.
+  devin: {
+    command: "devin",
+    required: false,
+    minimumVersion: "3000.3.22",
+    install: "Install or update Devin CLI to 3000.3.22 or later (`devin update`) for terminal use; Devin Desktop-only installs may omit it.",
   },
   // The 2.x line is where the hooks, skills and workspace default agent this
   // distribution relies on shipped; the guide asks for 2.6 or later.

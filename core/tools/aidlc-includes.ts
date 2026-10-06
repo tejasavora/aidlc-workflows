@@ -289,6 +289,24 @@ export function repointHarnessIncludes(projectDir: string, space?: string): stri
     return written;
   }
 
+  if (harness === ".devin") {
+    // Devin — the .devin/rules/*.md method pointers list plain paths (Devin
+    // rules expand no @-imports), and the persona bodies in .devin/agents/
+    // carry active-space memory paths, exactly like Cursor's. Same rewriter.
+    for (const sub of ["rules", "agents"] as const) {
+      const dir = join(harnessRoot, sub);
+      if (!existsSync(dir)) continue;
+      for (const name of readdirSync(dir).sort()) {
+        if (!name.endsWith(".md")) continue;
+        const p = join(dir, name);
+        const raw = readSafe(p);
+        if (raw === null) continue;
+        repointFile(p, join(harness, sub, name), raw, sp, repointOpencodeAgentMemory, written);
+      }
+    }
+    return written;
+  }
+
   if (harness === ".aidlc") {
     // Two harnesses ship the .aidlc runtime dir; both include surfaces are
     // probed (each rewriter no-ops when its surface carries no method

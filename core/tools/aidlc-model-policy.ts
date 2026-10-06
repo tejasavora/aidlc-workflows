@@ -44,6 +44,7 @@ export type ModelHarness =
   | "codex"
   | "copilot"
   | "cursor"
+  | "devin"
   | "kiro"
   | "kiro-ide"
   | "opencode";
@@ -160,6 +161,13 @@ export const HARNESS_HONESTY = Object.freeze({
     message:
       "GitHub Copilot cannot pin one portable agent model or effort across CLI and IDE; agents inherit the session.",
   }),
+  devin: Object.freeze({
+    model: false,
+    effort: false,
+    groupEffort: false,
+    message:
+      "Devin runs each agent on your organization's default subagent model; a profile pinned to a model the plan did not include was refused at spawn when tested, so AI-DLC pins none; profiles carry no effort key.",
+  }),
 });
 
 type HarnessHonesty = (typeof HARNESS_HONESTY)[ModelHarness];
@@ -180,6 +188,7 @@ export const HARNESS_PRODUCT_NAMES: Readonly<Record<ModelHarness, string>> = Obj
   codex: "Codex CLI",
   copilot: "GitHub Copilot",
   cursor: "Cursor",
+  devin: "Devin",
   kiro: "Kiro CLI",
   "kiro-ide": "Kiro IDE",
   opencode: "opencode",
@@ -197,6 +206,11 @@ export function sessionModelsDetail(
     : policy?.preset
     ? `; the recorded ${policy.preset} preset does not apply here`
     : "; the recorded policy does not apply here";
+  // Devin does not run agents on the session model: an unpinned profile runs on
+  // the organization's default subagent model, and that is what AI-DLC ships.
+  if (harness === "devin") {
+    return `every agent uses your Devin organization's default subagent model${recorded}`;
+  }
   return `every agent uses your ${HARNESS_PRODUCT_NAMES[harness]} session's model and effort${recorded}`;
 }
 

@@ -111,6 +111,17 @@ export type TierProjection = {
    *  accounts reject every named model), so a pinned id would hard-fail
    *  installs on lower plans; agents inherit the session model instead. */
   cursor: { model: string | null };
+  /** Devin subagent profile frontmatter: `model:`. Always omitted. Devin runs a
+   *  custom profile with no `model:` on the organization's default subagent
+   *  model (SWE-1.6 unless an admin chose another), not on the session model,
+   *  so omission is not "inherit". It is still the only spelling that works
+   *  everywhere: measured on Devin CLI 3000.11.3 (2026-10-05), a profile pinned
+   *  to `opus`, `sonnet`, `swe` or a full model id was refused at spawn
+   *  ("Permission denied: an internal error occurred") on an account whose
+   *  plan did not include that model, while the same profile with no
+   *  `model:` ran. A refused spawn
+   *  stops every delegated stage; a different subagent model does not. */
+  devin: { model: null };
 };
 
 export type Harness = keyof TierProjection;
@@ -127,6 +138,7 @@ export const TIER_PROJECTIONS: Record<Tier, TierProjection> = {
     opencode: { model: null, variant: null },
     copilot: { model: null },
     cursor: { model: null },
+    devin: { model: null },
   },
   balanced: {
     // Effort pinned to medium (was: inherit the session effort). Balanced is
@@ -140,6 +152,7 @@ export const TIER_PROJECTIONS: Record<Tier, TierProjection> = {
     kiro: { model: null },
     opencode: { model: null, variant: "medium" },
     copilot: { model: null },
+    devin: { model: null },
   },
   templated: {
     // The tier remains a models-dial group for pattern-following work, but the
@@ -151,6 +164,7 @@ export const TIER_PROJECTIONS: Record<Tier, TierProjection> = {
     opencode: { model: null, variant: null },
     copilot: { model: null },
     cursor: { model: null },
+    devin: { model: null },
   },
 };
 

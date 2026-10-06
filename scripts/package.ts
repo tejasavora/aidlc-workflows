@@ -259,6 +259,8 @@ function agentTierFromMd(s: string, srcPath: string): string {
 // harness's own session/config default applies for that harness/tier
 // combination. When every key is omitted the `tier:` line is dropped without
 // a replacement.
+const DROPS_DISALLOWED_TOOLS = new Set<Harness>(["kiro", "devin"]);
+
 function projectTierFrontmatter(
   s: string,
   srcPath: string,
@@ -285,9 +287,13 @@ function projectTierFrontmatter(
       `${srcPath}: kiro projection requires exactly one disallowedTools: Task line.`,
     );
   }
-  if (harness === "kiro") {
-    // Kiro's native agent surface rejects unknown frontmatter keys: project the
-    // authored disallowedTools line out before the model-policy rewrite.
+  if (DROPS_DISALLOWED_TOOLS.has(harness)) {
+    // Harnesses that do not understand Claude's `disallowedTools` key drop it
+    // rather than ship it inert, before the model-policy rewrite. An inert key
+    // that READS like enforcement is worse than no key: a reviewer sees "Task
+    // is denied" and stops looking. Kiro rejects it outright; Devin silently
+    // ignores it, and denies delegation through the `allowed-tools` allowlist
+    // its manifest emits.
     const newFm = fm
       .split(/\r?\n/)
       .filter((line) => !/^disallowedTools:/.test(line))
@@ -372,13 +378,13 @@ function transform(
     s = substituteToken(s, harnessDir, invoke);
     s = applyRulesRename(s, harnessDir, rulesRename);
     if (harness) s = projectTierFrontmatter(s, srcPath, harness);
-    // Cursor, opencode, and Copilot persona bodies are mutable active-space
-    // pointers. Ship their memory references on the default seed so the first
+    // Cursor, Devin, opencode, and Copilot persona bodies are mutable
+    // active-space pointers. Ship their memory references on the default seed so the first
     // startup's repointHarnessIncludes(project, "default") is byte-identical;
     // later space switches still rewrite the same concrete segment in place.
     const posixPath = srcPath.split(sep).join("/");
     if (
-      (harness === "cursor" || harness === "opencode" || harness === "copilot") &&
+      (harness === "cursor" || harness === "devin" || harness === "opencode" || harness === "copilot") &&
       posixPath.includes("/agents/") &&
       posixPath.endsWith("-agent.md")
     ) {
@@ -1317,6 +1323,7 @@ function rewriteNativeInvocations(
     "codex-adapter": true,
     "cursor-adapter": true,
     "copilot-adapter": true,
+    "devin-adapter": true,
   };
   const projectPrefix = String.raw`(?:"?(?:\$\{?CLAUDE_PROJECT_DIR\}?/)?`;
   const suffix = `"?)`;

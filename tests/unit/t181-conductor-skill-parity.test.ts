@@ -1306,6 +1306,7 @@ describe("t181 per-harness conductor-SKILL freshness gate (P11 RESOLVE-2)", () =
       "copilot",
       "codex",
       "cursor",
+      "devin",
       "kiro",
       "kiro-ide",
       "opencode",

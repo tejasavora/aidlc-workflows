@@ -13,6 +13,7 @@ type ReviewerScopeRegistration =
   | "cursor-hooks"
   | "kiro-agent-json"
   | "opencode-plugin"
+  | "devin-hooks"
   | "unsupported";
 
 type HarnessCapabilities = {
@@ -37,7 +38,8 @@ type HarnessCapabilities = {
     | "cursor-rule"
     | "kiro-resources"
     | "kiro-steering"
-    | "opencode-instructions";
+    | "opencode-instructions"
+    | "devin-rule-pointer";
   kiroAgentJson: boolean;
   ideAgentTools: boolean;
   reviewerScopeRegistration: ReviewerScopeRegistration;
@@ -86,6 +88,30 @@ const HARNESS_CAPABILITIES = {
     kiroAgentJson: false,
     ideAgentTools: false,
     reviewerScopeRegistration: "codex-hooks",
+  },
+  devin: {
+    harnessDir: ".devin",
+    onboarding: {
+      mode: "manifest",
+      fills: "onboarding.fills.ts",
+      dist: "AGENTS.md",
+      harnessDist: ".devin/rules/aidlc-onboarding.md",
+    },
+    rootFiles: [".gitignore", "AGENTS.md"],
+    skillsRoot: ".devin/skills",
+    plugin: {
+      kind: "store",
+      manifestDir: ".devin-plugin",
+      wiringFile: "hooks/hooks.json",
+    },
+    // Devin expands no @-imports (measured: `devin rules show` prints the
+    // literal @-line), so the method reaches ambient context through
+    // .devin/rules/aidlc.md (`trigger: always_on`), which NAMES the memory files
+    // under an explicit "read them" instruction rather than embedding them.
+    memoryInclude: "devin-rule-pointer",
+    kiroAgentJson: false,
+    ideAgentTools: false,
+    reviewerScopeRegistration: "devin-hooks",
   },
   copilot: {
     harnessDir: ".aidlc",
@@ -286,7 +312,8 @@ function validateManifest(
         (file) => file.dst === "steering/aidlc-active-memory.md",
       ) ||
     (capabilities.memoryInclude === "claude-import") !==
-      manifest.harnessFiles.some((file) => file.dst === "rules/aidlc.md") ||
+      (manifest.harnessDir === ".claude" &&
+        manifest.harnessFiles.some((file) => file.dst === "rules/aidlc.md")) ||
     (capabilities.memoryInclude === "codex-env") !==
       (manifest.orchestratorSkillPath === ".agents/skills/aidlc/SKILL.md") ||
     (capabilities.memoryInclude === "opencode-instructions") !==
@@ -297,7 +324,14 @@ function validateManifest(
         manifest.harnessDir === ".aidlc" &&
         manifest.skipRunnerGen === true) ||
     (capabilities.memoryInclude === "cursor-rule") !==
-      manifest.harnessFiles.some((file) => file.dst === "rules/aidlc.mdc")
+      manifest.harnessFiles.some((file) => file.dst === "rules/aidlc.mdc") ||
+    // devin: the pointer is an always-on .devin/rules/aidlc.md that NAMES the
+    // method files (Devin expands no @-imports). Without this arm
+    // "devin-rule-pointer" would have nothing to disagree with, so the
+    // capability could drift from the manifest freely.
+    (capabilities.memoryInclude === "devin-rule-pointer") !==
+      (manifest.harnessDir === ".devin" &&
+        manifest.harnessFiles.some((file) => file.dst === "rules/aidlc.md"))
   ) {
     fail(name, "memoryInclude does not agree with manifest-owned include surfaces");
   }
