@@ -8,7 +8,7 @@
 // doc tells anyone to edit the projected file.
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { REPO_ROOT } from "../harness/fixtures.ts";
 import { HARNESS_MATRIX } from "../harness/harness-matrix.ts";
@@ -25,7 +25,14 @@ function releasePath(path: string): string {
 
 describe("a model or effort request runs config models", () => {
   test("every harness's ambient onboarding names the command, in both channels", () => {
-    expect(HARNESS_MATRIX.length).toBe(7);
+    // Derived, not a literal: this pins that the sweep covers every shipped
+    // harness, and a hardcoded count fails the moment one is added without
+    // saying anything about coverage.
+    expect(HARNESS_MATRIX.length).toBe(
+      readdirSync(join(REPO_ROOT, "harness"), { withFileTypes: true })
+        .filter((e) => e.isDirectory() && existsSync(join(REPO_ROOT, "harness", e.name, "manifest.ts")))
+        .length,
+    );
     for (const harness of HARNESS_MATRIX) {
       const invokes = [
         { path: harness.harnessOnboardingDist, invoke: `bun ${harness.manifest.harnessDir}/tools/aidlc.ts` },
