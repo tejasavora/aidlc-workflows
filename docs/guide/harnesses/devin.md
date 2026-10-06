@@ -125,8 +125,10 @@ Always-on rules this install adds (as `devin rules list` reports them):
   session id** and no agent identity. The adapter records each foreground
   dispatch while it is in flight and lets a `Stop` through untouched while one is
   outstanding: without that, the forwarding-loop gate would tell the subagent to
-  drive the parent workflow (verified by removing the check in a test). Reviewer
-  read-scope cannot tell a reviewer's reads from the main session's on Devin.
+  drive the parent workflow (verified by removing the check in a test). For the
+  same reason the per-unit **reviewer read-scope bound is not enforced on
+  Devin**: that hook identifies the reviewer from the payload's `agent_type`,
+  which Devin never sends, so it fails open (as on Kiro IDE).
 - **No `PreCompact`.** `PostCompaction` fires after a compaction, so state
   validation runs afterwards and cannot veto one.
 - **Personas carry no `model:`.** Devin runs an unpinned profile on the
