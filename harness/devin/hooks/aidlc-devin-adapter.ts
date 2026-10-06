@@ -180,7 +180,10 @@ function digest(value: string): string {
   return createHash("sha256").update(value).digest("hex").slice(0, 24);
 }
 
-export async function run(target: string, rawInput: string): Promise<number> {
+export async function run(target: string, rawInput?: string, _extraArgs: string[] = []): Promise<number> {
+  // Fail open on a call that carries no stdin text (for example the dispatcher's
+  // one-argument `engine hook <name>` route, which Devin's wiring never uses).
+  if (typeof rawInput !== "string") return 0;
   let devin: Payload = {};
   if (rawInput.trim().length > 0) {
     try {

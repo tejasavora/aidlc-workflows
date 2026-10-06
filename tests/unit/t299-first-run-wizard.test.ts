@@ -997,7 +997,8 @@ describe("t299 first-run setup wizard", () => {
 
     // Below the kiro row's own 2.6 floor neither Kiro row is detected, so
     // setup asks instead of taking one; the person still can choose Kiro CLI.
-    const unsupported = runWizard("5\n\n", {
+    // Kiro CLI is option 6 in the runtime-ordered menu (devin sits before it).
+    const unsupported = runWizard("6\n\n", {
       harnesses: { claude: { found: false }, kiro: { found: true, version: "kiro-cli 2.5.9" } },
       probed: ["kiro", "kiro-ide"],
     });
